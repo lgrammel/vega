@@ -158,7 +158,7 @@ inherits(SVGStringRenderer, Renderer, {
     };
 
     if (mdef.nested) {
-      if (scene.items && scene.items.length) process(scene.items[0]);
+      if (scene.items?.length) process(scene.items[0]);
     } else {
       visit(scene, process);
     }

@@ -7,7 +7,7 @@ export function resetSVGGradientId() {
 export const patternPrefix = 'p_';
 
 export function isGradient(value) {
-  return value && value.gradient;
+  return value?.gradient;
 }
 
 export function gradientRef(g, defs, base) {

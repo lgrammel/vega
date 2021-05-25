@@ -260,7 +260,7 @@ export function getPulse(op, encode) {
 
   return s && isArray(s)
     ? new MultiPulse(this, stamp, s.map(_ => _.pulse), encode)
-    : this._input[op.id] || singlePulse(this._pulse, s && s.pulse);
+    : this._input[op.id] || singlePulse(this._pulse, s?.pulse);
 }
 
 function singlePulse(p, s) {

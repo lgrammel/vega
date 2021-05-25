@@ -132,9 +132,9 @@ function parseSubParameter(def, value, scope) {
 
 // -- Utilities -----
 
-export const outerExpr = _ => _ && _.expr;
+export const outerExpr = _ => _?.expr;
 
-export const outerField = _ => _ && _.field;
+export const outerField = _ => _?.field;
 
 export const isData = _ => _ === 'data';
 

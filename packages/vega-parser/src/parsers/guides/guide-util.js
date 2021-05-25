@@ -33,7 +33,7 @@ export function getEncoding(name, encode) {
     (encode.update && encode.update[name]) ||
     (encode.enter && encode.enter[name])
   );
-  return v && v.signal ? v : v ? v.value : null;
+  return v?.signal ? v : v ? v.value : null;
 }
 
 export function getStyle(name, scope, style) {

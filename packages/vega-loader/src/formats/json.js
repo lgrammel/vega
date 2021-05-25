@@ -8,7 +8,7 @@ function isBuffer(_) {
 }
 
 export default function json(data, format) {
-  const prop = (format && format.property) ? field(format.property) : identity;
+  const prop = format?.property ? field(format.property) : identity;
   return isObject(data) && !isBuffer(data)
     ? parseJSON(prop(data), format)
     : prop(JSON.parse(data));
@@ -20,7 +20,5 @@ function parseJSON(data, format) {
   if (!isArray(data) && isIterable(data)) {
     data = [...data];
   }
-  return (format && format.copy)
-    ? JSON.parse(JSON.stringify(data))
-    : data;
+  return format?.copy ? JSON.parse(JSON.stringify(data)) : data;
 }

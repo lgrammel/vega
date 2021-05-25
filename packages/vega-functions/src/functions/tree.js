@@ -4,7 +4,7 @@ const datum = d => d.data;
 
 function treeNodes(name, context) {
   const tree = data.call(context, name);
-  return tree.root && tree.root.lookup || {};
+  return tree.root?.lookup || {};
 }
 
 export function treePath(name, source, target) {

@@ -278,7 +278,7 @@ Pulse.prototype = {
     if (fork) return this.fork(ALL).reflow();
 
     const len = this.add.length,
-          src = this.source && this.source.length;
+          src = this.source?.length;
     if (src && src !== len) {
       this.mod = this.source;
       if (len) this.filter(MOD, filter(this, ADD));

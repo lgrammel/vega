@@ -13,11 +13,11 @@ export default function(spec) {
 
   if (!source) error('Source not defined: ' + spec.source);
 
-  target = spec.target && spec.target.$expr
+  target = spec.target?.$expr
     ? ctx.eventExpression(spec.target.$expr)
     : ctx.get(spec.target);
 
-  if (update && update.$expr) {
+  if (update?.$expr) {
     if (update.$params) {
       params = ctx.parseParameters(update.$params);
     }

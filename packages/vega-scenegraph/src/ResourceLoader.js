@@ -62,7 +62,7 @@ ResourceLoader.prototype = {
       })
       .catch(e => {
         decrement(loader);
-        return {complete: false, width: 0, height: 0, src: e && e.url || ''};
+        return {complete: false, width: 0, height: 0, src: e?.url || ''};
       });
   },
 

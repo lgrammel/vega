@@ -55,7 +55,7 @@ function intersectGroup(group, box, filter, hits) {
   // recursively test children marks
   // translate box to group coordinate space
   const marks = group.items,
-        n = marks && marks.length;
+        n = marks?.length;
 
   if (n) {
     const x = group.x || 0,

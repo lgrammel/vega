@@ -13,7 +13,7 @@ import {LegendLabelRole, LegendSymbolRole, ScopeRole} from '../marks/roles';
 export default function(spec, config, userEncode, dataRef, columns) {
   const _ = lookup(spec, config),
         entries = userEncode.entries,
-        interactive = !!(entries && entries.interactive),
+        interactive = !!entries?.interactive,
         name = entries ? entries.name : undefined,
         height = _('clipHeight'),
         symbolOffset = _('symbolOffset'),

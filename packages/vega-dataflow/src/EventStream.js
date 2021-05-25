@@ -107,7 +107,7 @@ EventStream.prototype = {
       debounce(delay, e => {
         const df = e.dataflow;
         s.receive(e);
-        if (df && df.run) df.run();
+        if (df?.run) df.run();
       })
     ));
 

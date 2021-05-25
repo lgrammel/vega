@@ -120,7 +120,7 @@ function scaleKey(_) {
 function isContinuousColor(_) {
   const t = _.type;
   return isContinuous(t) && t !== Time && t !== UTC && (
-    _.scheme || _.range && _.range.length && _.range.every(isString)
+    _.scheme || _.range?.length && _.range.every(isString)
   );
 }
 

@@ -107,12 +107,12 @@ DataScope.prototype = {
         groupby: scope.fieldRef(field, 'key'),
         pulse: ref(ds.output)
       };
-      if (sort && sort.field) addSortField(scope, p, sort);
+      if (sort?.field) addSortField(scope, p, sort);
       a = scope.add(Aggregate(p));
       v = scope.add(Collect({pulse: ref(a)}));
       v = {agg: a, ref: ref(v)};
       if (k != null) cache[k] = v;
-    } else if (sort && sort.field) {
+    } else if (sort?.field) {
       addSortField(scope, v.agg.params, sort);
     }
 

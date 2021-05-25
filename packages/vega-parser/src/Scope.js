@@ -323,7 +323,7 @@ Scope.prototype = Subscope.prototype = {
   },
 
   property(spec) {
-    return spec && spec.signal ? this.signalRef(spec.signal) : spec;
+    return spec?.signal ? this.signalRef(spec.signal) : spec;
   },
 
   objectProperty(spec) {

@@ -14,7 +14,7 @@ export default function(view) {
     (_, event) => {
       const value = cursor.value,
             user = value ? (isString(value) ? value : value.user) : Default,
-            item = event.item && event.item.cursor || null;
+            item = event.item?.cursor || null;
 
       return (value && user === value.user && item == value.item)
         ? value

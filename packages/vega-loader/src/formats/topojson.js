@@ -11,10 +11,10 @@ export default function topojson(data, format) {
   let method, object, property, filter;
   data = json(data, format);
 
-  if (format && format.feature) {
+  if (format?.feature) {
     method = feature;
     property = format.feature;
-  } else if (format && format.mesh) {
+  } else if (format?.mesh) {
     method = mesh;
     property = format.mesh;
     filter = filters[format.filter];
@@ -26,7 +26,7 @@ export default function topojson(data, format) {
     ? method(data, object, filter)
     : error('Invalid TopoJSON object: ' + property);
 
-  return object && object.features || [object];
+  return object?.features || [object];
 }
 
 topojson.responseType = 'json';

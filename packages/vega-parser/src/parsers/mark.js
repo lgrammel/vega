@@ -18,7 +18,7 @@ import {Bound, Collect, DataJoin, Encode, Mark, Overlap, Render, Sieve, SortItem
 export default function(spec, scope) {
   const role = getRole(spec),
         group = spec.type === GroupMark,
-        facet = spec.from && spec.from.facet,
+        facet = spec.from?.facet,
         overlap = spec.overlap;
 
   let layout = spec.layout || role === ScopeRole || role === FrameRole,

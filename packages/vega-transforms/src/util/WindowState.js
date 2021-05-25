@@ -74,7 +74,7 @@ prototype.update = function(w, t) {
   const cell = this.cell,
         wind = this.windows,
         data = w.data,
-        m = wind && wind.length;
+        m = wind?.length;
   let j;
 
   if (cell) {

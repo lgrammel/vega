@@ -59,9 +59,9 @@ export function sortKey(sort) {
 }
 
 export function aggrField(op, field) {
-  return (op && op.signal ? '$' + op.signal : op || '')
+  return (op?.signal ? '$' + op.signal : op || '')
     + (op && field ? '_' : '')
-    + (field && field.signal ? '$' + field.signal : field || '');
+    + (field?.signal ? '$' + field.signal : field || '');
 }
 
 // -----
@@ -71,11 +71,11 @@ export const Scope = 'scope';
 export const View = 'view';
 
 export function isSignal(_) {
-  return _ && _.signal;
+  return _?.signal;
 }
 
 export function isExpr(_) {
-  return _ && _.expr;
+  return _?.expr;
 }
 
 export function hasSignal(_) {
@@ -91,5 +91,5 @@ export function value(specValue, defaultValue) {
 }
 
 export function deref(v) {
-  return v && v.signal || v;
+  return v?.signal || v;
 }

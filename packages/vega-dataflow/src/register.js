@@ -4,7 +4,7 @@ export const transforms = {};
 
 export function definition(type) {
   const t = transform(type);
-  return t && t.Definition || null;
+  return t?.Definition || null;
 }
 
 export function transform(type) {

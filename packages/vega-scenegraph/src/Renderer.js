@@ -44,7 +44,7 @@ Renderer.prototype = {
    * @return {DOMElement} - The scene (e.g., canvas or SVG) element.
    */
   canvas() {
-    return this._el && this._el.firstChild;
+    return this._el?.firstChild;
   },
 
   /**

@@ -40,7 +40,7 @@ tape('Handler should return array of handlers', t => {
   t.deepEqual(h.handlers(), []);
   h._handlers = {'click':[obj]};
   h = h.handlers();
-  t.equal(h && h.length, 1);
+  t.equal(h?.length, 1);
   t.equal(h[0], obj);
   t.end();
 });

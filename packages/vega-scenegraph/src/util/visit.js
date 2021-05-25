@@ -24,7 +24,7 @@ export function visit(scene, visitor) {
 
   const zitems = zorder(scene);
 
-  if (zitems && zitems.length) {
+  if (zitems?.length) {
     for (i=0, n=items.length; i<n; ++i) {
       if (!items[i].zindex) visitor(items[i]);
     }
@@ -41,7 +41,7 @@ export function pickVisit(scene, visitor) {
   if (!items || !items.length) return null;
 
   const zitems = zorder(scene);
-  if (zitems && zitems.length) items = zitems;
+  if (zitems?.length) items = zitems;
 
   for (i=items.length; --i >= 0;) {
     if (hit = visitor(items[i])) return hit;

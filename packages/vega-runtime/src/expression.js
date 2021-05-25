@@ -7,7 +7,7 @@ function expression(ctx, args, code) {
     code = 'return(' + code + ');';
   }
   const fn = Function(...args.concat(code));
-  return ctx && ctx.functions ? fn.bind(ctx.functions) : fn;
+  return ctx?.functions ? fn.bind(ctx.functions) : fn;
 }
 
 // generate code for comparing a single field

@@ -26,7 +26,7 @@ export const strokeJoinEnum = ['miter', 'round', 'bevel'];
 
 export function baseValueSchema(type, nullable) {
   type = Array.isArray(type) ? {enum: type}
-    : type && type.oneOf ? type
+    : type?.oneOf ? type
     : {type: type};
 
   var modType = type.type === 'number' ? 'number' : 'string',

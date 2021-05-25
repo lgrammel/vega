@@ -9,7 +9,7 @@ import {error} from 'vega-util';
  */
 export default async function(view, type, scaleFactor, opt) {
   const module = renderModule(type),
-        ctr = module && module.headless;
+        ctr = module?.headless;
 
   if (!ctr) error('Unrecognized renderer type: ' + type);
 

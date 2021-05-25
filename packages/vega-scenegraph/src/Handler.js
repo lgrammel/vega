@@ -54,7 +54,7 @@ Handler.prototype = {
    * @return {DOMElement} - The scene (e.g., canvas or SVG) element.
    */
   canvas() {
-    return this._el && this._el.firstChild;
+    return this._el?.firstChild;
   },
 
   /**
@@ -159,7 +159,7 @@ Handler.prototype = {
    *   to show or hide a tooltip for the given item.
    */
   handleTooltip(event, item, show) {
-    if (item && item.tooltip != null) {
+    if (item?.tooltip != null) {
       item = resolveItem(item, event, this.canvas(), this._origin);
       const value = (show && item && item.tooltip) || null;
       this._tooltip.call(this._obj, this, event, item, value);

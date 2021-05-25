@@ -96,7 +96,7 @@ function getCompare(_, ctx) {
   // As of Vega 5.5.3, $tupleid sort is no longer used.
   // Keep here for now for backwards compatibility.
   const k = 'c:' + _.$compare + '_' + _.$order,
-        c = array(_.$compare).map(_ => (_ && _.$tupleid) ? tupleid : _);
+        c = array(_.$compare).map(_ => _?.$tupleid ? tupleid : _);
   return ctx.fn[k] || (ctx.fn[k] = compare(c, _.$order, ctx.expr.codegen));
 }
 

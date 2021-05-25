@@ -12,7 +12,7 @@ export function getScale(name, ctx) {
 
 export function internalScaleFunctions(codegen, fnctx, visitors) {
   // add helper method to the 'this' expression function context
-  fnctx.__bandwidth = s => s && s.bandwidth ? s.bandwidth() : 0;
+  fnctx.__bandwidth = s => s?.bandwidth ? s.bandwidth() : 0;
 
   // register AST visitors for internal scale functions
   visitors._bandwidth = scaleVisitor;

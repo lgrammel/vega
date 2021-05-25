@@ -110,7 +110,7 @@ tape('Parser parses signals with event-driven updates', t => {
   t.equal(update.options.force, true);
 
   update = scope.updates[1];
-  t.equal(update.source && update.source.$ref, a);
+  t.equal(update.source?.$ref, a);
   t.equal(update.target, c);
   t.equal(update.update.$expr.code, '(2 * 2)');
   t.equal(update.options, undefined);

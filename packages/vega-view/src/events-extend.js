@@ -57,7 +57,7 @@ function extension(view, item, point) {
     if (name) for (i = item; i; i = i.mark.group) {
       if (i.mark.name === name) { g = i; break; }
     }
-    return g && g.mark && g.mark.interactive ? g : {};
+    return g?.mark?.interactive ? g : {};
   }
 
   function xy(item) {
@@ -68,7 +68,7 @@ function extension(view, item, point) {
     while (item) {
       p[0] -= item.x || 0;
       p[1] -= item.y || 0;
-      item = item.mark && item.mark.group;
+      item = item.mark?.group;
     }
     return p;
   }

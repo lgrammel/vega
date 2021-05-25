@@ -66,7 +66,7 @@ function testPoint(datum, entry) {
 export function selectionTest(name, datum, op) {
   var data = this.context.data[name],
       entries = data ? data.values.value : [],
-      unitIdx = data ? data[UNIT_INDEX] && data[UNIT_INDEX].value : undefined,
+      unitIdx = data ? data[UNIT_INDEX]?.value : undefined,
       intersect = op === Intersect,
       n = entries.length,
       i = 0,
@@ -113,7 +113,7 @@ const selectionId = field(SELECTION_ID),
 export function selectionIdTest(name, datum, op) {
   const data = this.context.data[name],
       entries = data ? data.values.value : [],
-      unitIdx = data ? data[UNIT_INDEX] && data[UNIT_INDEX].value : undefined,
+      unitIdx = data ? data[UNIT_INDEX]?.value : undefined,
       intersect = op === Intersect,
       value = selectionId(datum),
       index = bisectLeft(entries, value);

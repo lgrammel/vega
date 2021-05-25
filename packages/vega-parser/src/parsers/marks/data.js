@@ -50,6 +50,6 @@ export default function(from, group, scope) {
 
 export function getDataRef(from, scope) {
   return from.$ref ? from
-    : from.data && from.data.$ref ? from.data
+    : from.data?.$ref ? from.data
     : ref(scope.getData(from.data).output);
 }

@@ -35,7 +35,7 @@ inherits(Collect, Transform, {
     this.value = out.source = list.data(stableCompare(sort), mod);
 
     // propagate tree root if defined
-    if (pulse.source && pulse.source.root) {
+    if (pulse.source?.root) {
       this.value.root = pulse.source.root;
     }
 

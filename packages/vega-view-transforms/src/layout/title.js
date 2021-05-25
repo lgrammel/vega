@@ -25,7 +25,7 @@ export function titleLayout(view, mark, width, height, viewBounds) {
     : (anchor === End) ? end
     : (start + end) / 2;
 
-  if (subtitle && subtitle.text) {
+  if (subtitle?.text) {
     // position subtitle
     switch (orient) {
       case Top:

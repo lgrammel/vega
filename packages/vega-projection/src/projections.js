@@ -87,7 +87,7 @@ export function projection(type, proj) {
 }
 
 export function getProjectionPath(proj) {
-  return (proj && proj.path) || defaultPath;
+  return proj?.path || defaultPath;
 }
 
 const projections = {

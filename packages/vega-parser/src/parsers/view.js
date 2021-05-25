@@ -38,7 +38,7 @@ export default function parseView(spec, scope) {
   // assign description, event, legend, and locale configuration
   scope.description = spec.description || config.description;
   scope.eventConfig = config.events;
-  scope.legends = scope.objectProperty(config.legend && config.legend.layout);
+  scope.legends = scope.objectProperty(config.legend?.layout);
   scope.locale = config.locale;
 
   // store root group item
@@ -77,7 +77,7 @@ export default function parseView(spec, scope) {
 }
 
 function signalObject(name, value) {
-  return value && value.signal
+  return value?.signal
     ? { name, update: value.signal }
     : { name, value };
 }

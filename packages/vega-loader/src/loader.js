@@ -171,7 +171,7 @@ function httpLoader(fetch) {
   return fetch
     ? async function(url, options) {
         const opt = extend({}, this.options.http, options),
-              type = options && options.response,
+              type = options?.response,
               response = await fetch(url, opt);
 
         return !response.ok

@@ -32,7 +32,7 @@ export default {
   handler(ctx, expr) {
     const ast = expr.ast, fn = ctx.functions;
     return (_, event) => {
-      const datum = event.item && event.item.datum;
+      const datum = event.item?.datum;
       return interpret(ast, fn, _, datum, event);
     };
   },

@@ -10,8 +10,8 @@ export default function(fields, flat, opt) {
       : array(fields);
   }
 
-  const len = fields && fields.length,
-        gen = opt && opt.get || getter,
+  const len = fields?.length,
+        gen = opt?.get || getter,
         map = f => gen(flat ? [f] : splitAccessPath(f));
   let fn;
 

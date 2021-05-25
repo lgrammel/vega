@@ -58,7 +58,7 @@ export default function(encode, type, role, style, config) {
 }
 
 function applyDefault(defaults, key, value) {
-  defaults[key] = value && value.signal
+  defaults[key] = value?.signal
     ? {signal: value.signal}
     : {value: value};
 }

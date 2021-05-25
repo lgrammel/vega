@@ -7,7 +7,7 @@ export default function SVGHandler(loader, tooltip) {
   Handler.call(this, loader, tooltip);
   const h = this;
   h._hrefHandler = listener(h, (evt, item) => {
-    if (item && item.href) h.handleHref(evt, item, item.href);
+    if (item?.href) h.handleHref(evt, item, item.href);
   });
   h._tooltipHandler = listener(h, (evt, item) => {
     h.handleTooltip(evt, item, evt.type !== TooltipHideEvent);

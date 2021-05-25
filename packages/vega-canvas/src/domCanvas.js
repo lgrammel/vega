@@ -1,7 +1,7 @@
 export function domCanvas(w, h) {
   if (typeof document !== 'undefined' && document.createElement) {
     const c = document.createElement('canvas');
-    if (c && c.getContext) {
+    if (c?.getContext) {
       c.width = w;
       c.height = h;
       return c;

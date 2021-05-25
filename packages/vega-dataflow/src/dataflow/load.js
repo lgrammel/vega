@@ -40,7 +40,7 @@ export async function request(url, format) {
   try {
     data = await df.loader().load(url, {
       context: 'dataflow',
-      response: responseType(format && format.type)
+      response: responseType(format?.type)
     });
     try {
       data = df.parse(data, format);

@@ -8,7 +8,7 @@ export default function(mark, bounds, opt) {
   var type  = marks[mark.marktype],
       bound = type.bound,
       items = mark.items,
-      hasItems = items && items.length,
+      hasItems = items?.length,
       i, n, item, b;
 
   if (type.nested) {

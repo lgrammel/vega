@@ -57,7 +57,7 @@ export default function(spec, scope) {
 // the top-level encode block has been *deprecated*.
 function titleEncode(spec) {
   const encode = spec.encode;
-  return (encode && encode.title) || extend({
+  return encode?.title || extend({
     name: spec.name,
     interactive: spec.interactive,
     style: spec.style

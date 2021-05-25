@@ -8,7 +8,7 @@ export function bandspace(count, paddingInner, paddingOuter) {
 
 export function bandwidth(name, group) {
   const s = getScale(name, (group || this).context);
-  return s && s.bandwidth ? s.bandwidth() : 0;
+  return s?.bandwidth ? s.bandwidth() : 0;
 }
 
 export function copy(name, group) {
@@ -30,7 +30,7 @@ export function invert(name, range, group) {
 
 export function range(name, group) {
   const s = getScale(name, (group || this).context);
-  return s && s.range ? s.range() : [];
+  return s?.range ? s.range() : [];
 }
 
 export function scale(name, value, group) {

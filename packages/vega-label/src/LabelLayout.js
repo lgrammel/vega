@@ -114,7 +114,7 @@ function getAnchors(_, count) {
 }
 
 function markType(item) {
-  return item && item.mark && item.mark.marktype;
+  return item?.mark?.marktype;
 }
 
 /**
