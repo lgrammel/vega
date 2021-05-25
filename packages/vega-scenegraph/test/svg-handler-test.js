@@ -58,11 +58,11 @@ function event(name, x, y) {
 }
 
 tape('SVGHandler should add/remove event callbacks', t => {
-  var array = function(_) { return _ || []; },
-      object = function(_) { return _ || {}; },
+  var array = _ => _ || [],
+      object = _ => _ || {},
       handler = new Handler(),
       h = handler._handlers,
-      f = function() {},
+      f = () => {},
       atype = 'click',
       btype = 'click.foo',
       ctype = 'mouseover';
@@ -117,7 +117,7 @@ tape('SVGHandler should handle input events', t => {
 
   const svg = handler.canvas();
   let count = 0;
-  const increment = function() { count++; };
+  const increment = () => { count++; };
 
   events.forEach(name => {
     handler.on(name, increment);

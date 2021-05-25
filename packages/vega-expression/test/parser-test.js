@@ -2,9 +2,7 @@ var tape = require('tape'),
     vega = require('../');
 
 function parse(str) {
-  return function() {
-    return JSON.parse(JSON.stringify(vega.parse(str)));
-  };
+  return () => JSON.parse(JSON.stringify(vega.parse(str)));
 }
 
 tape('Parser should allow literal boolean expressions', t => {

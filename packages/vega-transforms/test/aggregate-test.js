@@ -241,7 +241,7 @@ tape('Aggregate handles cross-product', t => {
         pulse: col
       }),
       out = df.add(Collect, {
-        sort: function(u, v) { return (u.a - v.a) || (u.b - v.b); },
+        sort: (u, v) => (u.a - v.a) || (u.b - v.b),
         pulse: agg
       });
 

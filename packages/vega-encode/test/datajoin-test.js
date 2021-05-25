@@ -29,7 +29,7 @@ tape('DataJoin joins tuples and items', t => {
   // Redundant add should not change output size
   // Fake changeset to test invalid insert
   df.pulse(c0, {
-    pulse: function(p) {
+    pulse: p => {
       p.add.push(data[0]);
       return p;
     }

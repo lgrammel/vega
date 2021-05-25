@@ -21,7 +21,7 @@ tape('Facet facets tuples', t => {
   }
 
   function subtest(len) {
-    return function(s, i) {
+    return (s, i) => {
       const d = s.data.value;
       t.equal(d.length, len === undefined ? i + 1 : len);
       t.equal(d.every(t => t.k === s.key), true);
@@ -126,7 +126,7 @@ tape('Facet handles key parameter change', t => {
   }
 
   function subtest(len) {
-    return function(s, i) {
+    return (s, i) => {
       const d = s.data.value;
       t.equal(d.length, len === undefined ? i + 1 : len);
       t.equal(d.every(t => t.k2 === s.key), true);

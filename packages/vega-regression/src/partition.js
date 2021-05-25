@@ -1,6 +1,6 @@
 export default function(data, groupby) {
   var groups = [],
-      get = function(f) { return f(t); },
+      get = f => f(t),
       map, i, n, t, k, g;
 
   // partition data points into stack groups

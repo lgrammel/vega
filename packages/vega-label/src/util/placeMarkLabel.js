@@ -10,7 +10,7 @@ export default function($, bitmaps, anchors, offsets) {
         bm1 = bitmaps[1],
         n = offsets.length;
 
-  return function(d) {
+  return d => {
     const boundary = d.boundary,
           textHeight = d.datum.fontSize;
 

@@ -106,7 +106,7 @@ function cell(measures, counts, countOnly) {
     var store = cell.data = new TupleStore();
   }
 
-  cell.add = function(t) {
+  cell.add = t => {
     cell.num += 1;
     if (countOnly) return;
     if (store) store.add(t);
@@ -115,7 +115,7 @@ function cell(measures, counts, countOnly) {
     }
   };
 
-  cell.rem = function(t) {
+  cell.rem = t => {
     cell.num -= 1;
     if (countOnly) return;
     if (store) store.rem(t);
@@ -124,7 +124,7 @@ function cell(measures, counts, countOnly) {
     }
   };
 
-  cell.set = function(t) {
+  cell.set = t => {
     let i, n;
 
     // consolidate stored values
@@ -135,7 +135,7 @@ function cell(measures, counts, countOnly) {
     if (!countOnly) for (i=0, n=a.length; i<n; ++i) a[i].set(t);
   };
 
-  cell.init = function() {
+  cell.init = () => {
     cell.num = 0;
     if (store) store.reset();
     for (let i=0; i<n; ++i) a[i].init();

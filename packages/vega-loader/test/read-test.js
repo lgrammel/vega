@@ -80,8 +80,8 @@ tape('JSON reader should copy data when "copy: true" provided', t => {
 });
 
 tape('JSON reader should parse date with format %d.%m.%Y', t => {
-  var expected = function() { return [{foo: new Date(1990, 6, 18)}]; },
-      input = function() { return [{foo: '18.07.1990'}]; },
+  var expected = () => [{foo: new Date(1990, 6, 18)}],
+      input = () => [{foo: '18.07.1990'}],
       types;
 
   // unquoted pattern
@@ -100,8 +100,8 @@ tape('JSON reader should parse date with format %d.%m.%Y', t => {
 });
 
 tape('JSON reader should parse date with format %m.%d.%Y', t => {
-  var expected = function() { return [{foo: new Date(1990, 6, 18)}]; },
-      input = function() { return [{foo: '07.18.1990'}]; },
+  var expected = () => [{foo: new Date(1990, 6, 18)}],
+      input = () => [{foo: '07.18.1990'}],
       types;
 
   // unquoted pattern
@@ -120,8 +120,8 @@ tape('JSON reader should parse date with format %m.%d.%Y', t => {
 });
 
 tape('JSON reader should parse time with format %H:%M', t => {
-  var expected = function() { return [{foo: new Date(1900, 0, 1, 13, 15)}]; },
-      input = function() { return [{foo: '13:15'}]; },
+  var expected = () => [{foo: new Date(1900, 0, 1, 13, 15)}],
+      input = () => [{foo: '13:15'}],
       types;
 
   // unquoted pattern
@@ -145,7 +145,7 @@ tape('JSON reader should parse date with custom parse function', t => {
       types = {foo: 'date:custom'};
 
   function dateParse() {
-    return function() { return new Date(2000, 1, 1); };
+    return () => new Date(2000, 1, 1);
   }
 
   t.deepEqual(read(input, {type:'json', parse: types}, dateParse), expected);
@@ -153,8 +153,8 @@ tape('JSON reader should parse date with custom parse function', t => {
 });
 
 tape('JSON reader should parse UTC date with format %d.%m.%Y', t => {
-  var expected = function() { return [{foo: new Date(Date.UTC(1990, 6, 18))}]; },
-      input = function() { return [{foo: '18.07.1990'}]; },
+  var expected = () => [{foo: new Date(Date.UTC(1990, 6, 18))}],
+      input = () => [{foo: '18.07.1990'}],
       types;
 
   // unquoted pattern
@@ -173,8 +173,8 @@ tape('JSON reader should parse UTC date with format %d.%m.%Y', t => {
 });
 
 tape('JSON reader should parse UTC date with format %m.%d.%Y', t => {
-  var expected = function() { return [{foo: new Date(Date.UTC(1990, 6, 18))}]; },
-      input = function() { return [{foo: '07.18.1990'}]; },
+  var expected = () => [{foo: new Date(Date.UTC(1990, 6, 18))}],
+      input = () => [{foo: '07.18.1990'}],
       types;
 
   // unquoted pattern
@@ -193,8 +193,8 @@ tape('JSON reader should parse UTC date with format %m.%d.%Y', t => {
 });
 
 tape('JSON reader should parse UTC time with format %H:%M', t => {
-  var expected = function() { return [{foo: new Date(Date.UTC(1900, 0, 1, 13, 15))}]; },
-      input = function() { return [{foo: '13:15'}]; },
+  var expected = () => [{foo: new Date(Date.UTC(1900, 0, 1, 13, 15))}],
+      input = () => [{foo: '13:15'}],
       types;
 
   // unquoted pattern

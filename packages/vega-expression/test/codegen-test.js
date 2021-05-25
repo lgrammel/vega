@@ -18,9 +18,7 @@ tape('Evaluate expressions without white or black list', t => {
     return fn();
   }
 
-  evaluate.fn = function(str) {
-    return function() { return evaluate(str); };
-  };
+  evaluate.fn = str => () => evaluate(str);
 
   // should access globals object
   const unicode = 'd\u00A9';
@@ -56,9 +54,7 @@ tape('Evaluate expressions with black list', t => {
     return fn(d);
   }
 
-  evaluate.fn = function(str) {
-    return function() { return evaluate(str); };
-  };
+  evaluate.fn = str => () => evaluate(str);
 
   // should not allow forbidden ids
   t.throws(evaluate.fn('a'));
@@ -89,9 +85,7 @@ tape('Evaluate expressions with white list', t => {
     return fn(datum, evt);
   }
 
-  evaluate.fn = function(str) {
-    return function() { return evaluate(str); };
-  };
+  evaluate.fn = str => () => evaluate(str);
 
   // Simple evaluation
   // should eval simple integer expressions

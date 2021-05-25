@@ -42,7 +42,7 @@ function floor(units, step, get, inv, newDate) {
         S = u[SECONDS] ? _(SECONDS) : zero,
         L = u[MILLISECONDS] ? _(MILLISECONDS) : zero;
 
-  return function(v) {
+  return v => {
     t.setTime(+v);
     const year = y(t);
     return newDate(year, m(t), d(t, year), H(t), M(t), S(t), L(t));

@@ -7,7 +7,7 @@ const scaleProps = ['clamp', 'base', 'constant', 'exponent'];
 export function interpolateRange(interpolator, range) {
   const start = range[0],
         span = peek(range) - start;
-  return function(i) { return interpolator(start + i * span); };
+  return i => interpolator(start + i * span);
 }
 
 export function interpolateColors(colors, type, gamma) {

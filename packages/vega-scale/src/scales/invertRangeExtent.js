@@ -1,5 +1,5 @@
 export default function(scale) {
-  return function(_) {
+  return _ => {
     const range = scale.range();
     let lo = _[0],
         hi = _[1],

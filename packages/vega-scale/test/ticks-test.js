@@ -5,8 +5,8 @@ var tape = require('tape'),
 tape('validTicks uses count correctly', t => {
   const data = [0, 1, 2, 3, 4, 5, 6, 7];
 
-  const identity = function(x) { return x; };
-  identity.range = function() { return [0, 10]; };
+  const identity = x => x;
+  identity.range = () => [0, 10];
 
   const t1 = validTicks(identity, data, 5);
   t.deepEqual(t1, [0, 2, 4, 6]);

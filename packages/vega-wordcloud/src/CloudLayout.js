@@ -50,7 +50,7 @@ export default function() {
       random = Math.random,
       cloud = {};
 
-  cloud.layout = function() {
+  cloud.layout = () => {
     var contextAndRatio = getContext(canvas()),
         board = zeroArray((size[0] >> 5) * size[1]),
         bounds = null,
@@ -388,9 +388,7 @@ function collideRects(a, b) {
 
 function archimedeanSpiral(size) {
   var e = size[0] / size[1];
-  return function(t) {
-    return [e * (t *= .1) * Math.cos(t), t * Math.sin(t)];
-  };
+  return t => [e * (t *= .1) * Math.cos(t), t * Math.sin(t)];
 }
 
 function rectangularSpiral(size) {
@@ -398,7 +396,7 @@ function rectangularSpiral(size) {
       dx = dy * size[0] / size[1],
       x = 0,
       y = 0;
-  return function(t) {
+  return t => {
     var sign = t < 0 ? -1 : 1;
     // See triangular numbers: T_n = n * (n + 1) / 2.
     switch ((Math.sqrt(1 + 4 * sign * t) - sign) & 3) {
@@ -420,7 +418,7 @@ function zeroArray(n) {
 }
 
 function functor(d) {
-  return typeof d === 'function' ? d : function() { return d; };
+  return typeof d === 'function' ? d : () => d;
 }
 
 var spirals = {

@@ -27,7 +27,7 @@ export function ref(op) {
 
 export const tupleidRef = {
   $tupleid: 1,
-  toString: function() { return ':_tupleid_:'; }
+  toString: () => ':_tupleid_:'
 };
 
 export function fieldRef(field, name) {

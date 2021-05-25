@@ -4,7 +4,7 @@ import Bounds from '../Bounds';
 const b = new Bounds();
 
 export function intersectPath(draw) {
-  return function(item, brush) {
+  return (item, brush) => {
     // rely on (inaccurate) bounds intersection if no context
     if (!context) return true;
 

@@ -4,17 +4,15 @@ export function WindowOp(op, field, param, as) {
   const fn = WindowOps[op](field, param);
   return {
     init:   fn.init || zero,
-    update: function(w, t) { t[as] = fn.next(w); }
+    update: (w, t) => { t[as] = fn.next(w); }
   };
 }
 
 export const WindowOps = {
-  row_number: function() {
-    return {
-      next: w => w.index + 1
-    };
-  },
-  rank: function() {
+  row_number: () => ({
+    next: w => w.index + 1
+  }),
+  rank: () => {
     let rank;
     return {
       init: () => rank = 1,
@@ -25,7 +23,7 @@ export const WindowOps = {
       }
     };
   },
-  dense_rank: function() {
+  dense_rank: () => {
     let drank;
     return {
       init: () => drank = 1,
@@ -36,7 +34,7 @@ export const WindowOps = {
       }
     };
   },
-  percent_rank: function() {
+  percent_rank: () => {
     const rank = WindowOps.rank(),
           next = rank.next;
     return {
@@ -44,7 +42,7 @@ export const WindowOps = {
       next: w => (next(w) - 1) / (w.data.length - 1)
     };
   },
-  cume_dist: function() {
+  cume_dist: () => {
     let cume;
     return {
       init: () => cume = 0,
@@ -60,7 +58,7 @@ export const WindowOps = {
       }
     };
   },
-  ntile: function(field, num) {
+  ntile: (field, num) => {
     num = +num;
     if (!(num > 0)) error('ntile num must be greater than zero.');
     const cume = WindowOps.cume_dist(),
@@ -71,7 +69,7 @@ export const WindowOps = {
     };
   },
 
-  lag: function(field, offset) {
+  lag: (field, offset) => {
     offset = +offset || 1;
     return {
       next: w => {
@@ -80,7 +78,7 @@ export const WindowOps = {
       }
     };
   },
-  lead: function(field, offset) {
+  lead: (field, offset) => {
     offset = +offset || 1;
     return {
       next: w => {
@@ -91,17 +89,13 @@ export const WindowOps = {
     };
   },
 
-  first_value: function(field) {
-    return {
-      next: w => field(w.data[w.i0])
-    };
-  },
-  last_value: function(field) {
-    return {
-      next: w => field(w.data[w.i1 - 1])
-    };
-  },
-  nth_value: function(field, nth) {
+  first_value: field => ({
+    next: w => field(w.data[w.i0])
+  }),
+  last_value: field => ({
+    next: w => field(w.data[w.i1 - 1])
+  }),
+  nth_value: (field, nth) => {
     nth = +nth;
     if (!(nth > 0)) error('nth_value nth must be greater than zero.');
     return {
@@ -112,7 +106,7 @@ export const WindowOps = {
     };
   },
 
-  prev_value: function(field) {
+  prev_value: field => {
     let prev;
     return {
       init: () => prev = null,
@@ -122,7 +116,7 @@ export const WindowOps = {
       }
     };
   },
-  next_value: function(field) {
+  next_value: field => {
     let v, i;
     return {
       init: () => (v = null, i = -1),
