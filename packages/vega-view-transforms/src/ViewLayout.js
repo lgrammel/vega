@@ -1,18 +1,35 @@
 import {
-  AxisRole, Bottom, ColFooter, ColHeader, ColTitle,
-  Fit, FitX, FitY, FrameRole, Left, LegendRole,
-  None, Pad, Padding, Right,
-  RowFooter, RowHeader, RowTitle, ScopeRole, TitleRole, Top
-} from './constants';
+  AxisRole,
+  Bottom,
+  ColFooter,
+  ColHeader,
+  ColTitle,
+  Fit,
+  FitX,
+  FitY,
+  FrameRole,
+  Left,
+  LegendRole,
+  None,
+  Pad,
+  Padding,
+  Right,
+  RowFooter,
+  RowHeader,
+  RowTitle,
+  ScopeRole,
+  TitleRole,
+  Top,
+} from "./constants";
 
-import {axisLayout, isYAxis} from './layout/axis';
-import {gridLayout, trellisLayout} from './layout/grid';
-import {legendLayout, legendParams} from './layout/legend';
-import {titleLayout} from './layout/title';
+import { axisLayout, isYAxis } from "./layout/axis";
+import { gridLayout, trellisLayout } from "./layout/grid";
+import { legendLayout, legendParams } from "./layout/legend";
+import { titleLayout } from "./layout/title";
 
-import {Transform} from 'vega-dataflow';
-import {Bounds} from 'vega-scenegraph';
-import {inherits} from 'vega-util';
+import { Transform } from "vega-dataflow";
+import { Bounds } from "vega-scenegraph";
+import { inherits } from "vega-util";
 
 /**
  * Layout view elements such as axes and legends.
@@ -28,12 +45,12 @@ export default function ViewLayout(params) {
 inherits(ViewLayout, Transform, {
   transform(_, pulse) {
     const view = pulse.dataflow;
-    _.mark.items.forEach(group => {
+    _.mark.items.forEach((group) => {
       if (_.layout) trellisLayout(view, group, _.layout);
       layoutGroup(view, group, _);
     });
     return shouldReflow(_.mark.group) ? pulse.reflow() : pulse;
-  }
+  },
 });
 
 function shouldReflow(group) {
@@ -42,21 +59,26 @@ function shouldReflow(group) {
   // However, legend entries have a special exception to avoid instability.
   // For example, if a selected legend symbol gains a stroke on hover,
   // we don't want to re-position subsequent elements in the legend.
-  return group && group.mark.role !== 'legend-entry';
+  return group && group.mark.role !== "legend-entry";
 }
 
 function layoutGroup(view, group, _) {
   var items = group.items,
-      width = Math.max(0, group.width || 0),
-      height = Math.max(0, group.height || 0),
-      viewBounds = new Bounds().set(0, 0, width, height),
-      xBounds = viewBounds.clone(),
-      yBounds = viewBounds.clone(),
-      legends = [], title,
-      mark, orient, b, i, n;
+    width = Math.max(0, group.width || 0),
+    height = Math.max(0, group.height || 0),
+    viewBounds = new Bounds().set(0, 0, width, height),
+    xBounds = viewBounds.clone(),
+    yBounds = viewBounds.clone(),
+    legends = [],
+    title,
+    mark,
+    orient,
+    b,
+    i,
+    n;
 
   // layout axes, gather legends, collect bounds
-  for (i=0, n=items.length; i<n; ++i) {
+  for (i = 0, n = items.length; i < n; ++i) {
     mark = items[i];
     switch (mark.role) {
       case AxisRole:
@@ -89,7 +111,7 @@ function layoutGroup(view, group, _) {
   if (legends.length) {
     // group legends by orient
     const l = {};
-    legends.forEach(item => {
+    legends.forEach((item) => {
       orient = item.orient || Right;
       if (orient !== None) (l[orient] || (l[orient] = [])).push(item);
     });
@@ -97,13 +119,15 @@ function layoutGroup(view, group, _) {
     // perform grid layout for each orient group
     for (const orient in l) {
       const g = l[orient];
-      gridLayout(view, g, legendParams(
-        g, orient, _.legends, xBounds, yBounds, width, height
-      ));
+      gridLayout(
+        view,
+        g,
+        legendParams(g, orient, _.legends, xBounds, yBounds, width, height)
+      );
     }
 
     // update view bounds
-    legends.forEach(item => {
+    legends.forEach((item) => {
       const b = item.bounds;
 
       if (!b.equals(item._bounds)) {
@@ -117,7 +141,7 @@ function layoutGroup(view, group, _) {
         // For autosize fit, incorporate the orthogonal dimension only.
         // Legends that overrun the chart area will then be clipped;
         // otherwise the chart area gets reduced to nothing!
-        switch(item.orient) {
+        switch (item.orient) {
           case Left:
           case Right:
             viewBounds.add(b.x1, 0).add(b.x2, 0);
@@ -151,19 +175,19 @@ function layoutGroup(view, group, _) {
 
 function viewSizeLayout(view, group, viewBounds, _) {
   const auto = _.autosize || {},
-        type = auto.type;
+    type = auto.type;
 
   if (view._autosize < 1 || !type) return;
 
   let viewWidth = view._width,
-      viewHeight = view._height,
-      width  = Math.max(0, group.width || 0),
-      left   = Math.max(0, Math.ceil(-viewBounds.x1)),
-      height = Math.max(0, group.height || 0),
-      top    = Math.max(0, Math.ceil(-viewBounds.y1));
+    viewHeight = view._height,
+    width = Math.max(0, group.width || 0),
+    left = Math.max(0, Math.ceil(-viewBounds.x1)),
+    height = Math.max(0, group.height || 0),
+    top = Math.max(0, Math.ceil(-viewBounds.y1));
 
-  const right  = Math.max(0, Math.ceil(viewBounds.x2 - width)),
-        bottom = Math.max(0, Math.ceil(viewBounds.y2 - height));
+  const right = Math.max(0, Math.ceil(viewBounds.x2 - width)),
+    bottom = Math.max(0, Math.ceil(viewBounds.y2 - height));
 
   if (auto.contains === Padding) {
     const padding = view.padding();
@@ -176,31 +200,25 @@ function viewSizeLayout(view, group, viewBounds, _) {
     top = 0;
     width = viewWidth;
     height = viewHeight;
-  }
-
-  else if (type === Fit) {
+  } else if (type === Fit) {
     width = Math.max(0, viewWidth - left - right);
     height = Math.max(0, viewHeight - top - bottom);
-  }
-
-  else if (type === FitX) {
+  } else if (type === FitX) {
     width = Math.max(0, viewWidth - left - right);
     viewHeight = height + top + bottom;
-  }
-
-  else if (type === FitY) {
+  } else if (type === FitY) {
     viewWidth = width + left + right;
     height = Math.max(0, viewHeight - top - bottom);
-  }
-
-  else if (type === Pad) {
+  } else if (type === Pad) {
     viewWidth = width + left + right;
     viewHeight = height + top + bottom;
   }
 
   view._resizeView(
-    viewWidth, viewHeight,
-    width, height,
+    viewWidth,
+    viewHeight,
+    width,
+    height,
     [left, top],
     auto.resize
   );

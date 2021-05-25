@@ -1,30 +1,30 @@
-import { OnTrigger, Transforms, SignalRef } from '.';
+import { OnTrigger, Transforms, SignalRef } from ".";
 
-export type DataType = 'boolean' | 'number' | 'date' | 'string';
+export type DataType = "boolean" | "number" | "date" | "string";
 export type Parse =
-  | 'auto'
+  | "auto"
   | {
       [f: string]: DataType | string;
     };
 export interface FormatJSON {
-  type: 'json';
+  type: "json";
   parse?: Parse;
   property?: string | SignalRef;
   copy?: boolean;
 }
 export interface FormatSV {
-  type: 'csv' | 'tsv';
+  type: "csv" | "tsv";
   header?: string[];
   parse?: Parse;
 }
 export interface FormatDSV {
-  type: 'dsv';
+  type: "dsv";
   header?: string[];
   parse?: Parse;
   delimiter: string;
 }
 export type FormatTopoJSON = {
-  type: 'topojson';
+  type: "topojson";
   property?: string;
 } & (
   | {
@@ -32,10 +32,15 @@ export type FormatTopoJSON = {
     }
   | {
       mesh: string;
-      filter: 'interior' | 'exterior' | null;
+      filter: "interior" | "exterior" | null;
     }
 );
-export type Format = FormatJSON | FormatSV | FormatDSV | FormatTopoJSON | { parse: Parse };
+export type Format =
+  | FormatJSON
+  | FormatSV
+  | FormatDSV
+  | FormatTopoJSON
+  | { parse: Parse };
 
 export interface BaseData {
   name: string;

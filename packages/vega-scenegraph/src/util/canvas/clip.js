@@ -1,7 +1,7 @@
-import {hasCornerRadius, rectangle} from '../../path/shapes';
-import {isFunction} from 'vega-util';
+import { hasCornerRadius, rectangle } from "../../path/shapes";
+import { isFunction } from "vega-util";
 
-export default function(context, scene) {
+export default function (context, scene) {
   var clip = scene.clip;
 
   context.save();

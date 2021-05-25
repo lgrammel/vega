@@ -1,7 +1,7 @@
-import { stringOrSignal } from './util';
+import { stringOrSignal } from "./util";
 
 const background = stringOrSignal;
 
 export default {
-  background
+  background,
 };

@@ -1,12 +1,12 @@
-import isArray from './isArray';
-import isObject from './isObject';
+import isArray from "./isArray";
+import isObject from "./isObject";
 
-const isLegalKey = key => key !== '__proto__';
+const isLegalKey = (key) => key !== "__proto__";
 
 export function mergeConfig(...configs) {
   return configs.reduce((out, source) => {
     for (const key in source) {
-      if (key === 'signals') {
+      if (key === "signals") {
         // for signals, we merge the signals arrays
         // source signals take precedence over
         // existing signals with the same name
@@ -16,9 +16,8 @@ export function mergeConfig(...configs) {
         // for legend block, recurse for the layout entry only
         // for style block, recurse for all properties
         // otherwise, no recursion: objects overwrite, no merging
-        const r = key === 'legend' ? {layout: 1}
-          : key === 'style' ? true
-          : null;
+        const r =
+          key === "legend" ? { layout: 1 } : key === "style" ? true : null;
         writeConfig(out, key, source[key], r);
       }
     }
@@ -47,7 +46,8 @@ export function writeConfig(output, key, value, recurse) {
 function mergeNamed(a, b) {
   if (a == null) return b;
 
-  const map = {}, out = [];
+  const map = {},
+    out = [];
 
   function add(_) {
     if (!map[_.name]) {

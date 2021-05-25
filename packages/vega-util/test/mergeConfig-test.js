@@ -1,75 +1,85 @@
-var tape = require('tape'),
-    vega = require('../');
+var tape = require("tape"),
+  vega = require("../");
 
-tape('mergeConfig merges configuration objects', t => {
+tape("mergeConfig merges configuration objects", (t) => {
   t.deepEqual(
     vega.mergeConfig(
-      {mark: {fill: 'blue', stroke: {value: 'black'}, dashArray: [1, 2]}},
-      {mark: {stroke: {signal: '"black"'}, dashArray: [3, 4]}}
+      { mark: { fill: "blue", stroke: { value: "black" }, dashArray: [1, 2] } },
+      { mark: { stroke: { signal: '"black"' }, dashArray: [3, 4] } }
     ),
-    {mark: {fill: 'blue', stroke: {signal: '"black"'}, dashArray: [3, 4]}}
+    { mark: { fill: "blue", stroke: { signal: '"black"' }, dashArray: [3, 4] } }
   );
   t.end();
 });
 
-tape('mergeConfig merges legend objects', t => {
+tape("mergeConfig merges legend objects", (t) => {
   t.deepEqual(
     vega.mergeConfig(
       {
         legend: {
-          orient: 'right',
+          orient: "right",
           titlePadding: 5,
           layout: {
-            anchor: 'start',
-            left: {anchor: 'middle'},
-            right: {anchor: 'start', direction: 'horizontal'}
-          }
-        }
+            anchor: "start",
+            left: { anchor: "middle" },
+            right: { anchor: "start", direction: "horizontal" },
+          },
+        },
       },
       {
         legend: {
-          orient: 'left',
+          orient: "left",
           layout: {
-            anchor: 'middle',
-            right: {anchor: 'middle'}
-          }
-        }
+            anchor: "middle",
+            right: { anchor: "middle" },
+          },
+        },
       }
     ),
     {
       legend: {
-        orient: 'left',
+        orient: "left",
         titlePadding: 5,
         layout: {
-          anchor: 'middle',
-          left: {anchor: 'middle'},
-          right: {anchor: 'middle'}
-        }
-      }
+          anchor: "middle",
+          left: { anchor: "middle" },
+          right: { anchor: "middle" },
+        },
+      },
     }
   );
   t.end();
 });
 
-tape('mergeConfig merges signal arrays', t => {
+tape("mergeConfig merges signal arrays", (t) => {
   t.deepEqual(
     vega.mergeConfig(
-      {signals: [{name: 'foo', value: 1}, {name: 'bar', value: 2}]},
-      {signals: [{name: 'foo', value: 3}, {name: 'baz', value: 4}]}
+      {
+        signals: [
+          { name: "foo", value: 1 },
+          { name: "bar", value: 2 },
+        ],
+      },
+      {
+        signals: [
+          { name: "foo", value: 3 },
+          { name: "baz", value: 4 },
+        ],
+      }
     ),
     {
       signals: [
-        {name: 'foo', value: 3},
-        {name: 'baz', value: 4},
-        {name: 'bar', value: 2}
-      ]
+        { name: "foo", value: 3 },
+        { name: "baz", value: 4 },
+        { name: "bar", value: 2 },
+      ],
     }
   );
   t.end();
 });
 
-tape('mergeConfig handles empty arguments', t => {
-  const c = {autosize:'pad'};
+tape("mergeConfig handles empty arguments", (t) => {
+  const c = { autosize: "pad" };
   t.deepEqual(vega.mergeConfig(), {});
   t.deepEqual(vega.mergeConfig(null), {});
   t.deepEqual(vega.mergeConfig(undefined), {});
@@ -79,10 +89,10 @@ tape('mergeConfig handles empty arguments', t => {
   t.end();
 });
 
-tape('mergeConfig must not allow prototype pollution', t => {
-  const config = {symbol: {shape: 'triangle-right'}},
-        payload = JSON.parse('{"__proto__": {"vulnerable": "Polluted"}}'),
-        merged = vega.mergeConfig(config, payload, {symbol: payload});
+tape("mergeConfig must not allow prototype pollution", (t) => {
+  const config = { symbol: { shape: "triangle-right" } },
+    payload = JSON.parse('{"__proto__": {"vulnerable": "Polluted"}}'),
+    merged = vega.mergeConfig(config, payload, { symbol: payload });
 
   t.equal(merged.__proto__.vulnerable, undefined);
   t.equal(merged.symbol.__proto__.vulnerable, undefined);

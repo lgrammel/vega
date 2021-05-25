@@ -13,18 +13,18 @@ import {
   SceneText,
   sceneVisit,
   View,
-} from 'vega';
+} from "vega";
 
 type SceneRenderer = (scene: Scene) => void;
 
 const group: SceneRenderer = (outerScene: Scene) => {
-  sceneVisit(outerScene, sceneGroupOrItem => {
+  sceneVisit(outerScene, (sceneGroupOrItem) => {
     const group = sceneGroupOrItem as SceneGroup;
     group.context.background;
     group.items.length;
     group.height;
     group.width;
-    sceneVisit(group, item => {
+    sceneVisit(group, (item) => {
       const innerScene = item as Scene;
       rootRenderer(innerScene);
     });
@@ -32,7 +32,7 @@ const group: SceneRenderer = (outerScene: Scene) => {
 };
 
 const rect: SceneRenderer = (scene: Scene) => {
-  sceneVisit(scene, sceneGroupOrItem => {
+  sceneVisit(scene, (sceneGroupOrItem) => {
     const rect = sceneGroupOrItem as SceneRect;
     rect.fill;
     rect.height;
@@ -44,25 +44,25 @@ const rect: SceneRenderer = (scene: Scene) => {
 
 const legend: SceneRenderer = (scene: Scene) => {
   const legendMap: { [role: string]: (item: SceneItem) => void } = {
-    'legend-title': item => {
+    "legend-title": (item) => {
       const textItem = item as SceneText;
       textItem.text;
     },
-    'legend-symbol': item => {
+    "legend-symbol": (item) => {
       const symbol = item as SceneSymbol & SceneLegendItem;
       symbol.datum;
       symbol.shape;
       symbol.size;
     },
   };
-  sceneVisit(scene, sceneGroupOrItem => {
+  sceneVisit(scene, (sceneGroupOrItem) => {
     const sceneItem = sceneGroupOrItem as SceneItem;
     legendMap[sceneItem.mark.role](sceneItem);
   });
 };
 
 const rule: SceneRenderer = (scene: Scene) => {
-  sceneVisit(scene, sceneGroupOrItem => {
+  sceneVisit(scene, (sceneGroupOrItem) => {
     const line = sceneGroupOrItem as SceneLine;
     line.opacity;
     line.stroke;
@@ -75,7 +75,7 @@ const rule: SceneRenderer = (scene: Scene) => {
 };
 
 const text: SceneRenderer = (scene: Scene) => {
-  sceneVisit(scene, sceneGroupOrItem => {
+  sceneVisit(scene, (sceneGroupOrItem) => {
     const text = sceneGroupOrItem as SceneText;
     text.align;
     text.angle;
@@ -116,9 +116,9 @@ class TestRenderer extends Renderer {
 }
 
 class TestView extends View {
-  renderer(renderer: Renderers | 'test'): this
-  renderer(): Renderers
-  renderer(renderer?: Renderers | 'test') {
+  renderer(renderer: Renderers | "test"): this;
+  renderer(): Renderers;
+  renderer(renderer?: Renderers | "test") {
     if (!renderer) {
       return super.renderer();
     }
@@ -126,4 +126,4 @@ class TestView extends View {
   }
 }
 
-renderModule('test', { handler: CanvasHandler, renderer: TestRenderer });
+renderModule("test", { handler: CanvasHandler, renderer: TestRenderer });

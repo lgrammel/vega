@@ -1,7 +1,7 @@
 let NodeCanvas;
 
 try {
-  NodeCanvas = require('canvas');
+  NodeCanvas = require("canvas");
   if (!(NodeCanvas && NodeCanvas.createCanvas)) {
     NodeCanvas = null;
   }
@@ -20,5 +20,4 @@ export function nodeCanvas(w, h, type) {
   return null;
 }
 
-export const nodeImage = () =>
-  (NodeCanvas && NodeCanvas.Image) || null;
+export const nodeImage = () => (NodeCanvas && NodeCanvas.Image) || null;

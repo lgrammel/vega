@@ -1,5 +1,5 @@
-import {Operator} from 'vega-dataflow';
-import {accessor, accessorFields, accessorName, inherits} from 'vega-util';
+import { Operator } from "vega-dataflow";
+import { accessor, accessorFields, accessorName, inherits } from "vega-util";
 
 /**
  * Wraps an expression function with access to external parameters.
@@ -19,10 +19,10 @@ inherits(Expression, Operator);
 
 function update(_) {
   const expr = _.expr;
-  return this.value && !_.modified('expr')
+  return this.value && !_.modified("expr")
     ? this.value
     : accessor(
-        datum => expr(datum, _),
+        (datum) => expr(datum, _),
         accessorFields(expr),
         accessorName(expr)
       );

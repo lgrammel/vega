@@ -1,5 +1,5 @@
-import {Transform} from 'vega-dataflow';
-import {accessorName, error, inherits} from 'vega-util';
+import { Transform } from "vega-dataflow";
+import { accessorName, error, inherits } from "vega-util";
 
 /**
  * Extend tuples by joining them with values from a lookup table.
@@ -15,33 +15,39 @@ export default function Lookup(params) {
 }
 
 Lookup.Definition = {
-  'type': 'Lookup',
-  'metadata': {'modifies': true},
-  'params': [
-    { 'name': 'index', 'type': 'index', 'params': [
-        {'name': 'from', 'type': 'data', 'required': true },
-        {'name': 'key', 'type': 'field', 'required': true }
-      ] },
-    { 'name': 'values', 'type': 'field', 'array': true },
-    { 'name': 'fields', 'type': 'field', 'array': true, 'required': true },
-    { 'name': 'as', 'type': 'string', 'array': true },
-    { 'name': 'default', 'default': null }
-  ]
+  type: "Lookup",
+  metadata: { modifies: true },
+  params: [
+    {
+      name: "index",
+      type: "index",
+      params: [
+        { name: "from", type: "data", required: true },
+        { name: "key", type: "field", required: true },
+      ],
+    },
+    { name: "values", type: "field", array: true },
+    { name: "fields", type: "field", array: true, required: true },
+    { name: "as", type: "string", array: true },
+    { name: "default", default: null },
+  ],
 };
 
 inherits(Lookup, Transform, {
   transform(_, pulse) {
     const keys = _.fields,
-          index = _.index,
-          values = _.values,
-          defaultValue = _.default==null ? null : _.default,
-          reset = _.modified(),
-          n = keys.length;
+      index = _.index,
+      values = _.values,
+      defaultValue = _.default == null ? null : _.default,
+      reset = _.modified(),
+      n = keys.length;
 
     let flag = reset ? pulse.SOURCE : pulse.ADD,
-        out = pulse,
-        as = _.as,
-        set, m, mods;
+      out = pulse,
+      as = _.as,
+      set,
+      m,
+      mods;
 
     if (values) {
       m = values.length;
@@ -54,22 +60,22 @@ inherits(Lookup, Transform, {
       }
       as = as || values.map(accessorName);
 
-      set = function(t) {
-        for (var i=0, k=0, j, v; i<n; ++i) {
+      set = function (t) {
+        for (var i = 0, k = 0, j, v; i < n; ++i) {
           v = index.get(keys[i](t));
-          if (v == null) for (j=0; j<m; ++j, ++k) t[as[k]] = defaultValue;
-          else for (j=0; j<m; ++j, ++k) t[as[k]] = values[j](v);
+          if (v == null) for (j = 0; j < m; ++j, ++k) t[as[k]] = defaultValue;
+          else for (j = 0; j < m; ++j, ++k) t[as[k]] = values[j](v);
         }
       };
     } else {
       if (!as) {
-        error('Missing output field names.');
+        error("Missing output field names.");
       }
 
-      set = function(t) {
-        for (var i=0, v; i<n; ++i) {
+      set = function (t) {
+        for (var i = 0, v; i < n; ++i) {
           v = index.get(keys[i](t));
-          t[as[i]] = v==null ? defaultValue : v;
+          t[as[i]] = v == null ? defaultValue : v;
         }
       };
     }
@@ -77,11 +83,11 @@ inherits(Lookup, Transform, {
     if (reset) {
       out = pulse.reflow(true);
     } else {
-      mods = keys.some(k =>pulse.modified(k.fields));
-      flag |= (mods ? pulse.MOD : 0);
+      mods = keys.some((k) => pulse.modified(k.fields));
+      flag |= mods ? pulse.MOD : 0;
     }
     pulse.visit(flag, set);
 
     return out.modifies(as);
-  }
+  },
 });

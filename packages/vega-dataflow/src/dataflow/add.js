@@ -1,5 +1,5 @@
-import Operator from '../Operator';
-import {isFunction} from 'vega-util';
+import Operator from "../Operator";
+import { isFunction } from "vega-util";
 
 /**
  * Add an operator to the dataflow graph. This function accepts a
@@ -17,9 +17,9 @@ import {isFunction} from 'vega-util';
  *   listen for changes to upstream operators included as parameters.
  * @return {Operator} - The added operator.
  */
-export default function(init, update, params, react) {
+export default function (init, update, params, react) {
   let shift = 1,
-      op;
+    op;
 
   if (init instanceof Operator) {
     op = init;

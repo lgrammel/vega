@@ -1,20 +1,14 @@
-import {
-  codegen,
-  constants,
-  functions
-} from 'vega-expression';
+import { codegen, constants, functions } from "vega-expression";
 
-import {
-  isTuple
-} from 'vega-dataflow';
+import { isTuple } from "vega-dataflow";
 
 import {
   selectionIdTest,
   selectionResolve,
   selectionTest,
   selectionTuples,
-  selectionVisitor
-} from 'vega-selections';
+  selectionVisitor,
+} from "vega-selections";
 
 import {
   cumulativeLogNormal,
@@ -29,8 +23,8 @@ import {
   random,
   sampleLogNormal,
   sampleNormal,
-  sampleUniform
-} from 'vega-statistics';
+  sampleUniform,
+} from "vega-statistics";
 
 import {
   dayofyear,
@@ -41,8 +35,8 @@ import {
   utcSequence,
   utcdayofyear,
   utcweek,
-  week
-} from 'vega-time';
+  week,
+} from "vega-time";
 
 import {
   clampRange,
@@ -76,32 +70,18 @@ import {
   zoomLinear,
   zoomLog,
   zoomPow,
-  zoomSymlog
-} from 'vega-util';
+  zoomSymlog,
+} from "vega-util";
 
-import {
-  range as sequence
-} from 'd3-array';
+import { range as sequence } from "d3-array";
 
-import {
-  hcl,
-  hsl,
-  lab,
-  rgb
-} from 'd3-color';
+import { hcl, hsl, lab, rgb } from "d3-color";
 
-import {
-  contrast,
-  luminance
-} from './functions/luminance';
+import { contrast, luminance } from "./functions/luminance";
 
-import {
-  data,
-  indata,
-  setdata
-} from './functions/data';
+import { data, indata, setdata } from "./functions/data";
 
-import encode from './functions/encode';
+import encode from "./functions/encode";
 
 import {
   dayAbbrevFormat,
@@ -112,35 +92,24 @@ import {
   timeFormat,
   timeParse,
   utcFormat,
-  utcParse
-} from './functions/format';
+  utcParse,
+} from "./functions/format";
 
-import {
-  geoArea,
-  geoBounds,
-  geoCentroid
-} from './functions/geo';
+import { geoArea, geoBounds, geoCentroid } from "./functions/geo";
 
-import inScope from './functions/inscope';
+import inScope from "./functions/inscope";
 
-import intersect from './functions/intersect';
+import intersect from "./functions/intersect";
 
-import {
-  debug,
-  info,
-  warn
-} from './functions/log';
+import { debug, info, warn } from "./functions/log";
 
-import merge from './functions/merge';
+import merge from "./functions/merge";
 
-import modify from './functions/modify';
+import modify from "./functions/modify";
 
-import {
-  pinchAngle,
-  pinchDistance
-} from './functions/pinch';
+import { pinchAngle, pinchDistance } from "./functions/pinch";
 
-import pluck from './functions/pluck';
+import pluck from "./functions/pluck";
 
 import {
   indexof,
@@ -148,8 +117,8 @@ import {
   lastindexof,
   replace,
   reverse,
-  slice
-} from './functions/sequence';
+  slice,
+} from "./functions/sequence";
 
 import {
   bandspace,
@@ -158,44 +127,28 @@ import {
   domain,
   invert,
   range,
-  scale
-} from './functions/scale';
+  scale,
+} from "./functions/scale";
 
-import scaleGradient from './functions/scale-gradient';
+import scaleGradient from "./functions/scale-gradient";
 
-import {
-  geoShape,
-  pathShape
-} from './functions/shape';
+import { geoShape, pathShape } from "./functions/shape";
 
-import {
-  treeAncestors,
-  treePath
-} from './functions/tree';
+import { treeAncestors, treePath } from "./functions/tree";
 
-import {
-  containerSize,
-  screen,
-  windowSize
-} from './functions/window';
+import { containerSize, screen, windowSize } from "./functions/window";
 
-import {
-  SignalPrefix
-} from './constants';
+import { SignalPrefix } from "./constants";
 
-import {
-  internalScaleFunctions
-} from './scales';
+import { internalScaleFunctions } from "./scales";
 
-import {
-  dataVisitor,
-  indataVisitor,
-  scaleVisitor
-} from './visitors';
+import { dataVisitor, indataVisitor, scaleVisitor } from "./visitors";
 
 // Expression function context object
 export const functionContext = {
-  random() { return random(); }, // override default
+  random() {
+    return random();
+  }, // override default
   cumulativeNormal,
   cumulativeLogNormal,
   cumulativeUniform,
@@ -211,13 +164,17 @@ export const functionContext = {
   isArray,
   isBoolean,
   isDate,
-  isDefined(_) { return _ !== undefined; },
+  isDefined(_) {
+    return _ !== undefined;
+  },
   isNumber,
   isObject,
   isRegExp,
   isString,
   isTuple,
-  isValid(_) { return _ != null && _ === _; },
+  isValid(_) {
+    return _ != null && _ === _;
+  },
   toBoolean,
   toDate,
   toNumber,
@@ -288,23 +245,23 @@ export const functionContext = {
   zoomPow,
   zoomSymlog,
   encode,
-  modify
+  modify,
 };
 
-const eventFunctions = ['view', 'item', 'group', 'xy', 'x', 'y'], // event functions
-      eventPrefix = 'event.vega.', // event function prefix
-      thisPrefix = 'this.', // function context prefix
-      astVisitors = {}; // AST visitors for dependency analysis
+const eventFunctions = ["view", "item", "group", "xy", "x", "y"], // event functions
+  eventPrefix = "event.vega.", // event function prefix
+  thisPrefix = "this.", // function context prefix
+  astVisitors = {}; // AST visitors for dependency analysis
 
 // export code generator parameters
 export const codegenParams = {
-  forbidden:  ['_'],
-  allowed:    ['datum', 'event', 'item'],
-  fieldvar:   'datum',
-  globalvar:  id => `_[${stringValue(SignalPrefix + id)}]`,
-  functions:  buildFunctions,
-  constants:  constants,
-  visitors:   astVisitors
+  forbidden: ["_"],
+  allowed: ["datum", "event", "item"],
+  fieldvar: "datum",
+  globalvar: (id) => `_[${stringValue(SignalPrefix + id)}]`,
+  functions: buildFunctions,
+  constants: constants,
+  visitors: astVisitors,
 };
 
 // export code generator
@@ -313,8 +270,10 @@ export const codeGenerator = codegen(codegenParams);
 // Build expression function registry
 function buildFunctions(codegen) {
   const fn = functions(codegen);
-  eventFunctions.forEach(name => fn[name] = eventPrefix + name);
-  for (const name in functionContext) { fn[name] = thisPrefix + name; }
+  eventFunctions.forEach((name) => (fn[name] = eventPrefix + name));
+  for (const name in functionContext) {
+    fn[name] = thisPrefix + name;
+  }
   extend(fn, internalScaleFunctions(codegen, functionContext, astVisitors));
   return fn;
 }
@@ -338,24 +297,24 @@ export function expressionFunction(name, fn, visitor) {
 }
 
 // register expression functions with ast visitors
-expressionFunction('bandwidth', bandwidth, scaleVisitor);
-expressionFunction('copy', copy, scaleVisitor);
-expressionFunction('domain', domain, scaleVisitor);
-expressionFunction('range', range, scaleVisitor);
-expressionFunction('invert', invert, scaleVisitor);
-expressionFunction('scale', scale, scaleVisitor);
-expressionFunction('gradient', scaleGradient, scaleVisitor);
-expressionFunction('geoArea', geoArea, scaleVisitor);
-expressionFunction('geoBounds', geoBounds, scaleVisitor);
-expressionFunction('geoCentroid', geoCentroid, scaleVisitor);
-expressionFunction('geoShape', geoShape, scaleVisitor);
-expressionFunction('indata', indata, indataVisitor);
-expressionFunction('data', data, dataVisitor);
-expressionFunction('treePath', treePath, dataVisitor);
-expressionFunction('treeAncestors', treeAncestors, dataVisitor);
+expressionFunction("bandwidth", bandwidth, scaleVisitor);
+expressionFunction("copy", copy, scaleVisitor);
+expressionFunction("domain", domain, scaleVisitor);
+expressionFunction("range", range, scaleVisitor);
+expressionFunction("invert", invert, scaleVisitor);
+expressionFunction("scale", scale, scaleVisitor);
+expressionFunction("gradient", scaleGradient, scaleVisitor);
+expressionFunction("geoArea", geoArea, scaleVisitor);
+expressionFunction("geoBounds", geoBounds, scaleVisitor);
+expressionFunction("geoCentroid", geoCentroid, scaleVisitor);
+expressionFunction("geoShape", geoShape, scaleVisitor);
+expressionFunction("indata", indata, indataVisitor);
+expressionFunction("data", data, dataVisitor);
+expressionFunction("treePath", treePath, dataVisitor);
+expressionFunction("treeAncestors", treeAncestors, dataVisitor);
 
 // register Vega-Lite selection functions
-expressionFunction('vlSelectionTest', selectionTest, selectionVisitor);
-expressionFunction('vlSelectionIdTest', selectionIdTest, selectionVisitor);
-expressionFunction('vlSelectionResolve', selectionResolve, selectionVisitor);
-expressionFunction('vlSelectionTuples', selectionTuples);
+expressionFunction("vlSelectionTest", selectionTest, selectionVisitor);
+expressionFunction("vlSelectionIdTest", selectionIdTest, selectionVisitor);
+expressionFunction("vlSelectionResolve", selectionResolve, selectionVisitor);
+expressionFunction("vlSelectionTuples", selectionTuples);

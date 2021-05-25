@@ -11,10 +11,10 @@ import {
   RangeScheme,
   SymbolShape,
   TextBaseline,
-} from '.';
-import { BaseAxis } from './axis';
-import { Color } from './color';
-import { URI } from './data';
+} from ".";
+import { BaseAxis } from "./axis";
+import { Color } from "./color";
+import { URI } from "./data";
 import {
   Blend,
   ColorValueRef,
@@ -23,13 +23,13 @@ import {
   ScaledValueRef,
   Text,
   TextDirection,
-} from './encode.d';
-import { LayoutBounds } from './layout';
-import { BaseLegend } from './legend';
-import { Locale } from './locale';
-import { BaseProjection } from './projection';
-import { InitSignal, NewSignal, SignalRef } from './signal';
-import { BaseTitle, TitleAnchor } from './title';
+} from "./encode.d";
+import { LayoutBounds } from "./layout";
+import { BaseLegend } from "./legend";
+import { Locale } from "./locale";
+import { BaseProjection } from "./projection";
+import { InitSignal, NewSignal, SignalRef } from "./signal";
+import { BaseTitle, TitleAnchor } from "./title";
 
 export type KeepSignal<T> = T extends SignalRef ? SignalRef : never;
 
@@ -50,7 +50,7 @@ export interface Config
   padding?: Padding | SignalRef;
   group?: any; // TODO
   events?: {
-    bind?: 'any' | 'container' | 'none';
+    bind?: "any" | "container" | "none";
     defaults?: DefaultsConfig;
     globalCursor?: boolean;
     selector?: boolean | string[];
@@ -78,13 +78,13 @@ export interface Config
  *  The defaults object should have a single property: either "prevent" (to indicate which events should have default behavior suppressed) or "allow" (to indicate only those events whose default behavior should be allowed).
  */
 export type DefaultsConfig =
-  | Record<'prevent', boolean | EventType[]>
-  | Record<'allow', boolean | EventType[]>;
+  | Record<"prevent", boolean | EventType[]>
+  | Record<"allow", boolean | EventType[]>;
 
-export type MarkConfigKeys = 'mark' | Mark['type'];
+export type MarkConfigKeys = "mark" | Mark["type"];
 
-export type StrokeCap = 'butt' | 'round' | 'square';
-export type StrokeJoin = 'miter' | 'round' | 'bevel';
+export type StrokeCap = "butt" | "round" | "square";
+export type StrokeJoin = "miter" | "round" | "bevel";
 
 export interface MarkConfig {
   /**
@@ -474,52 +474,52 @@ export interface MarkConfig {
 }
 
 export type Cursor =
-  | 'auto'
-  | 'default'
-  | 'none'
-  | 'context-menu'
-  | 'help'
-  | 'pointer'
-  | 'progress'
-  | 'wait'
-  | 'cell'
-  | 'crosshair'
-  | 'text'
-  | 'vertical-text'
-  | 'alias'
-  | 'copy'
-  | 'move'
-  | 'no-drop'
-  | 'not-allowed'
-  | 'e-resize'
-  | 'n-resize'
-  | 'ne-resize'
-  | 'nw-resize'
-  | 's-resize'
-  | 'se-resize'
-  | 'sw-resize'
-  | 'w-resize'
-  | 'ew-resize'
-  | 'ns-resize'
-  | 'nesw-resize'
-  | 'nwse-resize'
-  | 'col-resize'
-  | 'row-resize'
-  | 'all-scroll'
-  | 'zoom-in'
-  | 'zoom-out'
-  | 'grab'
-  | 'grabbing';
+  | "auto"
+  | "default"
+  | "none"
+  | "context-menu"
+  | "help"
+  | "pointer"
+  | "progress"
+  | "wait"
+  | "cell"
+  | "crosshair"
+  | "text"
+  | "vertical-text"
+  | "alias"
+  | "copy"
+  | "move"
+  | "no-drop"
+  | "not-allowed"
+  | "e-resize"
+  | "n-resize"
+  | "ne-resize"
+  | "nw-resize"
+  | "s-resize"
+  | "se-resize"
+  | "sw-resize"
+  | "w-resize"
+  | "ew-resize"
+  | "ns-resize"
+  | "nesw-resize"
+  | "nwse-resize"
+  | "col-resize"
+  | "row-resize"
+  | "all-scroll"
+  | "zoom-in"
+  | "zoom-out"
+  | "grab"
+  | "grabbing";
 
 export type AxisConfigKeys =
-  | 'axis'
-  | 'axisX'
-  | 'axisY'
-  | 'axisTop'
-  | 'axisRight'
-  | 'axisBottom'
-  | 'axisLeft'
-  | 'axisBand';
+  | "axis"
+  | "axisX"
+  | "axisY"
+  | "axisTop"
+  | "axisRight"
+  | "axisBottom"
+  | "axisLeft"
+  | "axisBand";
 
 export type AxisConfig = ExcludeMappedValueRef<BaseAxis>;
 
@@ -620,10 +620,10 @@ export interface LegendLayout extends BaseLegendLayout {
   right?: BaseLegendLayout;
   top?: BaseLegendLayout;
   bottom?: BaseLegendLayout;
-  'top-left'?: BaseLegendLayout;
-  'top-right'?: BaseLegendLayout;
-  'bottom-left'?: BaseLegendLayout;
-  'bottom-right'?: BaseLegendLayout;
+  "top-left"?: BaseLegendLayout;
+  "top-right"?: BaseLegendLayout;
+  "bottom-left"?: BaseLegendLayout;
+  "bottom-right"?: BaseLegendLayout;
 }
 
 export type TitleConfig = ExcludeMappedValueRef<BaseTitle>;

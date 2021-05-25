@@ -1,7 +1,7 @@
-var tape = require('tape'),
-    vega = require('../');
+var tape = require("tape"),
+  vega = require("../");
 
-tape('array wraps values in an array', t => {
+tape("array wraps values in an array", (t) => {
   // should return an empty array for null argument
   t.deepEqual(vega.array(null), []);
 

@@ -1,10 +1,14 @@
-import {Transform, ingest} from 'vega-dataflow';
+import { Transform, ingest } from "vega-dataflow";
 import {
-  GradientLegend, SymbolLegend,
-  labelFormat, labelFraction, labelValues,
-  scaleFraction, tickCount
-} from 'vega-scale';
-import {constant, inherits, isFunction, peek} from 'vega-util';
+  GradientLegend,
+  SymbolLegend,
+  labelFormat,
+  labelFraction,
+  labelValues,
+  scaleFraction,
+  tickCount,
+} from "vega-scale";
+import { constant, inherits, isFunction, peek } from "vega-util";
 
 /**
  * Generates legend entries for visualizing a scale.
@@ -35,29 +39,45 @@ inherits(LegendEntries, Transform, {
     }
 
     var locale = pulse.dataflow.locale(),
-        out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
-        items = this.value,
-        type  = _.type || SymbolLegend,
-        scale = _.scale,
-        limit = +_.limit,
-        count = tickCount(scale, _.count == null ? 5 : _.count, _.minstep),
-        lskip = !!_.values || type === SymbolLegend,
-        format = _.format || labelFormat(locale, scale, count, type, _.formatSpecifier, _.formatType, lskip),
-        values = _.values || labelValues(scale, count),
-        domain, fraction, size, offset, ellipsis;
+      out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
+      items = this.value,
+      type = _.type || SymbolLegend,
+      scale = _.scale,
+      limit = +_.limit,
+      count = tickCount(scale, _.count == null ? 5 : _.count, _.minstep),
+      lskip = !!_.values || type === SymbolLegend,
+      format =
+        _.format ||
+        labelFormat(
+          locale,
+          scale,
+          count,
+          type,
+          _.formatSpecifier,
+          _.formatType,
+          lskip
+        ),
+      values = _.values || labelValues(scale, count),
+      domain,
+      fraction,
+      size,
+      offset,
+      ellipsis;
 
     if (items) out.rem = items;
 
     if (type === SymbolLegend) {
       if (limit && values.length > limit) {
-        pulse.dataflow.warn('Symbol legend count exceeds limit, filtering items.');
+        pulse.dataflow.warn(
+          "Symbol legend count exceeds limit, filtering items."
+        );
         items = values.slice(0, limit - 1);
         ellipsis = true;
       } else {
         items = values;
       }
 
-      if (isFunction(size = _.size)) {
+      if (isFunction((size = _.size))) {
         // if first value maps to size zero, remove from list (vega#717)
         if (!_.values && scale(items[0]) === 0) {
           items = items.slice(1);
@@ -65,34 +85,34 @@ inherits(LegendEntries, Transform, {
         // compute size offset for legend entries
         offset = items.reduce((max, value) => Math.max(max, size(value, _)), 0);
       } else {
-        size = constant(offset = size || 8);
+        size = constant((offset = size || 8));
       }
 
       items = items.map((value, index) =>
         ingest({
-          index:  index,
-          label:  format(value, index, items),
-          value:  value,
+          index: index,
+          label: format(value, index, items),
+          value: value,
           offset: offset,
-          size:   size(value, _)
+          size: size(value, _),
         })
       );
 
       if (ellipsis) {
         ellipsis = values[items.length];
-        items.push(ingest({
-          index:    items.length,
-          label:    `\u2026${values.length-items.length} entries`,
-          value:    ellipsis,
-          offset:   offset,
-          size:     size(ellipsis, _)
-        }));
+        items.push(
+          ingest({
+            index: items.length,
+            label: `\u2026${values.length - items.length} entries`,
+            value: ellipsis,
+            offset: offset,
+            size: size(ellipsis, _),
+          })
+        );
       }
-    }
-
-    else if (type === GradientLegend) {
-      domain = scale.domain(),
-      fraction = scaleFraction(scale, domain[0], peek(domain));
+    } else if (type === GradientLegend) {
+      (domain = scale.domain()),
+        (fraction = scaleFraction(scale, domain[0], peek(domain)));
 
       // if automatic label generation produces 2 or fewer values,
       // use the domain end points instead (fixes vega/vega#1364)
@@ -105,12 +125,10 @@ inherits(LegendEntries, Transform, {
           index: index,
           label: format(value, index, values),
           value: value,
-          perc:  fraction(value)
+          perc: fraction(value),
         })
       );
-    }
-
-    else {
+    } else {
       size = values.length - 1;
       fraction = labelFraction(scale);
 
@@ -119,8 +137,8 @@ inherits(LegendEntries, Transform, {
           index: index,
           label: format(value, index, values),
           value: value,
-          perc:  index ? fraction(value) : 0,
-          perc2: index === size ? 1 : fraction(values[index+1])
+          perc: index ? fraction(value) : 0,
+          perc2: index === size ? 1 : fraction(values[index + 1]),
         })
       );
     }
@@ -130,5 +148,5 @@ inherits(LegendEntries, Transform, {
     this.value = items;
 
     return out;
-  }
+  },
 });

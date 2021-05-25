@@ -1,5 +1,5 @@
-import {Transform} from 'vega-dataflow';
-import {inherits} from 'vega-util';
+import { Transform } from "vega-dataflow";
+import { inherits } from "vega-util";
 
 /**
  * Propagates a new pulse without any tuples so long as the input
@@ -18,6 +18,5 @@ inherits(Sieve, Transform, {
     return pulse.changed()
       ? pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS)
       : pulse.StopPropagation;
-  }
+  },
 });
-

@@ -1,5 +1,5 @@
-import Pulse from './Pulse';
-import {error, inherits, isArray} from 'vega-util';
+import Pulse from "./Pulse";
+import { error, inherits, isArray } from "vega-util";
 
 /**
  * Represents a set of multiple pulses. Used as input for operators
@@ -28,7 +28,9 @@ export default function MultiPulse(dataflow, stamp, pulses, encode) {
 
     if (pulse.fields) {
       const hash = p.fields || (p.fields = {});
-      for (const f in pulse.fields) { hash[f] = 1; }
+      for (const f in pulse.fields) {
+        hash[f] = 1;
+      }
     }
 
     if (pulse.changed(p.ADD)) c |= p.ADD;
@@ -48,9 +50,9 @@ inherits(MultiPulse, Pulse, {
   fork(flags) {
     const p = new Pulse(this.dataflow).init(this, flags & this.NO_FIELDS);
     if (flags !== undefined) {
-      if (flags & p.ADD) this.visit(p.ADD, t => p.add.push(t));
-      if (flags & p.REM) this.visit(p.REM, t => p.rem.push(t));
-      if (flags & p.MOD) this.visit(p.MOD, t => p.mod.push(t));
+      if (flags & p.ADD) this.visit(p.ADD, (t) => p.add.push(t));
+      if (flags & p.REM) this.visit(p.REM, (t) => p.rem.push(t));
+      if (flags & p.MOD) this.visit(p.MOD, (t) => p.mod.push(t));
     }
     return p;
   },
@@ -60,24 +62,27 @@ inherits(MultiPulse, Pulse, {
   },
 
   modified(_) {
-    const p = this, fields = p.fields;
-    return !(fields && (p.changes & p.MOD)) ? 0
-      : isArray(_) ? _.some(f => fields[f])
+    const p = this,
+      fields = p.fields;
+    return !(fields && p.changes & p.MOD)
+      ? 0
+      : isArray(_)
+      ? _.some((f) => fields[f])
       : fields[_];
   },
 
   filter() {
-    error('MultiPulse does not support filtering.');
+    error("MultiPulse does not support filtering.");
   },
 
   materialize() {
-    error('MultiPulse does not support materialization.');
+    error("MultiPulse does not support materialization.");
   },
 
   visit(flags, visitor) {
     const p = this,
-          pulses = p.pulses,
-          n = pulses.length;
+      pulses = p.pulses,
+      n = pulses.length;
     let i = 0;
 
     if (flags & p.SOURCE) {
@@ -93,5 +98,5 @@ inherits(MultiPulse, Pulse, {
     }
 
     return p;
-  }
+  },
 });

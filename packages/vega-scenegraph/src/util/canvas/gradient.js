@@ -1,21 +1,20 @@
-import value from '../value';
-import {canvas} from 'vega-canvas';
+import value from "../value";
+import { canvas } from "vega-canvas";
 
 function addStops(gradient, stops) {
   const n = stops.length;
-  for (let i=0; i<n; ++i) {
+  for (let i = 0; i < n; ++i) {
     gradient.addColorStop(stops[i].offset, stops[i].color);
   }
   return gradient;
 }
 
-export default function(context, spec, bounds) {
+export default function (context, spec, bounds) {
   const w = bounds.width(),
-        h = bounds.height();
+    h = bounds.height();
   let gradient;
 
-
-  if (spec.gradient === 'radial') {
+  if (spec.gradient === "radial") {
     gradient = context.createRadialGradient(
       bounds.x1 + value(spec.x1, 0.5) * w,
       bounds.y1 + value(spec.y1, 0.5) * h,
@@ -24,11 +23,12 @@ export default function(context, spec, bounds) {
       bounds.y1 + value(spec.y2, 0.5) * h,
       Math.max(w, h) * value(spec.r2, 0.5)
     );
-  } else { // linear gradient
+  } else {
+    // linear gradient
     const x1 = value(spec.x1, 0),
-          y1 = value(spec.y1, 0),
-          x2 = value(spec.x2, 1),
-          y2 = value(spec.y2, 0);
+      y1 = value(spec.y1, 0),
+      x2 = value(spec.x2, 1),
+      y2 = value(spec.y2, 0);
 
     if (x1 === x2 || y1 === y2 || w === h) {
       // axis aligned: use normal gradient
@@ -42,7 +42,7 @@ export default function(context, spec, bounds) {
       // not axis aligned: render gradient into a pattern (#2365)
       // this allows us to use normalized bounding box coordinates
       const image = canvas(Math.ceil(w), Math.ceil(h)),
-            ictx = image.getContext('2d');
+        ictx = image.getContext("2d");
 
       ictx.scale(w, h);
       ictx.fillStyle = addStops(
@@ -51,7 +51,7 @@ export default function(context, spec, bounds) {
       );
       ictx.fillRect(0, 0, w, h);
 
-      return context.createPattern(image, 'no-repeat');
+      return context.createPattern(image, "no-repeat");
     }
   }
 

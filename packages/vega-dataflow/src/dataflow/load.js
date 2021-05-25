@@ -1,5 +1,5 @@
-import {read, responseType} from 'vega-loader';
-import {truthy} from 'vega-util';
+import { read, responseType } from "vega-loader";
+import { truthy } from "vega-util";
 
 export function parse(data, format) {
   const locale = this.locale();
@@ -35,35 +35,42 @@ export function ingest(target, data, format) {
  */
 export async function request(url, format) {
   const df = this;
-  let status = 0, data;
+  let status = 0,
+    data;
 
   try {
     data = await df.loader().load(url, {
-      context: 'dataflow',
-      response: responseType(format && format.type)
+      context: "dataflow",
+      response: responseType(format && format.type),
     });
     try {
       data = df.parse(data, format);
     } catch (err) {
       status = -2;
-      df.warn('Data ingestion failed', url, err);
+      df.warn("Data ingestion failed", url, err);
     }
   } catch (err) {
     status = -1;
-    df.warn('Loading failed', url, err);
+    df.warn("Loading failed", url, err);
   }
 
-  return {data, status};
+  return { data, status };
 }
 
 export async function preload(target, url, format) {
   const df = this,
-        pending = df._pending || loadPending(df);
+    pending = df._pending || loadPending(df);
 
   pending.requests += 1;
 
   const res = await df.request(url, format);
-  df.pulse(target, df.changeset().remove(truthy).insert(res.data || []));
+  df.pulse(
+    target,
+    df
+      .changeset()
+      .remove(truthy)
+      .insert(res.data || [])
+  );
 
   pending.done();
   return res;
@@ -71,7 +78,7 @@ export async function preload(target, url, format) {
 
 function loadPending(df) {
   let accept;
-  const pending = new Promise(a => accept = a);
+  const pending = new Promise((a) => (accept = a));
 
   pending.requests = 0;
 

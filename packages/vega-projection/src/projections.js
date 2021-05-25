@@ -15,38 +15,36 @@ import {
   geoOrthographic,
   geoPath,
   geoStereographic,
-  geoTransverseMercator
-} from 'd3-geo';
+  geoTransverseMercator,
+} from "d3-geo";
 
-import {
-  geoMollweide
-} from 'd3-geo-projection';
+import { geoMollweide } from "d3-geo-projection";
 
 const defaultPath = geoPath();
 
 export const projectionProperties = [
   // standard properties in d3-geo
-  'clipAngle',
-  'clipExtent',
-  'scale',
-  'translate',
-  'center',
-  'rotate',
-  'parallels',
-  'precision',
-  'reflectX',
-  'reflectY',
+  "clipAngle",
+  "clipExtent",
+  "scale",
+  "translate",
+  "center",
+  "rotate",
+  "parallels",
+  "precision",
+  "reflectX",
+  "reflectY",
 
   // extended properties in d3-geo-projections
-  'coefficient',
-  'distance',
-  'fraction',
-  'lobes',
-  'parallel',
-  'radius',
-  'ratio',
-  'spacing',
-  'tilt'
+  "coefficient",
+  "distance",
+  "fraction",
+  "lobes",
+  "parallel",
+  "radius",
+  "ratio",
+  "spacing",
+  "tilt",
 ];
 
 /**
@@ -60,22 +58,24 @@ function create(type, constructor) {
 
     p.path = geoPath().projection(p);
 
-    p.copy = p.copy || function() {
-      const c = projection();
-      projectionProperties.forEach(prop => {
-        if (p[prop]) c[prop](p[prop]());
-      });
-      c.path.pointRadius(p.path.pointRadius());
-      return c;
-    };
+    p.copy =
+      p.copy ||
+      function () {
+        const c = projection();
+        projectionProperties.forEach((prop) => {
+          if (p[prop]) c[prop](p[prop]());
+        });
+        c.path.pointRadius(p.path.pointRadius());
+        return c;
+      };
 
     return p;
   };
 }
 
 export function projection(type, proj) {
-  if (!type || typeof type !== 'string') {
-    throw new Error('Projection type must be a name string.');
+  if (!type || typeof type !== "string") {
+    throw new Error("Projection type must be a name string.");
   }
   type = type.toLowerCase();
   if (arguments.length > 1) {
@@ -92,23 +92,23 @@ export function getProjectionPath(proj) {
 
 const projections = {
   // base d3-geo projection types
-  albers:               geoAlbers,
-  albersusa:            geoAlbersUsa,
-  azimuthalequalarea:   geoAzimuthalEqualArea,
+  albers: geoAlbers,
+  albersusa: geoAlbersUsa,
+  azimuthalequalarea: geoAzimuthalEqualArea,
   azimuthalequidistant: geoAzimuthalEquidistant,
-  conicconformal:       geoConicConformal,
-  conicequalarea:       geoConicEqualArea,
-  conicequidistant:     geoConicEquidistant,
-  equalEarth:           geoEqualEarth,
-  equirectangular:      geoEquirectangular,
-  gnomonic:             geoGnomonic,
-  identity:             geoIdentity,
-  mercator:             geoMercator,
-  mollweide:            geoMollweide,
-  naturalEarth1:        geoNaturalEarth1,
-  orthographic:         geoOrthographic,
-  stereographic:        geoStereographic,
-  transversemercator:   geoTransverseMercator
+  conicconformal: geoConicConformal,
+  conicequalarea: geoConicEqualArea,
+  conicequidistant: geoConicEquidistant,
+  equalEarth: geoEqualEarth,
+  equirectangular: geoEquirectangular,
+  gnomonic: geoGnomonic,
+  identity: geoIdentity,
+  mercator: geoMercator,
+  mollweide: geoMollweide,
+  naturalEarth1: geoNaturalEarth1,
+  orthographic: geoOrthographic,
+  stereographic: geoStereographic,
+  transversemercator: geoTransverseMercator,
 };
 
 for (const key in projections) {

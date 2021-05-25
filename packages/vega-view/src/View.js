@@ -1,32 +1,39 @@
-import {ariaLabel} from './aria';
-import background from './background';
-import cursor, {setCursor} from './cursor';
-import {change, data, dataref, insert, remove} from './data';
-import {events, initializeEventConfig} from './events';
-import hover from './hover';
-import finalize from './finalize';
-import initialize from './initialize';
-import padding from './padding';
-import renderToImageURL from './render-to-image-url';
-import renderToCanvas from './render-to-canvas';
-import renderToSVG from './render-to-svg';
-import {resizeRenderer} from './render-size';
-import runtime from './runtime';
-import {scale} from './scale';
-import {initializeResize, resizeView, viewHeight, viewWidth} from './size';
-import {getState, setState} from './state';
-import timer from './timer';
-import defaultTooltip from './tooltip';
-import trap from './trap';
+import { ariaLabel } from "./aria";
+import background from "./background";
+import cursor, { setCursor } from "./cursor";
+import { change, data, dataref, insert, remove } from "./data";
+import { events, initializeEventConfig } from "./events";
+import hover from "./hover";
+import finalize from "./finalize";
+import initialize from "./initialize";
+import padding from "./padding";
+import renderToImageURL from "./render-to-image-url";
+import renderToCanvas from "./render-to-canvas";
+import renderToSVG from "./render-to-svg";
+import { resizeRenderer } from "./render-size";
+import runtime from "./runtime";
+import { scale } from "./scale";
+import { initializeResize, resizeView, viewHeight, viewWidth } from "./size";
+import { getState, setState } from "./state";
+import timer from "./timer";
+import defaultTooltip from "./tooltip";
+import trap from "./trap";
 
-import {Dataflow, asyncCallback} from 'vega-dataflow';
-import {locale} from 'vega-format';
+import { Dataflow, asyncCallback } from "vega-dataflow";
+import { locale } from "vega-format";
 import {
-  CanvasHandler, RenderType, Scenegraph, renderModule
-} from 'vega-scenegraph';
+  CanvasHandler,
+  RenderType,
+  Scenegraph,
+  renderModule,
+} from "vega-scenegraph";
 import {
-  error, extend, hasOwnProperty, inherits, stringValue
-} from 'vega-util';
+  error,
+  extend,
+  hasOwnProperty,
+  inherits,
+  stringValue,
+} from "vega-util";
 
 /**
  * Create a new View instance from a Vega dataflow runtime specification.
@@ -59,8 +66,7 @@ export default function View(spec, options) {
 
   // initialize renderer, handler and event management
   view._renderer = null;
-  view._tooltip = options.tooltip || defaultTooltip,
-  view._redraw = true;
+  (view._tooltip = options.tooltip || defaultTooltip), (view._redraw = true);
   view._handler = new CanvasHandler().scene(root);
   view._globalCursor = false;
   view._preventDefault = false;
@@ -76,18 +82,15 @@ export default function View(spec, options) {
   const ctx = runtime(view, spec, options.expr);
   view._runtime = ctx;
   view._signals = ctx.signals;
-  view._bind = (spec.bindings || []).map(_ => ({
+  view._bind = (spec.bindings || []).map((_) => ({
     state: null,
-    param: extend({}, _)
+    param: extend({}, _),
   }));
 
   // initialize scenegraph
   if (ctx.root) ctx.root.set(root);
   root.source = ctx.data.root.input;
-  view.pulse(
-    ctx.data.root.input,
-    view.changeset().insert(root.items)
-  );
+  view.pulse(ctx.data.root.input, view.changeset().insert(root.items));
 
   // initialize view size
   view._width = view.width();
@@ -118,12 +121,13 @@ export default function View(spec, options) {
 function lookupSignal(view, name) {
   return hasOwnProperty(view._signals, name)
     ? view._signals[name]
-    : error('Unrecognized signal name: ' + stringValue(name));
+    : error("Unrecognized signal name: " + stringValue(name));
 }
 
 function findOperatorHandler(op, handler) {
-  const h = (op._targets || [])
-    .filter(op => op._update && op._update.handler === handler);
+  const h = (op._targets || []).filter(
+    (op) => op._update && op._update.handler === handler
+  );
   return h.length ? h[0] : null;
 }
 
@@ -181,8 +185,8 @@ inherits(View, Dataflow, {
 
   description(text) {
     if (arguments.length) {
-      const desc = text != null ? (text + '') : null;
-      if (desc !== this._desc) ariaLabel(this._el, this._desc = desc);
+      const desc = text != null ? text + "" : null;
+      if (desc !== this._desc) ariaLabel(this._el, (this._desc = desc));
       return this;
     }
     return this._desc;
@@ -202,36 +206,38 @@ inherits(View, Dataflow, {
 
   signal(name, value, options) {
     const op = lookupSignal(this, name);
-    return arguments.length === 1
-      ? op.value
-      : this.update(op, value, options);
+    return arguments.length === 1 ? op.value : this.update(op, value, options);
   },
 
   width(_) {
-    return arguments.length ? this.signal('width', _) : this.signal('width');
+    return arguments.length ? this.signal("width", _) : this.signal("width");
   },
 
   height(_) {
-    return arguments.length ? this.signal('height', _) : this.signal('height');
+    return arguments.length ? this.signal("height", _) : this.signal("height");
   },
 
   padding(_) {
     return arguments.length
-      ? this.signal('padding', padding(_))
-      : padding(this.signal('padding'));
+      ? this.signal("padding", padding(_))
+      : padding(this.signal("padding"));
   },
 
   autosize(_) {
-    return arguments.length ? this.signal('autosize', _) : this.signal('autosize');
+    return arguments.length
+      ? this.signal("autosize", _)
+      : this.signal("autosize");
   },
 
   background(_) {
-    return arguments.length ? this.signal('background', _) : this.signal('background');
+    return arguments.length
+      ? this.signal("background", _)
+      : this.signal("background");
   },
 
   renderer(type) {
     if (!arguments.length) return this._renderType;
-    if (!renderModule(type)) error('Unrecognized renderer type: ' + type);
+    if (!renderModule(type)) error("Unrecognized renderer type: " + type);
     if (type !== this._renderType) {
       this._renderType = type;
       this._resetRenderer();
@@ -261,7 +267,7 @@ inherits(View, Dataflow, {
     // set flag to perform autosize
     this._autosize = 1;
     // touch autosize signal to ensure top-level ViewLayout runs
-    return this.touch(lookupSignal(this, 'autosize'));
+    return this.touch(lookupSignal(this, "autosize"));
   },
 
   _resetRenderer() {
@@ -289,7 +295,9 @@ inherits(View, Dataflow, {
 
   removeEventListener(type, handler) {
     var handlers = this._handler.handlers(type),
-        i = handlers.length, h, t;
+      i = handlers.length,
+      h,
+      t;
 
     // search registered handlers, remove if match found
     while (--i >= 0) {
@@ -316,7 +324,7 @@ inherits(View, Dataflow, {
 
   removeResizeListener(handler) {
     var l = this._resizeListeners,
-        i = l.indexOf(handler);
+      i = l.indexOf(handler);
     if (i >= 0) {
       l.splice(i, 1);
     }
@@ -385,5 +393,5 @@ inherits(View, Dataflow, {
 
   // -- SAVE / RESTORE STATE ----
   getState,
-  setState
+  setState,
 });

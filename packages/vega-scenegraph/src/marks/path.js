@@ -1,21 +1,21 @@
-import boundStroke from '../bound/boundStroke';
-import context from '../bound/boundContext';
-import pathParse from '../path/parse';
-import pathRender from '../path/render';
-import {intersectPath} from '../util/intersect';
-import {drawAll} from '../util/canvas/draw';
-import {pickPath} from '../util/canvas/pick';
-import {transformItem} from '../util/svg/transform';
-import {DegToRad} from '../util/constants';
+import boundStroke from "../bound/boundStroke";
+import context from "../bound/boundContext";
+import pathParse from "../path/parse";
+import pathRender from "../path/render";
+import { intersectPath } from "../util/intersect";
+import { drawAll } from "../util/canvas/draw";
+import { pickPath } from "../util/canvas/pick";
+import { transformItem } from "../util/svg/transform";
+import { DegToRad } from "../util/constants";
 
 function attr(emit, item) {
   var sx = item.scaleX || 1,
-      sy = item.scaleY || 1;
+    sy = item.scaleY || 1;
   if (sx !== 1 || sy !== 1) {
-    emit('vector-effect', 'non-scaling-stroke');
+    emit("vector-effect", "non-scaling-stroke");
   }
-  emit('transform', transformItem(item));
-  emit('d', item.path);
+  emit("transform", transformItem(item));
+  emit("d", item.path);
 }
 
 function path(context, item) {
@@ -23,11 +23,11 @@ function path(context, item) {
   if (path == null) return true;
 
   var x = item.x || 0,
-      y = item.y || 0,
-      sx = item.scaleX || 1,
-      sy = item.scaleY || 1,
-      a = (item.angle || 0) * DegToRad,
-      cache = item.pathCache;
+    y = item.y || 0,
+    sx = item.scaleX || 1,
+    sy = item.scaleY || 1,
+    a = (item.angle || 0) * DegToRad,
+    cache = item.pathCache;
 
   if (!cache || cache.path !== path) {
     (item.pathCache = cache = pathParse(path)).path = path;
@@ -51,12 +51,12 @@ function bound(bounds, item) {
 }
 
 export default {
-  type:   'path',
-  tag:    'path',
+  type: "path",
+  tag: "path",
   nested: false,
-  attr:   attr,
-  bound:  bound,
-  draw:   drawAll(path),
-  pick:   pickPath(path),
-  isect:  intersectPath(path)
+  attr: attr,
+  bound: bound,
+  draw: drawAll(path),
+  pick: pickPath(path),
+  isect: intersectPath(path),
 };

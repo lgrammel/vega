@@ -1,4 +1,11 @@
-import { Expr, ExprRef, EventSelector, SignalRef, SignalValue, Stream } from '.';
+import {
+  Expr,
+  ExprRef,
+  EventSelector,
+  SignalRef,
+  SignalValue,
+  Stream,
+} from ".";
 
 export type EventListener =
   | SignalRef

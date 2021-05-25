@@ -1,10 +1,10 @@
-import hasOwnProperty from './hasOwnProperty';
+import hasOwnProperty from "./hasOwnProperty";
 
 const NULL = {};
 
-export default function(input) {
+export default function (input) {
   let obj = {},
-      test;
+    test;
 
   function has(key) {
     return hasOwnProperty(obj, key) && obj[key] !== NULL;
@@ -58,13 +58,14 @@ export default function(input) {
       }
       map.size = size;
       map.empty = 0;
-      map.object = (obj = next);
-    }
+      map.object = obj = next;
+    },
   };
 
-  if (input) Object.keys(input).forEach(key => {
-    map.set(key, input[key]);
-  });
+  if (input)
+    Object.keys(input).forEach((key) => {
+      map.set(key, input[key]);
+    });
 
   return map;
 }

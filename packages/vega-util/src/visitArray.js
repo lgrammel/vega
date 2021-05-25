@@ -1,4 +1,4 @@
-export default function(array, filter, visitor) {
+export default function (array, filter, visitor) {
   if (array) {
     if (filter) {
       const n = array.length;

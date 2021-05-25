@@ -1,5 +1,5 @@
-import Operator from './Operator';
-import {inherits} from 'vega-util';
+import Operator from "./Operator";
+import { inherits } from "vega-util";
 
 /**
  * Abstract class for operators that process data tuples.
@@ -34,7 +34,7 @@ inherits(Transform, Operator, {
     rv = rv || pulse;
 
     if (rv.then) {
-      rv = rv.then(_ => this.pulse =_);
+      rv = rv.then((_) => (this.pulse = _));
     } else if (rv !== pulse.StopPropagation) {
       this.pulse = rv;
     }
@@ -51,7 +51,7 @@ inherits(Transform, Operator, {
   */
   evaluate(pulse) {
     const params = this.marshall(pulse.stamp),
-          out = this.transform(params, pulse);
+      out = this.transform(params, pulse);
     params.clear();
     return out;
   },
@@ -64,5 +64,5 @@ inherits(Transform, Operator, {
    * @return {Pulse} The output pulse (or StopPropagation). A falsy return
    *   value (including undefined) will let the input pulse pass through.
    */
-  transform() {}
+  transform() {},
 });

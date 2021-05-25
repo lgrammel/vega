@@ -1,5 +1,5 @@
-import {stream} from '../EventStream';
-import {array} from 'vega-util';
+import { stream } from "../EventStream";
+import { array } from "vega-util";
 
 /**
  * Create a new event stream from an event source.
@@ -12,22 +12,22 @@ import {array} from 'vega-util';
  *   used as the downstream event value.
  * @return {EventStream}
  */
-export default function(source, type, filter, apply) {
+export default function (source, type, filter, apply) {
   const df = this,
-        s = stream(filter, apply),
-        send = function(e) {
-          e.dataflow = df;
-          try {
-            s.receive(e);
-          } catch (error) {
-            df.error(error);
-          } finally {
-            df.run();
-          }
-        };
+    s = stream(filter, apply),
+    send = function (e) {
+      e.dataflow = df;
+      try {
+        s.receive(e);
+      } catch (error) {
+        df.error(error);
+      } finally {
+        df.run();
+      }
+    };
 
   let sources;
-  if (typeof source === 'string' && typeof document !== 'undefined') {
+  if (typeof source === "string" && typeof document !== "undefined") {
     sources = document.querySelectorAll(source);
   } else {
     sources = array(source);

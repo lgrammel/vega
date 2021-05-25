@@ -1,6 +1,6 @@
-import {offset} from './render-size';
-import {constant, isString} from 'vega-util';
-import {point} from 'vega-scenegraph';
+import { offset } from "./render-size";
+import { constant, isString } from "vega-util";
+import { point } from "vega-scenegraph";
 
 /**
  * Extend an event with additional view-specific methods.
@@ -28,10 +28,12 @@ import {point} from 'vega-scenegraph';
  * @param {Item} item - The currently active scenegraph item (if any).
  * @return {Event} - The extended input event.
  */
-export default function(view, event, item) {
-  var r  = view._renderer,
-      el = r && r.canvas(),
-      p, e, translate;
+export default function (view, event, item) {
+  var r = view._renderer,
+    el = r && r.canvas(),
+    p,
+    e,
+    translate;
 
   if (el) {
     translate = offset(view);
@@ -49,14 +51,21 @@ export default function(view, event, item) {
 
 function extension(view, item, point) {
   const itemGroup = item
-    ? item.mark.marktype === 'group' ? item : item.mark.group
+    ? item.mark.marktype === "group"
+      ? item
+      : item.mark.group
     : null;
 
   function group(name) {
-    var g = itemGroup, i;
-    if (name) for (i = item; i; i = i.mark.group) {
-      if (i.mark.name === name) { g = i; break; }
-    }
+    var g = itemGroup,
+      i;
+    if (name)
+      for (i = item; i; i = i.mark.group) {
+        if (i.mark.name === name) {
+          g = i;
+          break;
+        }
+      }
     return g && g.mark && g.mark.interactive ? g : {};
   }
 
@@ -74,11 +83,11 @@ function extension(view, item, point) {
   }
 
   return {
-    view:  constant(view),
-    item:  constant(item || {}),
+    view: constant(view),
+    item: constant(item || {}),
     group: group,
-    xy:    xy,
-    x:     item => xy(item)[0],
-    y:     item => xy(item)[1]
+    xy: xy,
+    x: (item) => xy(item)[0],
+    y: (item) => xy(item)[1],
   };
 }

@@ -1,50 +1,57 @@
-import {timeIntervals} from './scale';
+import { timeIntervals } from "./scale";
 import {
-  alignValue, anchorValue, arrayOrSignal, baselineValue,
-  booleanOrNumberOrSignal, booleanOrSignal, booleanType, booleanValue,
-  colorValue, dashArrayValue, def, enums,
-  fontWeightValue, formatTypeOrSignal, formatTypeType,
-  numberOrSignal, numberType, numberValue, object, oneOf, orSignal,
-  signalRef, stringType, stringValue, textOrSignal
-} from './util';
+  alignValue,
+  anchorValue,
+  arrayOrSignal,
+  baselineValue,
+  booleanOrNumberOrSignal,
+  booleanOrSignal,
+  booleanType,
+  booleanValue,
+  colorValue,
+  dashArrayValue,
+  def,
+  enums,
+  fontWeightValue,
+  formatTypeOrSignal,
+  formatTypeType,
+  numberOrSignal,
+  numberType,
+  numberValue,
+  object,
+  oneOf,
+  orSignal,
+  signalRef,
+  stringType,
+  stringValue,
+  textOrSignal,
+} from "./util";
 
 // types defined elsewhere
-const guideEncodeRef = def('guideEncode');
+const guideEncodeRef = def("guideEncode");
 
-const overlapEnum = ['parity', 'greedy'];
+const overlapEnum = ["parity", "greedy"];
 
-const labelOverlap = oneOf(
-  booleanType,
-  enums(overlapEnum),
-  signalRef
-);
-const labelOverlapRef = def('labelOverlap');
+const labelOverlap = oneOf(booleanType, enums(overlapEnum), signalRef);
+const labelOverlapRef = def("labelOverlap");
 
-const tickBandEnum = ['center', 'extent'];
+const tickBandEnum = ["center", "extent"];
 
-const tickBand = oneOf(
-  enums(tickBandEnum),
-  signalRef
-);
-const tickBandRef = def('tickBand');
+const tickBand = oneOf(enums(tickBandEnum), signalRef);
+const tickBandRef = def("tickBand");
 
 const tickCount = oneOf(
   numberType,
   enums(timeIntervals),
   object({
     _interval_: orSignal(enums(timeIntervals)),
-    step: numberOrSignal
+    step: numberOrSignal,
   }),
   signalRef
 );
-const tickCountRef = def('tickCount');
+const tickCountRef = def("tickCount");
 
-const axisOrientEnum = [
-  'top',
-  'bottom',
-  'left',
-  'right'
-];
+const axisOrientEnum = ["top", "bottom", "left", "right"];
 
 const axisOrient = orSignal(enums(axisOrientEnum));
 
@@ -147,13 +154,13 @@ const axis = object({
     labels: guideEncodeRef,
     title: guideEncodeRef,
     grid: guideEncodeRef,
-    domain: guideEncodeRef
-  })
+    domain: guideEncodeRef,
+  }),
 });
 
 export default {
   axis,
   labelOverlap,
   tickBand,
-  tickCount
+  tickCount,
 };

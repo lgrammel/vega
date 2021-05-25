@@ -1,12 +1,12 @@
-import {getScale} from '../scales';
+import { getScale } from "../scales";
 import {
   geoArea as area,
   geoBounds as bounds,
-  geoCentroid as centroid
-} from 'd3-geo';
+  geoCentroid as centroid,
+} from "d3-geo";
 
 function geoMethod(methodName, globalMethod) {
-  return function(projection, geojson, group) {
+  return function (projection, geojson, group) {
     if (projection) {
       // projection defined, use it
       const p = getScale(projection, (group || this).context);
@@ -18,6 +18,6 @@ function geoMethod(methodName, globalMethod) {
   };
 }
 
-export const geoArea = geoMethod('area', area);
-export const geoBounds = geoMethod('bounds', bounds);
-export const geoCentroid = geoMethod('centroid', centroid);
+export const geoArea = geoMethod("area", area);
+export const geoBounds = geoMethod("bounds", bounds);
+export const geoCentroid = geoMethod("centroid", centroid);

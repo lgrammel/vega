@@ -1,5 +1,5 @@
-import {Transform} from 'vega-dataflow';
-import {fastmap, inherits} from 'vega-util';
+import { Transform } from "vega-dataflow";
+import { fastmap, inherits } from "vega-util";
 
 /**
  * An index that maps from unique, string-coerced, field values to tuples.
@@ -15,17 +15,17 @@ export default function TupleIndex(params) {
 inherits(TupleIndex, Transform, {
   transform(_, pulse) {
     const df = pulse.dataflow,
-        field = _.field,
-        index = this.value,
-        set = t => index.set(field(t), t);
+      field = _.field,
+      index = this.value,
+      set = (t) => index.set(field(t), t);
 
     let mod = true;
 
-    if (_.modified('field') || pulse.modified(field.fields)) {
+    if (_.modified("field") || pulse.modified(field.fields)) {
       index.clear();
       pulse.visit(pulse.SOURCE, set);
     } else if (pulse.changed()) {
-      pulse.visit(pulse.REM, t => index.delete(field(t)));
+      pulse.visit(pulse.REM, (t) => index.delete(field(t)));
       pulse.visit(pulse.ADD, set);
     } else {
       mod = false;
@@ -34,5 +34,5 @@ inherits(TupleIndex, Transform, {
     this.modified(mod);
     if (index.empty > df.cleanThreshold) df.runAfter(index.clean);
     return pulse.fork();
-  }
+  },
 });

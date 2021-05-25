@@ -1,6 +1,6 @@
-import {domCreate} from './util/dom';
-import resolveItem from './util/resolveItem';
-import {loader} from 'vega-loader';
+import { domCreate } from "./util/dom";
+import resolveItem from "./util/resolveItem";
+import { loader } from "vega-loader";
 
 /**
  * Create a new Handler instance.
@@ -21,7 +21,7 @@ export default function Handler(customLoader, customTooltip) {
 // The default tooltip display handler.
 // Sets the HTML title attribute on the visualization container.
 function defaultTooltip(handler, event, item, value) {
-  handler.element().setAttribute('title', value || '');
+  handler.element().setAttribute("title", value || "");
 }
 
 Handler.prototype = {
@@ -96,7 +96,7 @@ Handler.prototype = {
    * @return {number} - The handler's array index or -1 if not registered.
    */
   _handlerIndex(h, type, handler) {
-    for (let i = h ? h.length : 0; --i>=0;) {
+    for (let i = h ? h.length : 0; --i >= 0; ) {
       if (h[i].type === type && (!handler || h[i].handler === handler)) {
         return i;
       }
@@ -113,11 +113,14 @@ Handler.prototype = {
    * @return {Array} - A new array containing all registered event handlers.
    */
   handlers(type) {
-    const h = this._handlers, a = [];
+    const h = this._handlers,
+      a = [];
     if (type) {
       a.push(...h[this.eventName(type)]);
     } else {
-      for (const k in h) { a.push(...h[k]); }
+      for (const k in h) {
+        a.push(...h[k]);
+      }
     }
     return a;
   },
@@ -129,7 +132,7 @@ Handler.prototype = {
    * @return {string} - A string with the event type only.
    */
   eventName(name) {
-    const i = name.indexOf('.');
+    const i = name.indexOf(".");
     return i < 0 ? name : name.slice(0, i);
   },
 
@@ -141,14 +144,16 @@ Handler.prototype = {
    */
   handleHref(event, item, href) {
     this._loader
-      .sanitize(href, {context:'href'})
-      .then(opt => {
+      .sanitize(href, { context: "href" })
+      .then((opt) => {
         const e = new MouseEvent(event.type, event),
-              a = domCreate(null, 'a');
+          a = domCreate(null, "a");
         for (const name in opt) a.setAttribute(name, opt[name]);
         a.dispatchEvent(e);
       })
-      .catch(() => { /* do nothing */ });
+      .catch(() => {
+        /* do nothing */
+      });
   },
 
   /**
@@ -179,13 +184,13 @@ Handler.prototype = {
     if (!el) return;
 
     const rect = el.getBoundingClientRect(),
-          origin = this._origin,
-          bounds = item.bounds,
-          width = bounds.width(),
-          height = bounds.height();
+      origin = this._origin,
+      bounds = item.bounds,
+      width = bounds.width(),
+      height = bounds.height();
 
     let x = bounds.x1 + origin[0] + rect.left,
-        y = bounds.y1 + origin[1] + rect.top;
+      y = bounds.y1 + origin[1] + rect.top;
 
     // translate coordinate for each parent group
     while (item.mark && (item = item.mark.group)) {
@@ -195,8 +200,14 @@ Handler.prototype = {
 
     // return DOMRect-compatible bounding box
     return {
-      x, y, width, height,
-      left: x, top: y, right: x + width, bottom: y + height
+      x,
+      y,
+      width,
+      height,
+      left: x,
+      top: y,
+      right: x + width,
+      bottom: y + height,
     };
-  }
+  },
 };

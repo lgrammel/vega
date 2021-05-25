@@ -1,18 +1,25 @@
-import { SignalRef } from '.';
-import { ColorScheme } from './scheme';
+import { SignalRef } from ".";
+import { ColorScheme } from "./scheme";
 
 export type RangeEnum =
-  | 'width'
-  | 'height'
-  | 'symbol'
-  | 'category'
-  | 'ordinal'
-  | 'ramp'
-  | 'diverging'
-  | 'heatmap';
+  | "width"
+  | "height"
+  | "symbol"
+  | "category"
+  | "ordinal"
+  | "ramp"
+  | "diverging"
+  | "heatmap";
 
 export type RangeRawArray = (number | SignalRef)[];
-export type RangeRaw = (null | boolean | string | number | SignalRef | RangeRawArray)[];
+export type RangeRaw = (
+  | null
+  | boolean
+  | string
+  | number
+  | SignalRef
+  | RangeRawArray
+)[];
 export type RangeScheme =
   | RangeEnum
   | RangeRaw
@@ -28,7 +35,7 @@ export type RangeBand =
   | {
       step: number | SignalRef;
     };
-export type SortOrder = 'ascending' | 'descending' | SignalRef;
+export type SortOrder = "ascending" | "descending" | SignalRef;
 export type SortField =
   | boolean
   | {
@@ -46,12 +53,12 @@ export type SortField =
 export type UnionSortField =
   | boolean
   | {
-      op: 'count';
+      op: "count";
       order?: SortOrder;
     }
   | {
       field: ScaleField;
-      op: 'count' | 'min' | 'max';
+      op: "count" | "min" | "max";
       order?: SortOrder;
     };
 export type ScaleField = string | SignalRef;
@@ -81,21 +88,24 @@ export interface ScaleBinParams {
 export type ScaleBins = (number | SignalRef)[] | SignalRef | ScaleBinParams;
 
 export type ScaleInterpolateEnum =
-  | 'rgb'
-  | 'lab'
-  | 'hcl'
-  | 'hsl'
-  | 'hsl-long'
-  | 'hcl-long'
-  | 'cubehelix'
-  | 'cubehelix-long';
+  | "rgb"
+  | "lab"
+  | "hcl"
+  | "hsl"
+  | "hsl-long"
+  | "hcl-long"
+  | "cubehelix"
+  | "cubehelix-long";
 
 export interface ScaleInterpolateParams {
-  type: 'rgb' | 'cubehelix' | 'cubehelix-long' | SignalRef;
+  type: "rgb" | "cubehelix" | "cubehelix-long" | SignalRef;
   gamma?: number | SignalRef;
 }
 
-export type ScaleInterpolate = ScaleInterpolateEnum | SignalRef | ScaleInterpolateParams;
+export type ScaleInterpolate =
+  | ScaleInterpolateEnum
+  | SignalRef
+  | ScaleInterpolateParams;
 
 export interface ScaleDataRef {
   data: string;
@@ -111,25 +121,40 @@ export interface ScaleMultiFieldsRef {
   fields: ScaleField[];
 }
 
-export type ScaleData = (ScaleDataRef | ScaleMultiDataRef | ScaleMultiFieldsRef) & {
+export type ScaleData = (
+  | ScaleDataRef
+  | ScaleMultiDataRef
+  | ScaleMultiFieldsRef
+) & {
   sort?: SortField;
 };
 export type QuantScaleType =
-  | 'linear'
-  | 'pow'
-  | 'sqrt'
-  | 'log'
-  | 'symlog'
-  | 'time'
-  | 'utc'
-  | 'sequential';
-export type DiscreteScaleType = 'ordinal' | 'band' | 'point';
-export type DiscretizingScaleType = 'quantile' | 'quantize' | 'threshold' | 'bin-ordinal';
-export type ScaleType = QuantScaleType | DiscreteScaleType | DiscretizingScaleType | 'identity';
+  | "linear"
+  | "pow"
+  | "sqrt"
+  | "log"
+  | "symlog"
+  | "time"
+  | "utc"
+  | "sequential";
+export type DiscreteScaleType = "ordinal" | "band" | "point";
+export type DiscretizingScaleType =
+  | "quantile"
+  | "quantize"
+  | "threshold"
+  | "bin-ordinal";
+export type ScaleType =
+  | QuantScaleType
+  | DiscreteScaleType
+  | DiscretizingScaleType
+  | "identity";
 export interface BaseScale {
   name: string;
   type?: ScaleType;
-  domain?: (null | string | number | boolean | SignalRef)[] | ScaleData | SignalRef;
+  domain?:
+    | (null | string | number | boolean | SignalRef)[]
+    | ScaleData
+    | SignalRef;
   domainMin?: number | SignalRef;
   domainMax?: number | SignalRef;
   domainMid?: number | SignalRef;
@@ -156,32 +181,32 @@ export interface BaseBandScale extends BaseScale {
 }
 // concrete scales
 export interface OrdinalScale extends BaseScale {
-  type: 'ordinal';
+  type: "ordinal";
   range?: RangeScheme | ScaleData;
   interpolate?: ScaleInterpolate;
   domainImplicit?: boolean | SignalRef;
 }
 export interface BandScale extends BaseBandScale {
-  type: 'band';
+  type: "band";
   paddingInner?: number | SignalRef;
 }
 export interface PointScale extends BaseBandScale {
-  type: 'point';
+  type: "point";
 }
 
 // note: deprecated
 export interface SequentialScale extends NumericScale {
-  type: 'sequential';
+  type: "sequential";
 }
 export type TimeInterval =
-  | 'millisecond'
-  | 'second'
-  | 'minute'
-  | 'hour'
-  | 'day'
-  | 'week'
-  | 'month'
-  | 'year';
+  | "millisecond"
+  | "second"
+  | "minute"
+  | "hour"
+  | "day"
+  | "week"
+  | "month"
+  | "year";
 
 export interface TimeIntervalStep {
   interval: TimeInterval;
@@ -189,55 +214,55 @@ export interface TimeIntervalStep {
 }
 
 export interface TimeScale extends ContinuousScale {
-  type: 'time' | 'utc';
+  type: "time" | "utc";
   nice?: boolean | TimeInterval | TimeIntervalStep | SignalRef;
 }
 export interface IdentityScale extends BaseScale {
-  type: 'identity';
+  type: "identity";
   nice?: boolean | SignalRef;
 }
 export interface LinearScale extends NumericScale {
-  type?: 'linear'; // optional because it's the default
+  type?: "linear"; // optional because it's the default
 }
 export interface LogScale extends ContinuousScale {
-  type: 'log';
+  type: "log";
   base?: number | SignalRef;
   nice?: boolean | number | SignalRef;
   zero?: false; // zero has to be false or undefined
 }
 
 export interface SymLogScale extends NumericScale {
-  type: 'symlog';
+  type: "symlog";
   constant?: number | SignalRef;
 }
 export interface PowScale extends NumericScale {
-  type: 'pow';
+  type: "pow";
   exponent: number | SignalRef;
 }
 export interface SqrtScale extends NumericScale {
-  type: 'sqrt';
+  type: "sqrt";
 }
 export interface QuantizeScale extends BaseScale {
-  type?: 'quantize';
+  type?: "quantize";
   range?: RangeScheme;
   padding?: number | SignalRef;
   nice?: boolean | number | SignalRef;
   zero?: boolean | SignalRef;
 }
 export interface ThresholdScale extends BaseScale {
-  type?: 'threshold';
+  type?: "threshold";
   range?: RangeScheme;
   padding?: number | SignalRef;
   nice?: boolean | number | SignalRef;
   zero?: boolean | SignalRef;
 }
 export interface QuantileScale extends BaseScale {
-  type?: 'quantile';
+  type?: "quantile";
   range?: RangeScheme;
   interpolate?: ScaleInterpolate;
 }
 export interface BinOrdinalScale extends BaseScale {
-  type: 'bin-ordinal';
+  type: "bin-ordinal";
   bins?: ScaleBins;
   range?: RangeScheme | ScaleData;
   interpolate?: ScaleInterpolate;

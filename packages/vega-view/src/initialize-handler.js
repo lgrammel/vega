@@ -1,7 +1,7 @@
-import {offset} from './render-size';
-import trap from './trap';
+import { offset } from "./render-size";
+import trap from "./trap";
 
-export default function(view, prevHandler, el, constructor) {
+export default function (view, prevHandler, el, constructor) {
   // instantiate scenegraph handler
   const handler = new constructor(view.loader(), trap(view, view.tooltip()))
     .scene(view.scenegraph().root)
@@ -9,7 +9,7 @@ export default function(view, prevHandler, el, constructor) {
 
   // transfer event handlers
   if (prevHandler) {
-    prevHandler.handlers().forEach(h => {
+    prevHandler.handlers().forEach((h) => {
       handler.on(h.type, h.handler);
     });
   }

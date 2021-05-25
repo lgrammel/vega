@@ -1,29 +1,42 @@
 import {
-  alignValue, anchorValue, anyOf,
-  baselineValue, booleanType,
-  colorValue, def, enums, fontWeightValue,
-  numberOrSignal, numberType, numberValue,
-  object, oneOf, orSignal, pattern,
-  stringType, stringValue, textOrSignal
-} from './util';
+  alignValue,
+  anchorValue,
+  anyOf,
+  baselineValue,
+  booleanType,
+  colorValue,
+  def,
+  enums,
+  fontWeightValue,
+  numberOrSignal,
+  numberType,
+  numberValue,
+  object,
+  oneOf,
+  orSignal,
+  pattern,
+  stringType,
+  stringValue,
+  textOrSignal,
+} from "./util";
 
 // types defined elsewhere
-const guideEncodeRef = def('guideEncode');
-const encodeEntryRef = def('encodeEntry');
-const stringValueRef = def('stringValue');
-const styleRef = def('style');
+const guideEncodeRef = def("guideEncode");
+const encodeEntryRef = def("encodeEntry");
+const stringValueRef = def("stringValue");
+const styleRef = def("style");
 
-const titleOrientEnum = ['none', 'left', 'right', 'top', 'bottom'];
-const titleFrameEnum = ['group', 'bounds'];
+const titleOrientEnum = ["none", "left", "right", "top", "bottom"];
+const titleFrameEnum = ["group", "bounds"];
 
 const titleEncode = pattern({
-  '^(?!interactive|name|style).+$': encodeEntryRef
+  "^(?!interactive|name|style).+$": encodeEntryRef,
 });
 
 const title = oneOf(
   stringType,
   object({
-    orient: orSignal(enums(titleOrientEnum, {default: 'top'})),
+    orient: orSignal(enums(titleOrientEnum, { default: "top" })),
     anchor: anchorValue,
     frame: oneOf(enums(titleFrameEnum), stringValueRef),
     offset: numberValue,
@@ -65,17 +78,17 @@ const title = oneOf(
       object({
         group: guideEncodeRef,
         title: guideEncodeRef,
-        subtitle: guideEncodeRef
+        subtitle: guideEncodeRef,
       })
     ),
 
     // deprecated! (v5.7.0)
     name: stringType,
     interactive: booleanType,
-    style: styleRef
+    style: styleRef,
   })
 );
 
 export default {
-  title
+  title,
 };

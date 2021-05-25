@@ -1,14 +1,14 @@
-import {truthy} from 'vega-util';
+import { truthy } from "vega-util";
 
-const SKIP = {skip: true};
+const SKIP = { skip: true };
 
 export function getState(options) {
   var ctx = this,
-      state = {};
+    state = {};
 
   if (options.signals) {
     var signals = (state.signals = {});
-    Object.keys(ctx.signals).forEach(key => {
+    Object.keys(ctx.signals).forEach((key) => {
       const op = ctx.signals[key];
       if (options.signals(key, op)) {
         signals[key] = op.value;
@@ -18,7 +18,7 @@ export function getState(options) {
 
   if (options.data) {
     var data = (state.data = {});
-    Object.keys(ctx.data).forEach(key => {
+    Object.keys(ctx.data).forEach((key) => {
       const dataset = ctx.data[key];
       if (options.data(key, dataset)) {
         data[key] = dataset.input.value;
@@ -27,7 +27,7 @@ export function getState(options) {
   }
 
   if (ctx.subcontext && options.recurse !== false) {
-    state.subcontext = ctx.subcontext.map(ctx => ctx.getState(options));
+    state.subcontext = ctx.subcontext.map((ctx) => ctx.getState(options));
   }
 
   return state;
@@ -35,22 +35,22 @@ export function getState(options) {
 
 export function setState(state) {
   var ctx = this,
-      df = ctx.dataflow,
-      data = state.data,
-      signals = state.signals;
+    df = ctx.dataflow,
+    data = state.data,
+    signals = state.signals;
 
-  Object.keys(signals || {}).forEach(key => {
+  Object.keys(signals || {}).forEach((key) => {
     df.update(ctx.signals[key], signals[key], SKIP);
   });
 
-  Object.keys(data || {}).forEach(key => {
+  Object.keys(data || {}).forEach((key) => {
     df.pulse(
       ctx.data[key].input,
       df.changeset().remove(truthy).insert(data[key])
     );
   });
 
-  (state.subcontext  || []).forEach((substate, i) => {
+  (state.subcontext || []).forEach((substate, i) => {
     const subctx = ctx.subcontext[i];
     if (subctx) subctx.setState(substate);
   });

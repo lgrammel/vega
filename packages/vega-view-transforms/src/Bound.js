@@ -1,7 +1,7 @@
-import {AxisRole, Group, LegendRole, TitleRole} from './constants';
-import {Transform} from 'vega-dataflow';
-import {Marks, boundClip} from 'vega-scenegraph';
-import {inherits} from 'vega-util';
+import { AxisRole, Group, LegendRole, TitleRole } from "./constants";
+import { Transform } from "vega-dataflow";
+import { Marks, boundClip } from "vega-scenegraph";
+import { inherits } from "vega-util";
 
 /**
  * Calculate bounding boxes for scenegraph items.
@@ -16,28 +16,27 @@ export default function Bound(params) {
 inherits(Bound, Transform, {
   transform(_, pulse) {
     const view = pulse.dataflow,
-          mark = _.mark,
-          type = mark.marktype,
-          entry = Marks[type],
-          bound = entry.bound;
+      mark = _.mark,
+      type = mark.marktype,
+      entry = Marks[type],
+      bound = entry.bound;
 
-    let markBounds = mark.bounds, rebound;
+    let markBounds = mark.bounds,
+      rebound;
 
     if (entry.nested) {
       // multi-item marks have a single bounds instance
       if (mark.items.length) view.dirty(mark.items[0]);
       markBounds = boundItem(mark, bound);
-      mark.items.forEach(item => {
+      mark.items.forEach((item) => {
         item.bounds.clear().union(markBounds);
       });
-    }
-
-    else if (type === Group || _.modified()) {
+    } else if (type === Group || _.modified()) {
       // operator parameters modified -> re-bound all items
       // updates group bounds in response to modified group content
-      pulse.visit(pulse.MOD, item => view.dirty(item));
+      pulse.visit(pulse.MOD, (item) => view.dirty(item));
       markBounds.clear();
-      mark.items.forEach(item => markBounds.union(boundItem(item, bound)));
+      mark.items.forEach((item) => markBounds.union(boundItem(item, bound)));
 
       // force reflow for axes/legends/titles to propagate any layout changes
       switch (mark.role) {
@@ -46,17 +45,15 @@ inherits(Bound, Transform, {
         case TitleRole:
           pulse.reflow();
       }
-    }
-
-    else {
+    } else {
       // incrementally update bounds, re-bound mark as needed
       rebound = pulse.changed(pulse.REM);
 
-      pulse.visit(pulse.ADD, item => {
+      pulse.visit(pulse.ADD, (item) => {
         markBounds.union(boundItem(item, bound));
       });
 
-      pulse.visit(pulse.MOD, item => {
+      pulse.visit(pulse.MOD, (item) => {
         rebound = rebound || markBounds.alignsWith(item.bounds);
         view.dirty(item);
         markBounds.union(boundItem(item, bound));
@@ -64,15 +61,15 @@ inherits(Bound, Transform, {
 
       if (rebound) {
         markBounds.clear();
-        mark.items.forEach(item => markBounds.union(item.bounds));
+        mark.items.forEach((item) => markBounds.union(item.bounds));
       }
     }
 
     // ensure mark bounds do not exceed any clipping region
     boundClip(mark);
 
-    return pulse.modifies('bounds');
-  }
+    return pulse.modifies("bounds");
+  },
 });
 
 function boundItem(item, bound, opt) {

@@ -1,19 +1,19 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    Collect = require('../').collect,
-    changeset = vega.changeset;
+var tape = require("tape"),
+  util = require("vega-util"),
+  vega = require("vega-dataflow"),
+  Collect = require("../").collect,
+  changeset = vega.changeset;
 
-tape('Collect collects tuples', t => {
+tape("Collect collects tuples", (t) => {
   const data = [
-    {'id': 1, 'value': 'foo'},
-    {'id': 3, 'value': 'bar'},
-    {'id': 5, 'value': 'baz'}
+    { id: 1, value: "foo" },
+    { id: 3, value: "bar" },
+    { id: 5, value: "baz" },
   ];
 
   var df = new vega.Dataflow(),
-      so = df.add(null),
-      c0 = df.add(Collect, {sort:so});
+    so = df.add(null),
+    c0 = df.add(Collect, { sort: so });
 
   df.run(); // initialize
   t.equal(c0.value.length, 0);
@@ -28,7 +28,7 @@ tape('Collect collects tuples', t => {
   t.equal(!!c0.modified(), true);
 
   // sort data
-  df.update(so, util.compare('value')).run();
+  df.update(so, util.compare("value")).run();
   t.equal(c0.value.length, 3);
   t.equal(c0.value[0], data[1]);
   t.equal(c0.value[1], data[2]);
@@ -36,7 +36,7 @@ tape('Collect collects tuples', t => {
   t.equal(!!c0.modified(), true);
 
   // add new data
-  data.push({id:2, value:'abc'});
+  data.push({ id: 2, value: "abc" });
   df.pulse(c0, changeset().insert(data[3])).run();
   t.equal(c0.value.length, 4);
   t.equal(c0.value[0], data[3]);
@@ -54,7 +54,7 @@ tape('Collect collects tuples', t => {
   t.equal(!!c0.modified(), true);
 
   // modify data
-  df.pulse(c0, changeset().modify(data[0], 'value', 'boo')).run();
+  df.pulse(c0, changeset().modify(data[0], "value", "boo")).run();
   t.equal(c0.value.length, 3);
   t.equal(c0.value[0], data[3]);
   t.equal(c0.value[1], data[2]);

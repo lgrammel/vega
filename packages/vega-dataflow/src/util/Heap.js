@@ -1,10 +1,10 @@
 export default function Heap(cmp) {
   let nodes = [];
   return {
-    clear: () => nodes = [],
+    clear: () => (nodes = []),
     size: () => nodes.length,
     peek: () => nodes[0],
-    push: x => {
+    push: (x) => {
       nodes.push(x);
       return siftdown(nodes, 0, nodes.length - 1, cmp);
     },
@@ -19,7 +19,7 @@ export default function Heap(cmp) {
         item = last;
       }
       return item;
-    }
+    },
   };
 }
 
@@ -42,9 +42,10 @@ function siftdown(array, start, idx, cmp) {
 
 function siftup(array, idx, cmp) {
   const start = idx,
-        end = array.length,
-        item = array[idx];
-  let cidx = (idx << 1) + 1, ridx;
+    end = array.length,
+    item = array[idx];
+  let cidx = (idx << 1) + 1,
+    ridx;
 
   while (cidx < end) {
     ridx = cidx + 1;

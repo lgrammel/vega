@@ -1,14 +1,16 @@
-var tape = require('tape'),
-    vega = require('../');
+var tape = require("tape"),
+  vega = require("../");
 
-tape('Dataflow propagates values (run)', t => {
+tape("Dataflow propagates values (run)", (t) => {
   var df = new vega.Dataflow(),
-      s1 = df.add(10),
-      s2 = df.add(3),
-      n1 = df.add(_ => _.s1 + 0.25, {s1:s1}),
-      n2 = df.add(_ => _.n1 * _.s2, {n1:n1, s2:s2}),
-      op = [s1, s2, n1, n2],
-      stamp = function(_) { return _.stamp; };
+    s1 = df.add(10),
+    s2 = df.add(3),
+    n1 = df.add((_) => _.s1 + 0.25, { s1: s1 }),
+    n2 = df.add((_) => _.n1 * _.s2, { n1: n1, s2: s2 }),
+    op = [s1, s2, n1, n2],
+    stamp = function (_) {
+      return _.stamp;
+    };
 
   t.equal(df.stamp(), 0); // timestamp 0
 
@@ -34,14 +36,16 @@ tape('Dataflow propagates values (run)', t => {
   t.end();
 });
 
-tape('Dataflow propagates values (runAsync)', t => {
+tape("Dataflow propagates values (runAsync)", (t) => {
   var df = new vega.Dataflow(),
-      s1 = df.add(10),
-      s2 = df.add(3),
-      n1 = df.add(_ => _.s1 + 0.25, {s1:s1}),
-      n2 = df.add(_ => _.n1 * _.s2, {n1:n1, s2:s2}),
-      op = [s1, s2, n1, n2],
-      stamp = function(_) { return _.stamp; };
+    s1 = df.add(10),
+    s2 = df.add(3),
+    n1 = df.add((_) => _.s1 + 0.25, { s1: s1 }),
+    n2 = df.add((_) => _.n1 * _.s2, { n1: n1, s2: s2 }),
+    op = [s1, s2, n1, n2],
+    stamp = function (_) {
+      return _.stamp;
+    };
 
   t.equal(df.stamp(), 0); // timestamp 0
 
@@ -66,36 +70,40 @@ tape('Dataflow propagates values (runAsync)', t => {
     });
 });
 
-tape('Dataflow loads external data', t => {
+tape("Dataflow loads external data", (t) => {
   var df = new vega.Dataflow(),
-      op = df.add(null);
+    op = df.add(null);
 
   df.preload(op, null)
-    .then(res => {
+    .then((res) => {
       t.equal(res.status, -1); // load fail due to bad url
-      return df.preload(op, 'README.md', {type: 'json'});
+      return df.preload(op, "README.md", { type: "json" });
     })
-    .then(res => {
+    .then((res) => {
       t.equal(res.status, -2); // parse fail due to improper format
-      return df.preload(op, 'package.json');
+      return df.preload(op, "package.json");
     })
-    .then(res => {
+    .then((res) => {
       t.equal(res.status, 0); // successful load and parse
       return df.runAsync();
     })
     .then(() => {
       t.equal(op.pulse.add.length, 1);
-      t.equal(op.pulse.add[0].name, 'vega-dataflow');
+      t.equal(op.pulse.add[0].name, "vega-dataflow");
       t.end();
     });
 });
 
-tape('Dataflow handles errors', t => {
+tape("Dataflow handles errors", (t) => {
   var df = new vega.Dataflow(),
-      error = 0;
+    error = 0;
 
-  df.error = function() { error = 1; };
-  df.add(() => { throw Error('!!!'); });
+  df.error = function () {
+    error = 1;
+  };
+  df.add(() => {
+    throw Error("!!!");
+  });
 
   df.run();
 
@@ -107,23 +115,23 @@ tape('Dataflow handles errors', t => {
   t.end();
 });
 
-tape('Dataflow accepts new logger', t => {
+tape("Dataflow accepts new logger", (t) => {
   const store = [];
   const logger = {
-    level: lvl => store.push('level:'+lvl),
-    error: msg => store.push(msg),
-    warn: msg => store.push(msg),
-    info: msg => store.push(msg),
-    debug: msg => store.push(msg)
+    level: (lvl) => store.push("level:" + lvl),
+    error: (msg) => store.push(msg),
+    warn: (msg) => store.push(msg),
+    info: (msg) => store.push(msg),
+    debug: (msg) => store.push(msg),
   };
   const df = new vega.Dataflow().logger(logger);
 
   df.logLevel(99);
-  df.error('error');
-  df.warn('warn');
-  df.info('info');
-  df.debug('debug');
+  df.error("error");
+  df.warn("warn");
+  df.info("info");
+  df.debug("debug");
 
-  t.deepEqual(store, ['level:99', 'error', 'warn', 'info', 'debug']);
+  t.deepEqual(store, ["level:99", "error", "warn", "info", "debug"]);
   t.end();
 });

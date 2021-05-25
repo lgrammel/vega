@@ -1,5 +1,5 @@
-import {Transform, stableCompare} from 'vega-dataflow';
-import {inherits} from 'vega-util';
+import { Transform, stableCompare } from "vega-dataflow";
+import { inherits } from "vega-util";
 
 /**
  * Sorts scenegraph items in the pulse source array.
@@ -14,14 +14,15 @@ export default function SortItems(params) {
 
 inherits(SortItems, Transform, {
   transform(_, pulse) {
-    const mod = _.modified('sort')
-          || pulse.changed(pulse.ADD)
-          || pulse.modified(_.sort.fields)
-          || pulse.modified('datum');
+    const mod =
+      _.modified("sort") ||
+      pulse.changed(pulse.ADD) ||
+      pulse.modified(_.sort.fields) ||
+      pulse.modified("datum");
 
     if (mod) pulse.source.sort(stableCompare(_.sort));
 
     this.modified(mod);
     return pulse;
-  }
+  },
 });

@@ -1,8 +1,8 @@
-export default function(scale) {
-  return function(_) {
+export default function (scale) {
+  return function (_) {
     let lo = _[0],
-        hi = _[1],
-        t;
+      hi = _[1],
+      t;
 
     if (hi < lo) {
       t = lo;
@@ -10,9 +10,6 @@ export default function(scale) {
       hi = t;
     }
 
-    return [
-      scale.invert(lo),
-      scale.invert(hi)
-    ];
+    return [scale.invert(lo), scale.invert(hi)];
   };
 }

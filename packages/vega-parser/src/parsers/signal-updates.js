@@ -1,14 +1,14 @@
-import parseUpdate from './update';
-import {parseExpression} from 'vega-functions';
-import {error} from 'vega-util';
+import parseUpdate from "./update";
+import { parseExpression } from "vega-functions";
+import { error } from "vega-util";
 
-export default function(signal, scope) {
+export default function (signal, scope) {
   const op = scope.getSignal(signal.name);
   let expr = signal.update;
 
   if (signal.init) {
     if (expr) {
-      error('Signals can not include both init and update expressions.');
+      error("Signals can not include both init and update expressions.");
     } else {
       expr = signal.init;
       op.initonly = true;
@@ -22,6 +22,6 @@ export default function(signal, scope) {
   }
 
   if (signal.on) {
-    signal.on.forEach(_ => parseUpdate(_, scope, op.id));
+    signal.on.forEach((_) => parseUpdate(_, scope, op.id));
   }
 }

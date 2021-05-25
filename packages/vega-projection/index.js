@@ -1,5 +1,5 @@
 export {
   projection,
   projectionProperties,
-  getProjectionPath
-} from './src/projections';
+  getProjectionPath,
+} from "./src/projections";

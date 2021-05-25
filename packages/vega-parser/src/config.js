@@ -3,25 +3,25 @@
  * Users can provide their own (sub-)set of these default values
  * by passing in a config object to the top-level parse method.
  */
-export default function() {
-  const defaultFont = 'sans-serif',
-        defaultSymbolSize = 30,
-        defaultStrokeWidth = 2,
-        defaultColor = '#4c78a8',
-        black = '#000',
-        gray = '#888',
-        lightGray = '#ddd';
+export default function () {
+  const defaultFont = "sans-serif",
+    defaultSymbolSize = 30,
+    defaultStrokeWidth = 2,
+    defaultColor = "#4c78a8",
+    black = "#000",
+    gray = "#888",
+    lightGray = "#ddd";
 
   return {
     // default visualization description
-    description: 'Vega visualization',
+    description: "Vega visualization",
 
     // default padding around visualization
     padding: 0,
 
     // default for automatic sizing; options: 'none', 'pad', 'fit'
     // or provide an object (e.g., {'type': 'pad', 'resize': true})
-    autosize: 'pad',
+    autosize: "pad",
 
     // default view background color
     // covers the entire view component
@@ -30,7 +30,7 @@ export default function() {
     // default event handling configuration
     // preventDefault for view-sourced event types except 'wheel'
     events: {
-      defaults: {allow: ['wheel']}
+      defaults: { allow: ["wheel"] },
     },
 
     // defaults for top-level group marks
@@ -42,98 +42,98 @@ export default function() {
     // each subset accepts mark properties (fill, stroke, etc)
     mark: null,
     arc: {
-      fill: defaultColor
+      fill: defaultColor,
     },
     area: {
-      fill: defaultColor
+      fill: defaultColor,
     },
     image: null,
     line: {
       stroke: defaultColor,
-      strokeWidth: defaultStrokeWidth
+      strokeWidth: defaultStrokeWidth,
     },
     path: {
-      stroke: defaultColor
+      stroke: defaultColor,
     },
     rect: {
-      fill: defaultColor
+      fill: defaultColor,
     },
     rule: {
-      stroke: black
+      stroke: black,
     },
     shape: {
-      stroke: defaultColor
+      stroke: defaultColor,
     },
     symbol: {
       fill: defaultColor,
-      size: 64
+      size: 64,
     },
     text: {
       fill: black,
       font: defaultFont,
-      fontSize: 11
+      fontSize: 11,
     },
     trail: {
       fill: defaultColor,
-      size: defaultStrokeWidth
+      size: defaultStrokeWidth,
     },
 
     // style definitions
     style: {
       // axis & legend labels
-      'guide-label': {
+      "guide-label": {
         fill: black,
         font: defaultFont,
-        fontSize: 10
+        fontSize: 10,
       },
       // axis & legend titles
-      'guide-title': {
+      "guide-title": {
         fill: black,
         font: defaultFont,
         fontSize: 11,
-        fontWeight: 'bold'
+        fontWeight: "bold",
       },
       // headers, including chart title
-      'group-title': {
+      "group-title": {
         fill: black,
         font: defaultFont,
         fontSize: 13,
-        fontWeight: 'bold'
+        fontWeight: "bold",
       },
       // chart subtitle
-      'group-subtitle': {
+      "group-subtitle": {
         fill: black,
         font: defaultFont,
-        fontSize: 12
+        fontSize: 12,
       },
       // defaults for styled point marks in Vega-Lite
       point: {
         size: defaultSymbolSize,
         strokeWidth: defaultStrokeWidth,
-        shape: 'circle'
+        shape: "circle",
       },
       circle: {
         size: defaultSymbolSize,
-        strokeWidth: defaultStrokeWidth
+        strokeWidth: defaultStrokeWidth,
       },
       square: {
         size: defaultSymbolSize,
         strokeWidth: defaultStrokeWidth,
-        shape: 'square'
+        shape: "square",
       },
       // defaults for styled group marks in Vega-Lite
       cell: {
-        fill: 'transparent',
-        stroke: lightGray
-      }
+        fill: "transparent",
+        stroke: lightGray,
+      },
     },
 
     // defaults for title
     title: {
-      orient: 'top',
-      anchor: 'middle',
+      orient: "top",
+      anchor: "middle",
       offset: 4,
-      subtitlePadding: 3
+      subtitlePadding: 3,
     },
 
     // defaults for axes
@@ -158,84 +158,84 @@ export default function() {
       tickRound: true,
       tickSize: 5,
       tickWidth: 1,
-      titlePadding: 4
+      titlePadding: 4,
     },
 
     // correction for centering bias
     axisBand: {
-      tickOffset: -0.5
+      tickOffset: -0.5,
     },
 
     // defaults for cartographic projection
     projection: {
-      type: 'mercator'
+      type: "mercator",
     },
 
     // defaults for legends
     legend: {
-      orient: 'right',
+      orient: "right",
       padding: 0,
-      gridAlign: 'each',
+      gridAlign: "each",
       columnPadding: 10,
       rowPadding: 2,
-      symbolDirection: 'vertical',
-      gradientDirection: 'vertical',
+      symbolDirection: "vertical",
+      gradientDirection: "vertical",
       gradientLength: 200,
       gradientThickness: 16,
       gradientStrokeColor: lightGray,
       gradientStrokeWidth: 0,
       gradientLabelOffset: 2,
-      labelAlign: 'left',
-      labelBaseline: 'middle',
+      labelAlign: "left",
+      labelBaseline: "middle",
       labelLimit: 160,
       labelOffset: 4,
       labelOverlap: true,
       symbolLimit: 30,
-      symbolType: 'circle',
+      symbolType: "circle",
       symbolSize: 100,
       symbolOffset: 0,
       symbolStrokeWidth: 1.5,
-      symbolBaseFillColor: 'transparent',
+      symbolBaseFillColor: "transparent",
       symbolBaseStrokeColor: gray,
       titleLimit: 180,
-      titleOrient: 'top',
+      titleOrient: "top",
       titlePadding: 5,
       layout: {
         offset: 18,
-        direction: 'horizontal',
-        left:   { direction: 'vertical' },
-        right:  { direction: 'vertical' }
-      }
+        direction: "horizontal",
+        left: { direction: "vertical" },
+        right: { direction: "vertical" },
+      },
     },
 
     // defaults for scale ranges
     range: {
       category: {
-        scheme: 'tableau10'
+        scheme: "tableau10",
       },
       ordinal: {
-        scheme: 'blues'
+        scheme: "blues",
       },
       heatmap: {
-        scheme: 'yellowgreenblue'
+        scheme: "yellowgreenblue",
       },
       ramp: {
-        scheme: 'blues'
+        scheme: "blues",
       },
       diverging: {
-        scheme: 'blueorange',
-        extent: [1, 0]
+        scheme: "blueorange",
+        extent: [1, 0],
       },
       symbol: [
-        'circle',
-        'square',
-        'triangle-up',
-        'cross',
-        'diamond',
-        'triangle-right',
-        'triangle-down',
-        'triangle-left'
-      ]
-    }
+        "circle",
+        "square",
+        "triangle-up",
+        "cross",
+        "diamond",
+        "triangle-right",
+        "triangle-down",
+        "triangle-left",
+      ],
+    },
   };
 }

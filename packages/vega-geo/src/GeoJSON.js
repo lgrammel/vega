@@ -1,6 +1,6 @@
-import {Feature, FeatureCollection, MultiPoint} from './constants';
-import {Transform} from 'vega-dataflow';
-import {accessorFields, identity, inherits} from 'vega-util';
+import { Feature, FeatureCollection, MultiPoint } from "./constants";
+import { Transform } from "vega-dataflow";
+import { accessorFields, identity, inherits } from "vega-util";
 
 /**
  * Consolidate an array of [longitude, latitude] points or GeoJSON features
@@ -19,45 +19,46 @@ export default function GeoJSON(params) {
 }
 
 GeoJSON.Definition = {
-  'type': 'GeoJSON',
-  'metadata': {},
-  'params': [
-    { 'name': 'fields', 'type': 'field', 'array': true, 'length': 2 },
-    { 'name': 'geojson', 'type': 'field' }
-  ]
+  type: "GeoJSON",
+  metadata: {},
+  params: [
+    { name: "fields", type: "field", array: true, length: 2 },
+    { name: "geojson", type: "field" },
+  ],
 };
 
 inherits(GeoJSON, Transform, {
   transform(_, pulse) {
     var features = this._features,
-        points = this._points,
-        fields = _.fields,
-        lon = fields && fields[0],
-        lat = fields && fields[1],
-        geojson = _.geojson || (!fields && identity),
-        flag = pulse.ADD,
-        mod;
+      points = this._points,
+      fields = _.fields,
+      lon = fields && fields[0],
+      lat = fields && fields[1],
+      geojson = _.geojson || (!fields && identity),
+      flag = pulse.ADD,
+      mod;
 
-    mod = _.modified()
-      || pulse.changed(pulse.REM)
-      || pulse.modified(accessorFields(geojson))
-      || (lon && (pulse.modified(accessorFields(lon))))
-      || (lat && (pulse.modified(accessorFields(lat))));
+    mod =
+      _.modified() ||
+      pulse.changed(pulse.REM) ||
+      pulse.modified(accessorFields(geojson)) ||
+      (lon && pulse.modified(accessorFields(lon))) ||
+      (lat && pulse.modified(accessorFields(lat)));
 
     if (!this.value || mod) {
       flag = pulse.SOURCE;
-      this._features = (features = []);
-      this._points = (points = []);
+      this._features = features = [];
+      this._points = points = [];
     }
 
     if (geojson) {
-      pulse.visit(flag, t => features.push(geojson(t)));
+      pulse.visit(flag, (t) => features.push(geojson(t)));
     }
 
     if (lon && lat) {
-      pulse.visit(flag, t => {
+      pulse.visit(flag, (t) => {
         var x = lon(t),
-            y = lat(t);
+          y = lat(t);
         if (x != null && y != null && (x = +x) === x && (y = +y) === y) {
           points.push([x, y]);
         }
@@ -66,14 +67,14 @@ inherits(GeoJSON, Transform, {
         type: Feature,
         geometry: {
           type: MultiPoint,
-          coordinates: points
-        }
+          coordinates: points,
+        },
       });
     }
 
     this.value = {
       type: FeatureCollection,
-      features: features
+      features: features,
     };
-  }
+  },
 });

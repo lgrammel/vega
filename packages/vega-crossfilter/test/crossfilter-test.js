@@ -1,31 +1,33 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    xf = require('../'),
-    changeset = vega.changeset,
-    Collect = require('vega-transforms').collect,
-    CrossFilter = xf.crossfilter,
-    ResolveFilter = xf.resolvefilter;
+var tape = require("tape"),
+  util = require("vega-util"),
+  vega = require("vega-dataflow"),
+  xf = require("../"),
+  changeset = vega.changeset,
+  Collect = require("vega-transforms").collect,
+  CrossFilter = xf.crossfilter,
+  ResolveFilter = xf.resolvefilter;
 
-tape('Crossfilter filters tuples', t => {
+tape("Crossfilter filters tuples", (t) => {
   const data = [
-    {a: 1, b: 1, c:0}, {a: 2, b: 2, c:1},
-    {a: 4, b: 4, c:2}, {a: 3, b: 3, c:3}
+    { a: 1, b: 1, c: 0 },
+    { a: 2, b: 2, c: 1 },
+    { a: 4, b: 4, c: 2 },
+    { a: 3, b: 3, c: 3 },
   ];
 
-  var a = util.field('a'),
-      b = util.field('b'),
-      df = new vega.Dataflow(),
-      r1 = df.add([0, 5]),
-      r2 = df.add([0, 5]),
-      c0 = df.add(Collect),
-      cf = df.add(CrossFilter, {fields:[a,b], query:[r1,r2], pulse:c0}),
-      f1 = df.add(ResolveFilter, {ignore:2, filter:cf, pulse:cf}),
-      o1 = df.add(Collect, {pulse: f1}),
-      f2 = df.add(ResolveFilter, {ignore:1, filter:cf, pulse:cf}),
-      o2 = df.add(Collect, {pulse: f2}),
-      fn = df.add(ResolveFilter, {ignore:0, filter:cf, pulse:cf}),
-      on = df.add(Collect, {pulse: fn});
+  var a = util.field("a"),
+    b = util.field("b"),
+    df = new vega.Dataflow(),
+    r1 = df.add([0, 5]),
+    r2 = df.add([0, 5]),
+    c0 = df.add(Collect),
+    cf = df.add(CrossFilter, { fields: [a, b], query: [r1, r2], pulse: c0 }),
+    f1 = df.add(ResolveFilter, { ignore: 2, filter: cf, pulse: cf }),
+    o1 = df.add(Collect, { pulse: f1 }),
+    f2 = df.add(ResolveFilter, { ignore: 1, filter: cf, pulse: cf }),
+    o2 = df.add(Collect, { pulse: f2 }),
+    fn = df.add(ResolveFilter, { ignore: 0, filter: cf, pulse: cf }),
+    on = df.add(Collect, { pulse: fn });
 
   // -- add data
   df.pulse(c0, changeset().insert(data)).run();
@@ -34,15 +36,13 @@ tape('Crossfilter filters tuples', t => {
   t.equal(on.value.length, 4);
 
   // -- update single query
-  df.update(r2, [1,2]).run();
+  df.update(r2, [1, 2]).run();
   t.equal(o1.value.length, 4);
   t.equal(o2.value.length, 2);
   t.equal(on.value.length, 2);
 
   // -- update multiple queries
-  df.update(r1, [1,3])
-    .update(r2, [3,4])
-    .run();
+  df.update(r1, [1, 3]).update(r2, [3, 4]).run();
   t.equal(o1.value.length, 3);
   t.equal(o2.value.length, 2);
   t.equal(on.value.length, 1);
@@ -66,9 +66,10 @@ tape('Crossfilter filters tuples', t => {
   t.equal(on.value.length, 1);
 
   // -- modify non-indexed values
-  df.pulse(c0, changeset()
-    .modify(data[0], 'c', 5)
-    .modify(data[3], 'c', 5)).run();
+  df.pulse(
+    c0,
+    changeset().modify(data[0], "c", 5).modify(data[3], "c", 5)
+  ).run();
   t.equal(o1.value.length, 3);
   t.equal(o2.value.length, 2);
   t.equal(on.value.length, 1);
@@ -79,19 +80,21 @@ tape('Crossfilter filters tuples', t => {
   t.end();
 });
 
-tape('Crossfilter consolidates after remove', t => {
+tape("Crossfilter consolidates after remove", (t) => {
   const data = [
-    {a: 1, b: 1, c:0}, {a: 2, b: 2, c:1},
-    {a: 4, b: 4, c:2}, {a: 3, b: 3, c:3}
+    { a: 1, b: 1, c: 0 },
+    { a: 2, b: 2, c: 1 },
+    { a: 4, b: 4, c: 2 },
+    { a: 3, b: 3, c: 3 },
   ];
 
-  var a = util.field('a'),
-      b = util.field('b'),
-      df = new vega.Dataflow(),
-      r1 = df.add([0, 3]),
-      r2 = df.add([0, 3]),
-      c0 = df.add(Collect),
-      cf = df.add(CrossFilter, {fields:[a,b], query:[r1,r2], pulse:c0});
+  var a = util.field("a"),
+    b = util.field("b"),
+    df = new vega.Dataflow(),
+    r1 = df.add([0, 3]),
+    r2 = df.add([0, 3]),
+    c0 = df.add(Collect),
+    cf = df.add(CrossFilter, { fields: [a, b], query: [r1, r2], pulse: c0 });
 
   // -- add data
   df.pulse(c0, changeset().insert(data)).run();
@@ -103,7 +106,7 @@ tape('Crossfilter consolidates after remove', t => {
   // this happens *after* propagation completes
 
   // were dimensions appropriately remapped?
-  cf._dims.map(dim => {
+  cf._dims.map((dim) => {
     t.equal(dim.size(), 2);
 
     const idx = dim.index();
@@ -113,7 +116,7 @@ tape('Crossfilter consolidates after remove', t => {
 
   // was the filter state appropriately updated?
   var d = cf.value.data(),
-      curr = cf.value.curr();
+    curr = cf.value.curr();
   t.equal(cf.value.size(), 2);
   t.equal(d[0], data[2]);
   t.equal(d[1], data[3]);

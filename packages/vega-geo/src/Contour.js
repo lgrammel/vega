@@ -1,10 +1,10 @@
-import {Transform, ingest} from 'vega-dataflow';
-import {inherits, isArray} from 'vega-util';
-import {transform} from './Isocontour';
-import {params} from './KDE2D';
-import contours from './util/contours';
-import density2D from './util/density2D';
-import quantize from './util/quantize';
+import { Transform, ingest } from "vega-dataflow";
+import { inherits, isArray } from "vega-util";
+import { transform } from "./Isocontour";
+import { params } from "./KDE2D";
+import contours from "./util/contours";
+import density2D from "./util/density2D";
+import quantize from "./util/quantize";
 
 /**
  * Generate contours based on kernel-density estimation of point data.
@@ -38,21 +38,21 @@ export default function Contour(params) {
 }
 
 Contour.Definition = {
-  'type': 'Contour',
-  'metadata': {'generates': true},
-  'params': [
-    { 'name': 'size', 'type': 'number', 'array': true, 'length': 2, 'required': true },
-    { 'name': 'values', 'type': 'number', 'array': true },
-    { 'name': 'x', 'type': 'field' },
-    { 'name': 'y', 'type': 'field' },
-    { 'name': 'weight', 'type': 'field' },
-    { 'name': 'cellSize', 'type': 'number' },
-    { 'name': 'bandwidth', 'type': 'number' },
-    { 'name': 'count', 'type': 'number' },
-    { 'name': 'nice', 'type': 'boolean', 'default': false },
-    { 'name': 'thresholds', 'type': 'number', 'array': true },
-    { 'name': 'smooth', 'type': 'boolean', 'default': true }
-  ]
+  type: "Contour",
+  metadata: { generates: true },
+  params: [
+    { name: "size", type: "number", array: true, length: 2, required: true },
+    { name: "values", type: "number", array: true },
+    { name: "x", type: "field" },
+    { name: "y", type: "field" },
+    { name: "weight", type: "field" },
+    { name: "cellSize", type: "number" },
+    { name: "bandwidth", type: "number" },
+    { name: "count", type: "number" },
+    { name: "nice", type: "boolean", default: false },
+    { name: "thresholds", type: "number", array: true },
+    { name: "smooth", type: "boolean", default: true },
+  ],
 };
 
 inherits(Contour, Transform, {
@@ -62,10 +62,12 @@ inherits(Contour, Transform, {
     }
 
     var out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
-        contour = contours().smooth(_.smooth !== false),
-        values = _.values,
-        thresh = _.thresholds || quantize(_.count || 10, _.nice, !!values),
-        size = _.size, grid, post;
+      contour = contours().smooth(_.smooth !== false),
+      values = _.values,
+      thresh = _.thresholds || quantize(_.count || 10, _.nice, !!values),
+      size = _.size,
+      grid,
+      post;
 
     if (!values) {
       values = pulse.materialize(pulse.SOURCE).source;
@@ -83,5 +85,5 @@ inherits(Contour, Transform, {
     this.value = out.source = out.add = (values || []).map(ingest);
 
     return out;
-  }
+  },
 });

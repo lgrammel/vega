@@ -1,6 +1,6 @@
-import Aggregate from './Aggregate';
-import {ValidAggregateOps} from './util/AggregateOps';
-import {accessor, accessorFields, ascending, inherits} from 'vega-util';
+import Aggregate from "./Aggregate";
+import { ValidAggregateOps } from "./util/AggregateOps";
+import { accessor, accessorFields, ascending, inherits } from "vega-util";
 
 /**
  * Aggregate and pivot selected field values to become new fields.
@@ -23,65 +23,61 @@ export default function Pivot(params) {
 }
 
 Pivot.Definition = {
-  'type': 'Pivot',
-  'metadata': {'generates': true, 'changes': true},
-  'params': [
-    { 'name': 'groupby', 'type': 'field', 'array': true },
-    { 'name': 'field', 'type': 'field', 'required': true },
-    { 'name': 'value', 'type': 'field', 'required': true },
-    { 'name': 'op', 'type': 'enum', 'values': ValidAggregateOps, 'default': 'sum' },
-    { 'name': 'limit', 'type': 'number', 'default': 0 },
-    { 'name': 'key', 'type': 'field' }
-  ]
+  type: "Pivot",
+  metadata: { generates: true, changes: true },
+  params: [
+    { name: "groupby", type: "field", array: true },
+    { name: "field", type: "field", required: true },
+    { name: "value", type: "field", required: true },
+    { name: "op", type: "enum", values: ValidAggregateOps, default: "sum" },
+    { name: "limit", type: "number", default: 0 },
+    { name: "key", type: "field" },
+  ],
 };
 
 inherits(Pivot, Aggregate, {
   _transform: Aggregate.prototype.transform,
   transform(_, pulse) {
     return this._transform(aggregateParams(_, pulse), pulse);
-  }
+  },
 });
 
 // Shoehorn a pivot transform into an aggregate transform!
 // First collect all unique pivot field values.
 // Then generate aggregate fields for each output pivot field.
 function aggregateParams(_, pulse) {
-  const key    = _.field,
-        value  = _.value,
-        op     = (_.op === 'count' ? '__count__' : _.op) || 'sum',
-        fields = accessorFields(key).concat(accessorFields(value)),
-        keys   = pivotKeys(key, _.limit || 0, pulse);
+  const key = _.field,
+    value = _.value,
+    op = (_.op === "count" ? "__count__" : _.op) || "sum",
+    fields = accessorFields(key).concat(accessorFields(value)),
+    keys = pivotKeys(key, _.limit || 0, pulse);
 
   // if data stream content changes, pivot fields may change
   // flag parameter modification to ensure re-initialization
-  if (pulse.changed()) _.set('__pivot__', null, null, true);
+  if (pulse.changed()) _.set("__pivot__", null, null, true);
 
   return {
-    key:      _.key,
-    groupby:  _.groupby,
-    ops:      keys.map(() => op),
-    fields:   keys.map(k => get(k, key, value, fields)),
-    as:       keys.map(k => k + ''),
-    modified: _.modified.bind(_)
+    key: _.key,
+    groupby: _.groupby,
+    ops: keys.map(() => op),
+    fields: keys.map((k) => get(k, key, value, fields)),
+    as: keys.map((k) => k + ""),
+    modified: _.modified.bind(_),
   };
 }
 
 // Generate aggregate field accessor.
 // Output NaN for non-existent values; aggregator will ignore!
 function get(k, key, value, fields) {
-  return accessor(
-    d => key(d) === k ? value(d) : NaN,
-    fields,
-    k + ''
-  );
+  return accessor((d) => (key(d) === k ? value(d) : NaN), fields, k + "");
 }
 
 // Collect (and optionally limit) all unique pivot values.
 function pivotKeys(key, limit, pulse) {
   const map = {},
-        list = [];
+    list = [];
 
-  pulse.visit(pulse.SOURCE, t => {
+  pulse.visit(pulse.SOURCE, (t) => {
     const k = key(t);
     if (!map[k]) {
       map[k] = 1;

@@ -1,6 +1,6 @@
-import {Transform} from 'vega-dataflow';
-import {inherits, one} from 'vega-util';
-import {range, sum} from 'd3-array';
+import { Transform } from "vega-dataflow";
+import { inherits, one } from "vega-util";
+import { range, sum } from "d3-array";
 
 /**
  * Pie and donut chart layout.
@@ -16,45 +16,53 @@ export default function Pie(params) {
 }
 
 Pie.Definition = {
-  'type': 'Pie',
-  'metadata': {'modifies': true},
-  'params': [
-    { 'name': 'field', 'type': 'field' },
-    { 'name': 'startAngle', 'type': 'number', 'default': 0 },
-    { 'name': 'endAngle', 'type': 'number', 'default': 6.283185307179586 },
-    { 'name': 'sort', 'type': 'boolean', 'default': false },
-    { 'name': 'as', 'type': 'string', 'array': true, 'length': 2, 'default': ['startAngle', 'endAngle'] }
-  ]
+  type: "Pie",
+  metadata: { modifies: true },
+  params: [
+    { name: "field", type: "field" },
+    { name: "startAngle", type: "number", default: 0 },
+    { name: "endAngle", type: "number", default: 6.283185307179586 },
+    { name: "sort", type: "boolean", default: false },
+    {
+      name: "as",
+      type: "string",
+      array: true,
+      length: 2,
+      default: ["startAngle", "endAngle"],
+    },
+  ],
 };
 
 inherits(Pie, Transform, {
   transform(_, pulse) {
-    var as = _.as || ['startAngle', 'endAngle'],
-        startAngle = as[0],
-        endAngle = as[1],
-        field = _.field || one,
-        start = _.startAngle || 0,
-        stop = _.endAngle != null ? _.endAngle : 2 * Math.PI,
-        data = pulse.source,
-        values = data.map(field),
-        n = values.length,
-        a = start,
-        k = (stop - start) / sum(values),
-        index = range(n),
-        i, t, v;
+    var as = _.as || ["startAngle", "endAngle"],
+      startAngle = as[0],
+      endAngle = as[1],
+      field = _.field || one,
+      start = _.startAngle || 0,
+      stop = _.endAngle != null ? _.endAngle : 2 * Math.PI,
+      data = pulse.source,
+      values = data.map(field),
+      n = values.length,
+      a = start,
+      k = (stop - start) / sum(values),
+      index = range(n),
+      i,
+      t,
+      v;
 
     if (_.sort) {
       index.sort((a, b) => values[a] - values[b]);
     }
 
-    for (i=0; i<n; ++i) {
+    for (i = 0; i < n; ++i) {
       v = values[index[i]];
       t = data[index[i]];
       t[startAngle] = a;
-      t[endAngle] = (a += v * k);
+      t[endAngle] = a += v * k;
     }
 
     this.value = values;
     return pulse.reflow(_.modified()).modifies(as);
-  }
+  },
 });

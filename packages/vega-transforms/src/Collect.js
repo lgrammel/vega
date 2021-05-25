@@ -1,6 +1,6 @@
-import SortedList from './util/SortedList';
-import {Transform, stableCompare, tupleid} from 'vega-dataflow';
-import {inherits} from 'vega-util';
+import SortedList from "./util/SortedList";
+import { Transform, stableCompare, tupleid } from "vega-dataflow";
+import { inherits } from "vega-util";
 
 /**
  * Collects all data tuples that pass through this operator.
@@ -14,20 +14,19 @@ export default function Collect(params) {
 }
 
 Collect.Definition = {
-  'type': 'Collect',
-  'metadata': {'source': true},
-  'params': [
-    { 'name': 'sort', 'type': 'compare' }
-  ]
+  type: "Collect",
+  metadata: { source: true },
+  params: [{ name: "sort", type: "compare" }],
 };
 
 inherits(Collect, Transform, {
   transform(_, pulse) {
     const out = pulse.fork(pulse.ALL),
-          list = SortedList(tupleid, this.value, out.materialize(out.ADD).add),
-          sort = _.sort,
-          mod = pulse.changed() || (sort &&
-                (_.modified('sort') || pulse.modified(sort.fields)));
+      list = SortedList(tupleid, this.value, out.materialize(out.ADD).add),
+      sort = _.sort,
+      mod =
+        pulse.changed() ||
+        (sort && (_.modified("sort") || pulse.modified(sort.fields)));
 
     out.visit(out.REM, list.remove);
 
@@ -40,5 +39,5 @@ inherits(Collect, Transform, {
     }
 
     return out;
-  }
+  },
 });

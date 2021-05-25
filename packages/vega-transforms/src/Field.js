@@ -1,5 +1,5 @@
-import {Operator} from 'vega-dataflow';
-import {array, field, inherits, isArray} from 'vega-util';
+import { Operator } from "vega-dataflow";
+import { array, field, inherits, isArray } from "vega-util";
 
 /**
  * Generates one or more field accessor functions.
@@ -17,7 +17,9 @@ export default function Field(params) {
 inherits(Field, Operator);
 
 function update(_) {
-  return (this.value && !_.modified()) ? this.value
-    : isArray(_.name) ? array(_.name).map(f => field(f))
+  return this.value && !_.modified()
+    ? this.value
+    : isArray(_.name)
+    ? array(_.name).map((f) => field(f))
     : field(_.name, _.as);
 }

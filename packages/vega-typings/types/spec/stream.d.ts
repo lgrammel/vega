@@ -1,26 +1,26 @@
-import { Expr, MarkType } from '.';
+import { Expr, MarkType } from ".";
 
-export type EventSource = EventStream['source'] & {};
+export type EventSource = EventStream["source"] & {};
 export type EventType =
-  | 'click'
-  | 'dblclick'
-  | 'dragenter'
-  | 'dragleave'
-  | 'dragover'
-  | 'keydown'
-  | 'keypress'
-  | 'keyup'
-  | 'mousedown'
-  | 'mousemove'
-  | 'mouseout'
-  | 'mouseover'
-  | 'mouseup'
-  | 'mousewheel'
-  | 'timer'
-  | 'touchend'
-  | 'touchmove'
-  | 'touchstart'
-  | 'wheel';
+  | "click"
+  | "dblclick"
+  | "dragenter"
+  | "dragleave"
+  | "dragover"
+  | "keydown"
+  | "keypress"
+  | "keyup"
+  | "mousedown"
+  | "mousemove"
+  | "mouseout"
+  | "mouseover"
+  | "mouseup"
+  | "mousewheel"
+  | "timer"
+  | "touchend"
+  | "touchmove"
+  | "touchstart"
+  | "wheel";
 export type WindowEventType =
   | EventType
   // TODO: change to `keyof HTMLBodyElementEventMap` after vega/ts-json-schema-generator#192
@@ -37,11 +37,11 @@ export interface StreamParameters {
 export type EventStream = StreamParameters &
   (
     | {
-        source?: 'view' | 'scope';
+        source?: "view" | "scope";
         type: EventType;
       }
     | {
-        source: 'window';
+        source: "window";
         type: WindowEventType;
       }
   );

@@ -1,7 +1,7 @@
-import {Bottom, Top} from './constants';
-import {Transform} from 'vega-dataflow';
-import {Bounds} from 'vega-scenegraph';
-import {inherits, peek} from 'vega-util';
+import { Bottom, Top } from "./constants";
+import { Transform } from "vega-dataflow";
+import { Bounds } from "vega-scenegraph";
+import { inherits, peek } from "vega-util";
 
 /**
  * Analyze items for overlap, changing opacity to hide items with
@@ -31,16 +31,14 @@ export default function Overlap(params) {
 }
 
 const methods = {
-  parity: items =>
-    items.filter((item, i) => i % 2 ? (item.opacity = 0) : 1),
+  parity: (items) =>
+    items.filter((item, i) => (i % 2 ? (item.opacity = 0) : 1)),
   greedy: (items, sep) => {
     let a;
     return items.filter((b, i) =>
-      (!i || !intersect(a.bounds, b.bounds, sep))
-        ? (a = b, 1)
-        : (b.opacity = 0)
+      !i || !intersect(a.bounds, b.bounds, sep) ? ((a = b), 1) : (b.opacity = 0)
     );
-  }
+  },
 };
 
 // compute bounding box intersection
@@ -49,19 +47,19 @@ const intersect = (a, b, sep) =>
   sep > Math.max(b.x1 - a.x2, a.x1 - b.x2, b.y1 - a.y2, a.y1 - b.y2);
 
 const hasOverlap = (items, pad) => {
-  for (var i=1, n=items.length, a=items[0].bounds, b; i<n; a=b, ++i) {
-    if (intersect(a, b = items[i].bounds, pad)) return true;
+  for (var i = 1, n = items.length, a = items[0].bounds, b; i < n; a = b, ++i) {
+    if (intersect(a, (b = items[i].bounds), pad)) return true;
   }
 };
 
-const hasBounds = item => {
+const hasBounds = (item) => {
   const b = item.bounds;
   return b.width() > 1 && b.height() > 1;
 };
 
 const boundTest = (scale, orient, tolerance) => {
   var range = scale.range(),
-      b = new Bounds();
+    b = new Bounds();
 
   if (orient === Top || orient === Bottom) {
     b.set(range[0], -Infinity, range[1], +Infinity);
@@ -70,33 +68,33 @@ const boundTest = (scale, orient, tolerance) => {
   }
   b.expand(tolerance || 1);
 
-  return item => b.encloses(item.bounds);
+  return (item) => b.encloses(item.bounds);
 };
 
 // reset all items to be fully opaque
-const reset = source => {
-  source.forEach(item => item.opacity = 1);
+const reset = (source) => {
+  source.forEach((item) => (item.opacity = 1));
   return source;
 };
 
 // add all tuples to mod, fork pulse if parameters were modified
 // fork prevents cross-stream tuple pollution (e.g., pulse from scale)
-const reflow = (pulse, _) =>
-  pulse.reflow(_.modified()).modifies('opacity');
+const reflow = (pulse, _) => pulse.reflow(_.modified()).modifies("opacity");
 
 inherits(Overlap, Transform, {
   transform(_, pulse) {
     const reduce = methods[_.method] || methods.parity,
-          sep = _.separation || 0;
+      sep = _.separation || 0;
 
     let source = pulse.materialize(pulse.SOURCE).source,
-        items, test;
+      items,
+      test;
 
     if (!source || !source.length) return;
 
     if (!_.method) {
       // early exit if method is falsy
-      if (_.modified('method')) {
+      if (_.modified("method")) {
         reset(source);
         pulse = reflow(pulse, _);
       }
@@ -129,17 +127,17 @@ inherits(Overlap, Transform, {
 
     if (_.boundScale && _.boundTolerance >= 0) {
       test = boundTest(_.boundScale, _.boundOrient, +_.boundTolerance);
-      source.forEach(item => {
+      source.forEach((item) => {
         if (!test(item)) item.opacity = 0;
       });
     }
 
     // re-calculate mark bounds
     const bounds = items[0].mark.bounds.clear();
-    source.forEach(item => {
+    source.forEach((item) => {
       if (item.opacity) bounds.union(item.bounds);
     });
 
     return pulse;
-  }
+  },
 });

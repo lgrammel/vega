@@ -1,6 +1,6 @@
-import Facet from './Facet';
-import {ingest, tupleid} from 'vega-dataflow';
-import {accessorFields, error, inherits} from 'vega-util';
+import Facet from "./Facet";
+import { ingest, tupleid } from "vega-dataflow";
+import { accessorFields, error, inherits } from "vega-util";
 
 /**
  * Partitions pre-faceted data into tuple subflows.
@@ -18,34 +18,37 @@ export default function PreFacet(params) {
 inherits(PreFacet, Facet, {
   transform(_, pulse) {
     const flow = _.subflow,
-          field = _.field,
-          subflow = t => this.subflow(tupleid(t), flow, pulse, t);
+      field = _.field,
+      subflow = (t) => this.subflow(tupleid(t), flow, pulse, t);
 
-    if (_.modified('field') || field && pulse.modified(accessorFields(field))) {
-      error('PreFacet does not support field modification.');
+    if (
+      _.modified("field") ||
+      (field && pulse.modified(accessorFields(field)))
+    ) {
+      error("PreFacet does not support field modification.");
     }
 
     this.initTargets(); // reset list of active subflows
 
     if (field) {
-      pulse.visit(pulse.MOD, t => {
+      pulse.visit(pulse.MOD, (t) => {
         const sf = subflow(t);
-        field(t).forEach(_ => sf.mod(_));
+        field(t).forEach((_) => sf.mod(_));
       });
 
-      pulse.visit(pulse.ADD, t => {
+      pulse.visit(pulse.ADD, (t) => {
         const sf = subflow(t);
-        field(t).forEach(_ => sf.add(ingest(_)));
+        field(t).forEach((_) => sf.add(ingest(_)));
       });
 
-      pulse.visit(pulse.REM, t => {
+      pulse.visit(pulse.REM, (t) => {
         const sf = subflow(t);
-        field(t).forEach(_ => sf.rem(_));
+        field(t).forEach((_) => sf.rem(_));
       });
     } else {
-      pulse.visit(pulse.MOD, t => subflow(t).mod(t));
-      pulse.visit(pulse.ADD, t => subflow(t).add(t));
-      pulse.visit(pulse.REM, t => subflow(t).rem(t));
+      pulse.visit(pulse.MOD, (t) => subflow(t).mod(t));
+      pulse.visit(pulse.ADD, (t) => subflow(t).add(t));
+      pulse.visit(pulse.REM, (t) => subflow(t).rem(t));
     }
 
     if (pulse.clean()) {
@@ -53,5 +56,5 @@ inherits(PreFacet, Facet, {
     }
 
     return pulse;
-  }
+  },
 });

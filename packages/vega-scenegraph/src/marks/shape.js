@@ -1,4 +1,4 @@
-import {shape} from '../path/shapes';
-import markItemPath from './markItemPath';
+import { shape } from "../path/shapes";
+import markItemPath from "./markItemPath";
 
-export default markItemPath('shape', shape);
+export default markItemPath("shape", shape);

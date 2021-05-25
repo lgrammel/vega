@@ -1,25 +1,28 @@
-import boundStroke from '../bound/boundStroke';
-import {intersectRule} from '../util/intersect';
-import {visit} from '../util/visit';
-import blend from '../util/canvas/blend';
-import {pick} from '../util/canvas/pick';
-import stroke from '../util/canvas/stroke';
-import {translateItem} from '../util/svg/transform';
+import boundStroke from "../bound/boundStroke";
+import { intersectRule } from "../util/intersect";
+import { visit } from "../util/visit";
+import blend from "../util/canvas/blend";
+import { pick } from "../util/canvas/pick";
+import stroke from "../util/canvas/stroke";
+import { translateItem } from "../util/svg/transform";
 
 function attr(emit, item) {
-  emit('transform', translateItem(item));
-  emit('x2', item.x2 != null ? item.x2 - (item.x || 0) : 0);
-  emit('y2', item.y2 != null ? item.y2 - (item.y || 0) : 0);
+  emit("transform", translateItem(item));
+  emit("x2", item.x2 != null ? item.x2 - (item.x || 0) : 0);
+  emit("y2", item.y2 != null ? item.y2 - (item.y || 0) : 0);
 }
 
 function bound(bounds, item) {
   var x1, y1;
-  return boundStroke(bounds.set(
-    x1 = item.x || 0,
-    y1 = item.y || 0,
-    item.x2 != null ? item.x2 : x1,
-    item.y2 != null ? item.y2 : y1
-  ), item);
+  return boundStroke(
+    bounds.set(
+      (x1 = item.x || 0),
+      (y1 = item.y || 0),
+      item.x2 != null ? item.x2 : x1,
+      item.y2 != null ? item.y2 : y1
+    ),
+    item
+  );
 }
 
 function path(context, item, opacity) {
@@ -39,7 +42,7 @@ function path(context, item, opacity) {
 }
 
 function draw(context, scene, bounds) {
-  visit(scene, item => {
+  visit(scene, (item) => {
     if (bounds && !bounds.intersects(item.bounds)) return; // bounds check
     var opacity = item.opacity == null ? 1 : item.opacity;
     if (opacity && path(context, item, opacity)) {
@@ -55,12 +58,12 @@ function hit(context, item, x, y) {
 }
 
 export default {
-  type:   'rule',
-  tag:    'line',
+  type: "rule",
+  tag: "line",
   nested: false,
-  attr:   attr,
-  bound:  bound,
-  draw:   draw,
-  pick:   pick(hit),
-  isect:  intersectRule
+  attr: attr,
+  bound: bound,
+  draw: draw,
+  pick: pick(hit),
+  isect: intersectRule,
 };

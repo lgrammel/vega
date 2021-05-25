@@ -1,5 +1,5 @@
-import { stringType } from './util';
+import { stringType } from "./util";
 
 export default {
-  marktype: stringType
+  marktype: stringType,
 };

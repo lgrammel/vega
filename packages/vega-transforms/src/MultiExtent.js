@@ -1,5 +1,5 @@
-import {Operator} from 'vega-dataflow';
-import {inherits} from 'vega-util';
+import { Operator } from "vega-dataflow";
+import { inherits } from "vega-util";
 
 /**
  * Computes global min/max extents over a collection of extents.
@@ -19,11 +19,12 @@ function update(_) {
   }
 
   const ext = _.extents,
-        n = ext.length;
+    n = ext.length;
 
   let min = +Infinity,
-      max = -Infinity,
-      i, e;
+    max = -Infinity,
+    i,
+    e;
 
   for (i = 0; i < n; ++i) {
     e = ext[i];

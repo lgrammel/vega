@@ -10,23 +10,20 @@ export function height(view) {
 
 export function offset(view) {
   var padding = view.padding(),
-      origin = view._origin;
-  return [
-    padding.left + origin[0],
-    padding.top + origin[1]
-  ];
+    origin = view._origin;
+  return [padding.left + origin[0], padding.top + origin[1]];
 }
 
 export function resizeRenderer(view) {
   var origin = offset(view),
-      w = width(view),
-      h = height(view);
+    w = width(view),
+    h = height(view);
 
   view._renderer.background(view.background());
   view._renderer.resize(w, h, origin);
   view._handler.origin(origin);
 
-  view._resizeListeners.forEach(handler => {
+  view._resizeListeners.forEach((handler) => {
     try {
       handler(w, h);
     } catch (error) {

@@ -1,6 +1,6 @@
-import {fieldNames} from './util/util';
-import {Transform, ingest, rederive, tupleid} from 'vega-dataflow';
-import {inherits} from 'vega-util';
+import { fieldNames } from "./util/util";
+import { Transform, ingest, rederive, tupleid } from "vega-dataflow";
+import { inherits } from "vega-util";
 
 /**
  * Performs a relational projection, copying selected fields from source
@@ -19,22 +19,20 @@ export default function Project(params) {
 }
 
 Project.Definition = {
-  'type': 'Project',
-  'metadata': {'generates': true, 'changes': true},
-  'params': [
-    { 'name': 'fields', 'type': 'field', 'array': true },
-    { 'name': 'as', 'type': 'string', 'null': true, 'array': true }
-  ]
+  type: "Project",
+  metadata: { generates: true, changes: true },
+  params: [
+    { name: "fields", type: "field", array: true },
+    { name: "as", type: "string", null: true, array: true },
+  ],
 };
 
 inherits(Project, Transform, {
   transform(_, pulse) {
     const out = pulse.fork(pulse.NO_SOURCE),
-          fields = _.fields,
-          as = fieldNames(_.fields, _.as || []),
-          derive = fields
-            ? (s, t) => project(s, t, fields, as)
-            : rederive;
+      fields = _.fields,
+      as = fieldNames(_.fields, _.as || []),
+      derive = fields ? (s, t) => project(s, t, fields, as) : rederive;
 
     let lut;
     if (this.value) {
@@ -44,28 +42,28 @@ inherits(Project, Transform, {
       lut = this.value = {};
     }
 
-    pulse.visit(pulse.REM, t => {
+    pulse.visit(pulse.REM, (t) => {
       const id = tupleid(t);
       out.rem.push(lut[id]);
       lut[id] = null;
     });
 
-    pulse.visit(pulse.ADD, t => {
+    pulse.visit(pulse.ADD, (t) => {
       const dt = derive(t, ingest({}));
       lut[tupleid(t)] = dt;
       out.add.push(dt);
     });
 
-    pulse.visit(pulse.MOD, t => {
+    pulse.visit(pulse.MOD, (t) => {
       out.mod.push(derive(t, lut[tupleid(t)]));
     });
 
     return out;
-  }
+  },
 });
 
 function project(s, t, fields, as) {
-  for (let i=0, n=fields.length; i<n; ++i) {
+  for (let i = 0, n = fields.length; i < n; ++i) {
     t[as[i]] = fields[i](s);
   }
   return t;

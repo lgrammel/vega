@@ -4,11 +4,11 @@ module.exports = function (api) {
   return {
     presets: [
       [
-        '@babel/preset-env',
+        "@babel/preset-env",
         {
-          targets: 'defaults and not IE 11'
-        }
-      ]
-    ]
+          targets: "defaults and not IE 11",
+        },
+      ],
+    ],
   };
 };

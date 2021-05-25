@@ -5,10 +5,15 @@ import {
   SignalRef,
   SymbolEncodeEntry,
   TextEncodeEntry,
-} from '.';
-import { FormatType, LabelOverlap, TickCount, TimeFormatSpecifier } from './axis';
-import { Text } from './encode';
-import { LayoutAlign } from './layout';
+} from ".";
+import {
+  FormatType,
+  LabelOverlap,
+  TickCount,
+  TimeFormatSpecifier,
+} from "./axis";
+import { Text } from "./encode";
+import { LayoutAlign } from "./layout";
 import {
   AlignValue,
   AnchorValue,
@@ -22,7 +27,7 @@ import {
   StringValue,
   SymbolShapeValue,
   TextBaselineValue,
-} from './values';
+} from "./values";
 
 export interface GuideEncodeEntry<T> {
   name?: string;
@@ -41,18 +46,18 @@ export interface GuideEncodeEntry<T> {
   hover?: T;
 }
 
-export type LegendType = 'gradient' | 'symbol';
+export type LegendType = "gradient" | "symbol";
 
 export type LegendOrient =
-  | 'none'
-  | 'left'
-  | 'right'
-  | 'top'
-  | 'bottom'
-  | 'top-left'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-right';
+  | "none"
+  | "left"
+  | "right"
+  | "top"
+  | "bottom"
+  | "top-left"
+  | "top-right"
+  | "bottom-left"
+  | "bottom-right";
 
 export interface Legend extends BaseLegend {
   size?: string;

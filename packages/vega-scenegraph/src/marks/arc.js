@@ -1,4 +1,4 @@
-import {arc} from '../path/shapes';
-import markItemPath from './markItemPath';
+import { arc } from "../path/shapes";
+import markItemPath from "./markItemPath";
 
-export default markItemPath('arc', arc);
+export default markItemPath("arc", arc);

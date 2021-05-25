@@ -1,11 +1,11 @@
-import {error, isArray, isObject, stringValue} from 'vega-util';
+import { error, isArray, isObject, stringValue } from "vega-util";
 
-export default function(proj, scope) {
+export default function (proj, scope) {
   const config = scope.config.projection || {},
-        params = {};
+    params = {};
 
   for (const name in proj) {
-    if (name === 'name') continue;
+    if (name === "name") continue;
     params[name] = parseParameter(proj[name], name, scope);
   }
 
@@ -20,9 +20,13 @@ export default function(proj, scope) {
 }
 
 function parseParameter(_, name, scope) {
-  return isArray(_) ? _.map(_ => parseParameter(_, name, scope))
-    : !isObject(_) ? _
-    : _.signal ? scope.signalRef(_.signal)
-    : name === 'fit' ? _
-    : error('Unsupported parameter object: ' + stringValue(_));
+  return isArray(_)
+    ? _.map((_) => parseParameter(_, name, scope))
+    : !isObject(_)
+    ? _
+    : _.signal
+    ? scope.signalRef(_.signal)
+    : name === "fit"
+    ? _
+    : error("Unsupported parameter object: " + stringValue(_));
 }

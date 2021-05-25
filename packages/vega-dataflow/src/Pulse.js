@@ -1,5 +1,5 @@
-import {tupleid} from './Tuple';
-import {isArray, visitArray} from 'vega-util';
+import { tupleid } from "./Tuple";
+import { isArray, visitArray } from "vega-util";
 
 /**
  * Sentinel value indicating pulse propagation should stop.
@@ -7,16 +7,16 @@ import {isArray, visitArray} from 'vega-util';
 export const StopPropagation = {};
 
 // Pulse visit type flags
-const ADD       = (1 << 0),
-      REM       = (1 << 1),
-      MOD       = (1 << 2),
-      ADD_REM   = ADD | REM,
-      ADD_MOD   = ADD | MOD,
-      ALL       = ADD | REM | MOD,
-      REFLOW    = (1 << 3),
-      SOURCE    = (1 << 4),
-      NO_SOURCE = (1 << 5),
-      NO_FIELDS = (1 << 6);
+const ADD = 1 << 0,
+  REM = 1 << 1,
+  MOD = 1 << 2,
+  ADD_REM = ADD | REM,
+  ADD_MOD = ADD | MOD,
+  ALL = ADD | REM | MOD,
+  REFLOW = 1 << 3,
+  SOURCE = 1 << 4,
+  NO_SOURCE = 1 << 5,
+  NO_FIELDS = 1 << 6;
 
 /**
  * A Pulse enables inter-operator communication during a run of the
@@ -53,24 +53,23 @@ export default function Pulse(dataflow, stamp, encode) {
 
 function materialize(data, filter) {
   const out = [];
-  visitArray(data, filter, _ => out.push(_));
+  visitArray(data, filter, (_) => out.push(_));
   return out;
 }
 
 function filter(pulse, flags) {
   const map = {};
-  pulse.visit(flags, t => { map[tupleid(t)] = 1; });
-  return t => map[tupleid(t)] ? null : t;
+  pulse.visit(flags, (t) => {
+    map[tupleid(t)] = 1;
+  });
+  return (t) => (map[tupleid(t)] ? null : t);
 }
 
 function addFilter(a, b) {
-  return a
-    ? (t, i) => a(t, i) && b(t, i)
-    : b;
+  return a ? (t, i) => a(t, i) && b(t, i) : b;
 }
 
 Pulse.prototype = {
-
   /**
    * Sentinel value indicating pulse propagation should stop.
    */
@@ -173,9 +172,10 @@ Pulse.prototype = {
    */
   addAll() {
     let p = this;
-    const reuse = !p.source
-      || p.add === p.rem // special case for indexed set (e.g., crossfilter)
-      || (!p.rem.length && p.source.length === p.add.length);
+    const reuse =
+      !p.source ||
+      p.add === p.rem || // special case for indexed set (e.g., crossfilter)
+      (!p.rem.length && p.source.length === p.add.length);
 
     if (reuse) {
       return p;
@@ -262,9 +262,11 @@ Pulse.prototype = {
    */
   changed(flags) {
     const f = flags || ALL;
-    return ((f & ADD) && this.add.length)
-        || ((f & REM) && this.rem.length)
-        || ((f & MOD) && this.mod.length);
+    return (
+      (f & ADD && this.add.length) ||
+      (f & REM && this.rem.length) ||
+      (f & MOD && this.mod.length)
+    );
   },
 
   /**
@@ -278,7 +280,7 @@ Pulse.prototype = {
     if (fork) return this.fork(ALL).reflow();
 
     const len = this.add.length,
-          src = this.source && this.source.length;
+      src = this.source && this.source.length;
     if (src && src !== len) {
       this.mod = this.source;
       if (len) this.filter(MOD, filter(this, ADD));
@@ -308,7 +310,7 @@ Pulse.prototype = {
   modifies(_) {
     const hash = this.fields || (this.fields = {});
     if (isArray(_)) {
-      _.forEach(f => hash[f] = true);
+      _.forEach((f) => (hash[f] = true));
     } else {
       hash[_] = true;
     }
@@ -326,9 +328,12 @@ Pulse.prototype = {
    */
   modified(_, nomod) {
     const fields = this.fields;
-    return !((nomod || this.mod.length) && fields) ? false
-      : !arguments.length ? !!fields
-      : isArray(_) ? _.some(f => fields[f])
+    return !((nomod || this.mod.length) && fields)
+      ? false
+      : !arguments.length
+      ? !!fields
+      : isArray(_)
+      ? _.some((f) => fields[f])
       : fields[_];
   },
 
@@ -366,19 +371,19 @@ Pulse.prototype = {
   materialize(flags) {
     flags = flags || ALL;
     const p = this;
-    if ((flags & ADD) && p.addF) {
+    if (flags & ADD && p.addF) {
       p.add = materialize(p.add, p.addF);
       p.addF = null;
     }
-    if ((flags & REM) && p.remF) {
+    if (flags & REM && p.remF) {
       p.rem = materialize(p.rem, p.remF);
       p.remF = null;
     }
-    if ((flags & MOD) && p.modF) {
+    if (flags & MOD && p.modF) {
       p.mod = materialize(p.mod, p.modF);
       p.modF = null;
     }
-    if ((flags & SOURCE) && p.srcF) {
+    if (flags & SOURCE && p.srcF) {
       p.source = p.source.filter(p.srcF);
       p.srcF = null;
     }
@@ -394,7 +399,8 @@ Pulse.prototype = {
    * @return {Pulse} - Returns this pulse instance.
    */
   visit(flags, visitor) {
-    const p = this, v = visitor;
+    const p = this,
+      v = visitor;
 
     if (flags & SOURCE) {
       visitArray(p.source, p.srcF, v);
@@ -406,7 +412,7 @@ Pulse.prototype = {
     if (flags & MOD) visitArray(p.mod, p.modF, v);
 
     const src = p.source;
-    if ((flags & REFLOW) && src) {
+    if (flags & REFLOW && src) {
       const sum = p.add.length + p.mod.length;
       if (sum === src.length) {
         // do nothing
@@ -419,5 +425,5 @@ Pulse.prototype = {
     }
 
     return p;
-  }
+  },
 };

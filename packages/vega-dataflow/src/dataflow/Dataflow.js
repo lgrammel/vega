@@ -1,17 +1,17 @@
-import add from './add';
-import connect from './connect';
-import events from './events';
-import {ingest, parse, preload, request} from './load';
-import on from './on';
-import {rank, rerank} from './rank';
-import {enqueue, evaluate, getPulse, run, runAfter, runAsync} from './run';
-import {pulse, touch, update} from './update';
-import changeset from '../ChangeSet';
-import Heap from '../util/Heap';
-import UniqueList from '../util/UniqueList';
-import {defaultLocale} from 'vega-format';
-import {loader} from 'vega-loader';
-import {Error, id, logger} from 'vega-util';
+import add from "./add";
+import connect from "./connect";
+import events from "./events";
+import { ingest, parse, preload, request } from "./load";
+import on from "./on";
+import { rank, rerank } from "./rank";
+import { enqueue, evaluate, getPulse, run, runAfter, runAsync } from "./run";
+import { pulse, touch, update } from "./update";
+import changeset from "../ChangeSet";
+import Heap from "../util/Heap";
+import UniqueList from "../util/UniqueList";
+import { defaultLocale } from "vega-format";
+import { loader } from "vega-loader";
+import { Error, id, logger } from "vega-util";
 
 /**
  * A dataflow graph for reactive processing of data streams.
@@ -39,13 +39,12 @@ export default function Dataflow() {
 }
 
 function logMethod(method) {
-  return function() {
+  return function () {
     return this._log[method].apply(this, arguments);
   };
 }
 
 Dataflow.prototype = {
-
   /**
    * The current timestamp of this dataflow. This value reflects the
    * timestamp of the previous dataflow run. The dataflow is initialized
@@ -119,28 +118,28 @@ Dataflow.prototype = {
    * output. The message will only be logged if the current log level is high
    * enough to permit error messages.
    */
-  error: logMethod('error'),
+  error: logMethod("error"),
 
   /**
    * Logs a warning message. By default, logged messages are written to console
    * output. The message will only be logged if the current log level is high
    * enough to permit warning messages.
    */
-  warn: logMethod('warn'),
+  warn: logMethod("warn"),
 
   /**
    * Logs a information message. By default, logged messages are written to
    * console output. The message will only be logged if the current log level is
    * high enough to permit information messages.
    */
-  info: logMethod('info'),
+  info: logMethod("info"),
 
   /**
    * Logs a debug message. By default, logged messages are written to console
    * output. The message will only be logged if the current log level is high
    * enough to permit debug messages.
    */
-  debug: logMethod('debug'),
+  debug: logMethod("debug"),
 
   /**
    * Get or set the current log level. If an argument is provided, it
@@ -148,7 +147,7 @@ Dataflow.prototype = {
    * @param {number} [level] - Should be one of None, Warn, Info
    * @return {number} - The current log level.
    */
-  logLevel: logMethod('level'),
+  logLevel: logMethod("level"),
 
   /**
    * Empty entry threshold for garbage cleaning. Map data structures will
@@ -184,5 +183,5 @@ Dataflow.prototype = {
   runAsync,
   runAfter,
   _enqueue: enqueue,
-  _getPulse: getPulse
+  _getPulse: getPulse,
 };

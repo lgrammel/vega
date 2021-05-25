@@ -1,20 +1,20 @@
-import parseTransform from './transform';
-import parseTrigger from './trigger';
-import {Collect, Load, Relay, Sieve} from '../transforms';
-import {hasSignal, isSignal, ref} from '../util';
-import {array} from 'vega-util';
+import parseTransform from "./transform";
+import parseTrigger from "./trigger";
+import { Collect, Load, Relay, Sieve } from "../transforms";
+import { hasSignal, isSignal, ref } from "../util";
+import { array } from "vega-util";
 
 export default function parseData(data, scope) {
   const transforms = [];
 
   if (data.transform) {
-    data.transform.forEach(tx => {
+    data.transform.forEach((tx) => {
       transforms.push(parseTransform(tx, scope));
     });
   }
 
   if (data.on) {
-    data.on.forEach(on => {
+    data.on.forEach((on) => {
       parseTrigger(on, scope, data.name);
     });
   }
@@ -28,50 +28,59 @@ export default function parseData(data, scope) {
 function analyze(data, scope, ops) {
   const output = [];
   let source = null,
-      modify = false,
-      generate = false,
-      upstream, i, n, t, m;
+    modify = false,
+    generate = false,
+    upstream,
+    i,
+    n,
+    t,
+    m;
 
   if (data.values) {
     // hard-wired input data set
     if (isSignal(data.values) || hasSignal(data.format)) {
       // if either values is signal or format has signal, use dynamic loader
       output.push(load(scope, data));
-      output.push(source = collect());
+      output.push((source = collect()));
     } else {
       // otherwise, ingest upon dataflow init
-      output.push(source = collect({
-        $ingest: data.values,
-        $format: data.format
-      }));
+      output.push(
+        (source = collect({
+          $ingest: data.values,
+          $format: data.format,
+        }))
+      );
     }
   } else if (data.url) {
     // load data from external source
     if (hasSignal(data.url) || hasSignal(data.format)) {
       // if either url or format has signal, use dynamic loader
       output.push(load(scope, data));
-      output.push(source = collect());
+      output.push((source = collect()));
     } else {
       // otherwise, request load upon dataflow init
-      output.push(source = collect({
-        $request: data.url,
-        $format: data.format
-      }));
+      output.push(
+        (source = collect({
+          $request: data.url,
+          $format: data.format,
+        }))
+      );
     }
   } else if (data.source) {
     // derives from one or more other data sets
-    source = upstream = array(data.source)
-      .map(d => ref(scope.getData(d).output));
+    source = upstream = array(data.source).map((d) =>
+      ref(scope.getData(d).output)
+    );
     output.push(null); // populate later
   }
 
   // scan data transforms, add collectors as needed
-  for (i=0, n=ops.length; i<n; ++i) {
+  for (i = 0, n = ops.length; i < n; ++i) {
     t = ops[i];
     m = t.metadata;
 
     if (!source && !m.source) {
-      output.push(source = collect());
+      output.push((source = collect()));
     }
     output.push(t);
 
@@ -86,7 +95,7 @@ function analyze(data, scope, ops) {
     n = upstream.length - 1;
     output[0] = Relay({
       derive: modify,
-      pulse: n ? upstream : upstream[0]
+      pulse: n ? upstream : upstream[0],
     });
     if (modify || n) {
       // collect derived and multi-pulse tuples
@@ -101,15 +110,15 @@ function analyze(data, scope, ops) {
 
 function collect(values) {
   const s = Collect({}, values);
-  s.metadata = {source: true};
+  s.metadata = { source: true };
   return s;
 }
 
 function load(scope, data) {
   return Load({
-    url:    data.url ? scope.property(data.url) : undefined,
-    async:  data.async ? scope.property(data.async) : undefined,
+    url: data.url ? scope.property(data.url) : undefined,
+    async: data.async ? scope.property(data.async) : undefined,
     values: data.values ? scope.property(data.values) : undefined,
-    format: scope.objectProperty(data.format)
+    format: scope.objectProperty(data.format),
   });
 }

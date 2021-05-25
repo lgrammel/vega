@@ -1,57 +1,60 @@
-import {hasCornerRadius, rectangle} from '../path/shapes';
-import boundStroke from '../bound/boundStroke';
-import {intersectRect} from '../util/intersect';
-import value from '../util/value';
-import {pickVisit, visit} from '../util/visit';
-import blend from '../util/canvas/blend';
-import {clipGroup} from '../util/canvas/clip';
-import fill from '../util/canvas/fill';
-import stroke from '../util/canvas/stroke';
-import {hitPath} from '../util/canvas/pick';
-import clip from '../util/svg/clip';
-import {translateItem} from '../util/svg/transform';
+import { hasCornerRadius, rectangle } from "../path/shapes";
+import boundStroke from "../bound/boundStroke";
+import { intersectRect } from "../util/intersect";
+import value from "../util/value";
+import { pickVisit, visit } from "../util/visit";
+import blend from "../util/canvas/blend";
+import { clipGroup } from "../util/canvas/clip";
+import fill from "../util/canvas/fill";
+import stroke from "../util/canvas/stroke";
+import { hitPath } from "../util/canvas/pick";
+import clip from "../util/svg/clip";
+import { translateItem } from "../util/svg/transform";
 
 function offset(item) {
   const sw = value(item.strokeWidth, 1);
-  return item.strokeOffset != null ? item.strokeOffset
-    : item.stroke && sw > 0.5 && sw < 1.5 ? 0.5 - Math.abs(sw - 1)
+  return item.strokeOffset != null
+    ? item.strokeOffset
+    : item.stroke && sw > 0.5 && sw < 1.5
+    ? 0.5 - Math.abs(sw - 1)
     : 0;
 }
 
 function attr(emit, item) {
-  emit('transform', translateItem(item));
+  emit("transform", translateItem(item));
 }
 
 function emitRectangle(emit, item) {
   const off = offset(item);
-  emit('d', rectangle(null, item, off, off));
+  emit("d", rectangle(null, item, off, off));
 }
 
 function background(emit, item) {
-  emit('class', 'background');
-  emit('aria-hidden', true);
+  emit("class", "background");
+  emit("aria-hidden", true);
   emitRectangle(emit, item);
 }
 
 function foreground(emit, item) {
-  emit('class', 'foreground');
-  emit('aria-hidden', true);
+  emit("class", "foreground");
+  emit("aria-hidden", true);
   if (item.strokeForeground) {
     emitRectangle(emit, item);
   } else {
-    emit('d', '');
+    emit("d", "");
   }
 }
 
 function content(emit, item, renderer) {
   const url = item.clip ? clip(renderer, item, item) : null;
-  emit('clip-path', url);
+  emit("clip-path", url);
 }
 
 function bound(bounds, group) {
   if (!group.clip && group.items) {
-    const items = group.items, m = items.length;
-    for (let j=0; j<m; ++j) {
+    const items = group.items,
+      m = items.length;
+    for (let j = 0; j < m; ++j) {
       bounds.union(items[j].bounds);
     }
   }
@@ -76,11 +79,11 @@ const hitForeground = hitPath(rectanglePath, false);
 const hitCorner = hitPath(rectanglePath, true);
 
 function draw(context, scene, bounds) {
-  visit(scene, group => {
+  visit(scene, (group) => {
     const gx = group.x || 0,
-          gy = group.y || 0,
-          fore = group.strokeForeground,
-          opacity = group.opacity == null ? 1 : group.opacity;
+      gy = group.y || 0,
+      fore = group.strokeForeground,
+      opacity = group.opacity == null ? 1 : group.opacity;
 
     // draw group background
     if ((group.stroke || group.fill) && opacity) {
@@ -101,7 +104,7 @@ function draw(context, scene, bounds) {
     if (bounds) bounds.translate(-gx, -gy);
 
     // draw group contents
-    visit(group, item => {
+    visit(group, (item) => {
       this.draw(context, item, bounds);
     });
 
@@ -121,14 +124,14 @@ function draw(context, scene, bounds) {
 }
 
 function pick(context, scene, x, y, gx, gy) {
-  if (scene.bounds && !scene.bounds.contains(gx, gy) || !scene.items) {
+  if ((scene.bounds && !scene.bounds.contains(gx, gy)) || !scene.items) {
     return null;
   }
 
   const cx = x * context.pixelRatio,
-        cy = y * context.pixelRatio;
+    cy = y * context.pixelRatio;
 
-  return pickVisit(scene, group => {
+  return pickVisit(scene, (group) => {
     let hit, dx, dy;
 
     // first hit test bounding box
@@ -139,8 +142,8 @@ function pick(context, scene, x, y, gx, gy) {
     dx = group.x || 0;
     dy = group.y || 0;
     const dw = dx + (group.width || 0),
-          dh = dy + (group.height || 0),
-          c = group.clip;
+      dh = dy + (group.height || 0),
+      c = group.clip;
     if (c && (gx < dx || gx > dw || gy < dy || gy > dh)) return;
 
     // adjust coordinate system
@@ -156,24 +159,26 @@ function pick(context, scene, x, y, gx, gy) {
     }
 
     const fore = group.strokeForeground,
-          ix = scene.interactive !== false;
+      ix = scene.interactive !== false;
 
     // hit test against group foreground
-    if (ix && fore && group.stroke
-        && hitForeground(context, group, cx, cy)) {
+    if (ix && fore && group.stroke && hitForeground(context, group, cx, cy)) {
       context.restore();
       return group;
     }
 
     // hit test against contained marks
-    hit = pickVisit(group, mark => pickMark(mark, dx, dy)
-      ? this.pick(mark, x, y, dx, dy)
-      : null
+    hit = pickVisit(group, (mark) =>
+      pickMark(mark, dx, dy) ? this.pick(mark, x, y, dx, dy) : null
     );
 
     // hit test against group background
-    if (!hit && ix && (group.fill || (!fore && group.stroke))
-        && hitBackground(context, group, cx, cy)) {
+    if (
+      !hit &&
+      ix &&
+      (group.fill || (!fore && group.stroke)) &&
+      hitBackground(context, group, cx, cy)
+    ) {
       hit = group;
     }
 
@@ -184,20 +189,23 @@ function pick(context, scene, x, y, gx, gy) {
 }
 
 function pickMark(mark, x, y) {
-  return (mark.interactive !== false || mark.marktype === 'group')
-    && mark.bounds && mark.bounds.contains(x, y);
+  return (
+    (mark.interactive !== false || mark.marktype === "group") &&
+    mark.bounds &&
+    mark.bounds.contains(x, y)
+  );
 }
 
 export default {
-  type:       'group',
-  tag:        'g',
-  nested:     false,
-  attr:       attr,
-  bound:      bound,
-  draw:       draw,
-  pick:       pick,
-  isect:      intersectRect,
-  content:    content,
+  type: "group",
+  tag: "g",
+  nested: false,
+  attr: attr,
+  bound: bound,
+  draw: draw,
+  pick: pick,
+  isect: intersectRect,
+  content: content,
   background: background,
-  foreground: foreground
+  foreground: foreground,
 };

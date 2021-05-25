@@ -1,8 +1,8 @@
-import {random} from './random';
+import { random } from "./random";
 
 export function sampleUniform(min, max) {
   if (max == null) {
-    max = (min == null ? 1 : min);
+    max = min == null ? 1 : min;
     min = 0;
   }
   return min + (max - min) * random();
@@ -10,15 +10,15 @@ export function sampleUniform(min, max) {
 
 export function densityUniform(value, min, max) {
   if (max == null) {
-    max = (min == null ? 1 : min);
+    max = min == null ? 1 : min;
     min = 0;
   }
-  return (value >= min && value <= max) ? 1 / (max - min) : 0;
+  return value >= min && value <= max ? 1 / (max - min) : 0;
 }
 
 export function cumulativeUniform(value, min, max) {
   if (max == null) {
-    max = (min == null ? 1 : min);
+    max = min == null ? 1 : min;
     min = 0;
   }
   return value < min ? 0 : value > max ? 1 : (value - min) / (max - min);
@@ -26,13 +26,13 @@ export function cumulativeUniform(value, min, max) {
 
 export function quantileUniform(p, min, max) {
   if (max == null) {
-    max = (min == null ? 1 : min);
+    max = min == null ? 1 : min;
     min = 0;
   }
-  return (p >= 0 && p <= 1) ? min + p * (max - min) : NaN;
+  return p >= 0 && p <= 1 ? min + p * (max - min) : NaN;
 }
 
-export default function(min, max) {
+export default function (min, max) {
   let a, b;
 
   const dist = {
@@ -53,13 +53,13 @@ export default function(min, max) {
       }
     },
     sample: () => sampleUniform(a, b),
-    pdf: value => densityUniform(value, a, b),
-    cdf: value => cumulativeUniform(value, a, b),
-    icdf: p => quantileUniform(p, a, b)
+    pdf: (value) => densityUniform(value, a, b),
+    cdf: (value) => cumulativeUniform(value, a, b),
+    icdf: (p) => quantileUniform(p, a, b),
   };
 
   if (max == null) {
-    max = (min == null ? 1 : min);
+    max = min == null ? 1 : min;
     min = 0;
   }
   return dist.min(min).max(max);

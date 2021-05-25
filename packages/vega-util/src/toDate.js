@@ -1,10 +1,9 @@
-import isDate from './isDate';
-import isNumber from './isNumber';
+import isDate from "./isDate";
+import isNumber from "./isNumber";
 
-const defaultParser = _ =>
-  isNumber(_) ? _ : isDate(_) ? _ : Date.parse(_);
+const defaultParser = (_) => (isNumber(_) ? _ : isDate(_) ? _ : Date.parse(_));
 
-export default function(_, parser) {
+export default function (_, parser) {
   parser = parser || defaultParser;
-  return _ == null || _ === '' ? null : parser(_);
+  return _ == null || _ === "" ? null : parser(_);
 }

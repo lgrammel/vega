@@ -1,9 +1,9 @@
 /**
  * Parse a serialized dataflow specification.
  */
-export default function(spec) {
+export default function (spec) {
   const ctx = this,
-        operators = spec.operators || [];
+    operators = spec.operators || [];
 
   // parse background
   if (spec.background) {
@@ -21,16 +21,16 @@ export default function(spec) {
   }
 
   // parse operators
-  operators.forEach(entry => ctx.parseOperator(entry));
+  operators.forEach((entry) => ctx.parseOperator(entry));
 
   // parse operator parameters
-  operators.forEach(entry => ctx.parseOperatorParameters(entry));
+  operators.forEach((entry) => ctx.parseOperatorParameters(entry));
 
   // parse streams
-  (spec.streams || []).forEach(entry => ctx.parseStream(entry));
+  (spec.streams || []).forEach((entry) => ctx.parseStream(entry));
 
   // parse updates
-  (spec.updates || []).forEach(entry => ctx.parseUpdate(entry));
+  (spec.updates || []).forEach((entry) => ctx.parseUpdate(entry));
 
   return ctx.resolve();
 }

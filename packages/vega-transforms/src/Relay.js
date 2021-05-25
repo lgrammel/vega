@@ -1,5 +1,5 @@
-import {Transform, derive, tupleid} from 'vega-dataflow';
-import {inherits} from 'vega-util';
+import { Transform, derive, tupleid } from "vega-dataflow";
+import { inherits } from "vega-util";
 
 /**
  * Relays a data stream between data processing pipelines.
@@ -29,19 +29,19 @@ inherits(Relay, Transform, {
     if (_.derive) {
       out = pulse.fork(pulse.NO_SOURCE);
 
-      pulse.visit(pulse.REM, t => {
+      pulse.visit(pulse.REM, (t) => {
         const id = tupleid(t);
         out.rem.push(lut[id]);
         lut[id] = null;
       });
 
-      pulse.visit(pulse.ADD, t => {
+      pulse.visit(pulse.ADD, (t) => {
         const dt = derive(t);
         lut[tupleid(t)] = dt;
         out.add.push(dt);
       });
 
-      pulse.visit(pulse.MOD, t => {
+      pulse.visit(pulse.MOD, (t) => {
         const dt = lut[tupleid(t)];
         for (const k in t) {
           dt[k] = t[k];
@@ -54,5 +54,5 @@ inherits(Relay, Transform, {
     }
 
     return out;
-  }
+  },
 });

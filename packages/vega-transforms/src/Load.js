@@ -1,5 +1,5 @@
-import {Transform, ingest} from 'vega-dataflow';
-import {array, inherits} from 'vega-util';
+import { Transform, ingest } from "vega-dataflow";
+import { array, inherits } from "vega-util";
 
 /**
  * Load and parse data from an external source. Marshalls parameter
@@ -30,22 +30,24 @@ inherits(Load, Transform, {
       return output(this, pulse, df.parse(_.values, _.format));
     } else if (_.async) {
       // return promise for non-blocking async loading
-      const p = df.request(_.url, _.format).then(res => {
+      const p = df.request(_.url, _.format).then((res) => {
         this._pending = array(res.data);
-        return df => df.touch(this);
+        return (df) => df.touch(this);
       });
-      return {async: p};
+      return { async: p };
     } else {
       // return promise for synchronous loading
-      return df.request(_.url, _.format)
-        .then(res => output(this, pulse, array(res.data)));
+      return df
+        .request(_.url, _.format)
+        .then((res) => output(this, pulse, array(res.data)));
     }
-  }
+  },
 });
 
 function stop(_) {
-  return _.modified('async') && !(
-    _.modified('values') || _.modified('url') || _.modified('format')
+  return (
+    _.modified("async") &&
+    !(_.modified("values") || _.modified("url") || _.modified("format"))
   );
 }
 

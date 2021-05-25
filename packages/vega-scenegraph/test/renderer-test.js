@@ -1,15 +1,15 @@
-var tape = require('tape'),
-    vega = require('../'),
-    Renderer = vega.Renderer;
+var tape = require("tape"),
+  vega = require("../"),
+  Renderer = vega.Renderer;
 
-tape('Renderer should support argument free constructor', t => {
+tape("Renderer should support argument free constructor", (t) => {
   const r = new Renderer();
   t.equal(r._el, null);
   t.equal(r._bgcolor, null);
   t.end();
 });
 
-tape('Renderer should initialize', t => {
+tape("Renderer should initialize", (t) => {
   const el = {};
   const o = [1, 1];
   const r = new Renderer();
@@ -23,7 +23,7 @@ tape('Renderer should initialize', t => {
   t.end();
 });
 
-tape('Renderer should resize', t => {
+tape("Renderer should resize", (t) => {
   const o = [10, 10];
   const r = new Renderer();
   const s = r.resize(100, 200, o);
@@ -34,21 +34,21 @@ tape('Renderer should resize', t => {
   t.end();
 });
 
-tape('Renderer should set background color', t => {
+tape("Renderer should set background color", (t) => {
   const r = new Renderer();
-  const s = r.background('steelblue');
+  const s = r.background("steelblue");
   t.equal(s, r);
-  t.equal(r._bgcolor, 'steelblue');
+  t.equal(r._bgcolor, "steelblue");
   t.end();
 });
 
-tape('Renderer should use zero-padding if none is provided', t => {
+tape("Renderer should use zero-padding if none is provided", (t) => {
   const r = new Renderer().resize(100, 200, null);
   t.deepEqual(r._origin, [0, 0]);
   t.end();
 });
 
-tape('Renderer should return self from render method', t => {
+tape("Renderer should return self from render method", (t) => {
   const r = new Renderer();
   const s = r.render();
   t.equal(s, r);

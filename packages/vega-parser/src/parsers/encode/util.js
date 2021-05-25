@@ -1,21 +1,19 @@
-import {extend, hasOwnProperty, isArray, isObject} from 'vega-util';
+import { extend, hasOwnProperty, isArray, isObject } from "vega-util";
 
-export const encoder = _ => isObject(_) && !isArray(_)
-  ? extend({}, _)
-  : {value: _};
+export const encoder = (_) =>
+  isObject(_) && !isArray(_) ? extend({}, _) : { value: _ };
 
 export function addEncode(object, name, value, set) {
   if (value != null) {
-    const isEncoder = (
+    const isEncoder =
       (isObject(value) && !isArray(value)) ||
-      (isArray(value) && value.length && isObject(value[0]))
-    );
+      (isArray(value) && value.length && isObject(value[0]));
 
     // Always assign signal to update, even if the signal is from the enter block
     if (isEncoder) {
       object.update[name] = value;
     } else {
-      object[set || 'enter'][name] = {value: value};
+      object[set || "enter"][name] = { value: value };
     }
     return 1;
   } else {
@@ -28,7 +26,7 @@ export function addEncoders(object, enter, update) {
     addEncode(object, name, enter[name]);
   }
   for (const name in update) {
-    addEncode(object, name, update[name], 'update');
+    addEncode(object, name, update[name], "update");
   }
 }
 
@@ -41,8 +39,9 @@ export function extendEncode(encode, extra, skip) {
 }
 
 export function has(key, encode) {
-  return encode && (
-    (encode.enter && encode.enter[key]) ||
-    (encode.update && encode.update[key])
+  return (
+    encode &&
+    ((encode.enter && encode.enter[key]) ||
+      (encode.update && encode.update[key]))
   );
 }

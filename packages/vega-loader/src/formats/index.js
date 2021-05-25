@@ -1,14 +1,14 @@
-import {delimitedFormat, default as dsv} from './dsv';
-import json from './json';
-import topojson from './topojson';
-import {hasOwnProperty} from 'vega-util';
+import { delimitedFormat, default as dsv } from "./dsv";
+import json from "./json";
+import topojson from "./topojson";
+import { hasOwnProperty } from "vega-util";
 
 export const format = {
   dsv: dsv,
-  csv: delimitedFormat(','),
-  tsv: delimitedFormat('\t'),
+  csv: delimitedFormat(","),
+  tsv: delimitedFormat("\t"),
   json: json,
-  topojson: topojson
+  topojson: topojson,
 };
 
 export function formats(name, reader) {
@@ -22,5 +22,5 @@ export function formats(name, reader) {
 
 export function responseType(type) {
   const f = formats(type);
-  return f && f.responseType || 'text';
+  return (f && f.responseType) || "text";
 }

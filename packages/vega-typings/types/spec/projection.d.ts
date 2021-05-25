@@ -1,25 +1,25 @@
-import { SignalRef, Vector2, Vector3 } from '.';
+import { SignalRef, Vector2, Vector3 } from ".";
 
 export type GeoJsonFeature = any; // TODO
 export type GeoJsonFeatureCollection = any; // TODO
 export type Fit = GeoJsonFeature | GeoJsonFeatureCollection | GeoJsonFeature[];
 export type ProjectionType =
-  | 'albers'
-  | 'albersUsa'
-  | 'azimuthalEqualArea'
-  | 'azimuthalEquidistant'
-  | 'conicConformal'
-  | 'conicEqualArea'
-  | 'conicEquidistant'
-  | 'equalEarth'
-  | 'equirectangular'
-  | 'gnomonic'
-  | 'identity'
-  | 'mercator'
-  | 'naturalEarth1'
-  | 'orthographic'
-  | 'stereographic'
-  | 'transverseMercator';
+  | "albers"
+  | "albersUsa"
+  | "azimuthalEqualArea"
+  | "azimuthalEquidistant"
+  | "conicConformal"
+  | "conicEqualArea"
+  | "conicEquidistant"
+  | "equalEarth"
+  | "equirectangular"
+  | "gnomonic"
+  | "identity"
+  | "mercator"
+  | "naturalEarth1"
+  | "orthographic"
+  | "stereographic"
+  | "transverseMercator";
 export interface BaseProjection {
   /*
    * The cartographic projection to use. This value is case-insensitive, for example `"albers"` and `"Albers"` indicate the same projection type.
@@ -60,7 +60,10 @@ export interface BaseProjection {
    *
    * __Default value:__ `[0, 0, 0]`
    */
-  rotate?: Vector2<number | SignalRef> | Vector3<number | SignalRef> | SignalRef;
+  rotate?:
+    | Vector2<number | SignalRef>
+    | Vector3<number | SignalRef>
+    | SignalRef;
 
   /**
    * For conic projections, the [two standard parallels](https://en.wikipedia.org/wiki/Map_projection#Conic) that define the map layout. The default depends on the specific conic projection used.

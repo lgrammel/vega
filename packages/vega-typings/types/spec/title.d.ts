@@ -1,5 +1,10 @@
-import { GroupEncodeEntry, GuideEncodeEntry, SignalRef, TextEncodeEntry } from '.';
-import { Encode, Text } from './encode';
+import {
+  GroupEncodeEntry,
+  GuideEncodeEntry,
+  SignalRef,
+  TextEncodeEntry,
+} from ".";
+import { Encode, Text } from "./encode";
 import {
   AlignValue,
   AnchorValue,
@@ -10,11 +15,11 @@ import {
   NumberValue,
   StringValue,
   TextBaselineValue,
-} from './values';
+} from "./values";
 
-export type TitleOrient = 'none' | 'left' | 'right' | 'top' | 'bottom';
-export type TitleAnchor = null | 'start' | 'middle' | 'end';
-export type TitleFrame = 'bounds' | 'group';
+export type TitleOrient = "none" | "left" | "right" | "top" | "bottom";
+export type TitleAnchor = null | "start" | "middle" | "end";
+export type TitleFrame = "bounds" | "group";
 
 export interface Title extends BaseTitle {
   /**

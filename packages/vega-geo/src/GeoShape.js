@@ -1,6 +1,6 @@
-import {Transform} from 'vega-dataflow';
-import {getProjectionPath} from 'vega-projection';
-import {field, inherits} from 'vega-util';
+import { Transform } from "vega-dataflow";
+import { getProjectionPath } from "vega-projection";
+import { field, inherits } from "vega-util";
 
 /**
  * Annotate items with a geopath shape generator.
@@ -18,50 +18,51 @@ export default function GeoShape(params) {
 }
 
 GeoShape.Definition = {
-  'type': 'GeoShape',
-  'metadata': {'modifies': true, 'nomod': true},
-  'params': [
-    { 'name': 'projection', 'type': 'projection' },
-    { 'name': 'field', 'type': 'field', 'default': 'datum' },
-    { 'name': 'pointRadius', 'type': 'number', 'expr': true },
-    { 'name': 'as', 'type': 'string', 'default': 'shape' }
-  ]
+  type: "GeoShape",
+  metadata: { modifies: true, nomod: true },
+  params: [
+    { name: "projection", type: "projection" },
+    { name: "field", type: "field", default: "datum" },
+    { name: "pointRadius", type: "number", expr: true },
+    { name: "as", type: "string", default: "shape" },
+  ],
 };
 
 inherits(GeoShape, Transform, {
   transform(_, pulse) {
     var out = pulse.fork(pulse.ALL),
-        shape = this.value,
-        as = _.as || 'shape',
-        flag = out.ADD;
+      shape = this.value,
+      as = _.as || "shape",
+      flag = out.ADD;
 
     if (!shape || _.modified()) {
       // parameters updated, reset and reflow
       this.value = shape = shapeGenerator(
         getProjectionPath(_.projection),
-        _.field || field('datum'),
+        _.field || field("datum"),
         _.pointRadius
       );
       out.materialize().reflow();
       flag = out.SOURCE;
     }
 
-    out.visit(flag, t => t[as] = shape);
+    out.visit(flag, (t) => (t[as] = shape));
 
     return out.modifies(as);
-  }
+  },
 });
 
 function shapeGenerator(path, field, pointRadius) {
-  const shape = pointRadius == null
-    ? _ => path(field(_))
-    : _ => {
-      var prev = path.pointRadius(),
-          value = path.pointRadius(pointRadius)(field(_));
-      path.pointRadius(prev);
-      return value;
-    };
-  shape.context = _ => {
+  const shape =
+    pointRadius == null
+      ? (_) => path(field(_))
+      : (_) => {
+          var prev = path.pointRadius(),
+            value = path.pointRadius(pointRadius)(field(_));
+          path.pointRadius(prev);
+          return value;
+        };
+  shape.context = (_) => {
     path.context(_);
     return shape;
   };

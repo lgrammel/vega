@@ -1,8 +1,8 @@
-import { SignalRef } from '.';
+import { SignalRef } from ".";
 
-export type LayoutAlign = 'all' | 'each' | 'none';
-export type LayoutTitleAnchor = 'start' | 'end';
-export type LayoutBounds = 'full' | 'flush' | SignalRef;
+export type LayoutAlign = "all" | "each" | "none";
+export type LayoutTitleAnchor = "start" | "end";
+export type LayoutBounds = "full" | "flush" | SignalRef;
 export type LayoutOffset =
   | number
   | SignalRef

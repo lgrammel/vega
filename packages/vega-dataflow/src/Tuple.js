@@ -1,4 +1,4 @@
-const TUPLE_ID_KEY = Symbol('vega_id');
+const TUPLE_ID_KEY = Symbol("vega_id");
 let TUPLE_ID = 1;
 
 /**
@@ -47,7 +47,7 @@ function setid(t, id) {
  * @return {object} The ingested data tuple.
  */
 export function ingest(datum) {
-  const t = (datum === Object(datum)) ? datum : {data: datum};
+  const t = datum === Object(datum) ? datum : { data: datum };
   return tupleid(t) ? t : setid(t, TUPLE_ID++);
 }
 
@@ -89,7 +89,9 @@ export function replace(t, d) {
  * @return {function} An augmented comparator function.
  */
 export function stableCompare(cmp, f) {
-  return !cmp ? null
-    : f ? (a, b) => cmp(a, b) || (tupleid(f(a)) - tupleid(f(b)))
-    : (a, b) => cmp(a, b) || (tupleid(a) - tupleid(b));
+  return !cmp
+    ? null
+    : f
+    ? (a, b) => cmp(a, b) || tupleid(f(a)) - tupleid(f(b))
+    : (a, b) => cmp(a, b) || tupleid(a) - tupleid(b);
 }

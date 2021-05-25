@@ -3,22 +3,22 @@ import {
   randomLogNormal,
   randomMixture,
   randomNormal,
-  randomUniform
-} from 'vega-statistics';
+  randomUniform,
+} from "vega-statistics";
 
-import {error, hasOwnProperty} from 'vega-util';
+import { error, hasOwnProperty } from "vega-util";
 
 const Distributions = {
-  kde:       randomKDE,
-  mixture:   randomMixture,
-  normal:    randomNormal,
+  kde: randomKDE,
+  mixture: randomMixture,
+  normal: randomNormal,
   lognormal: randomLogNormal,
-  uniform:   randomUniform
+  uniform: randomUniform,
 };
 
-const DISTRIBUTIONS = 'distributions',
-      FUNCTION = 'function',
-      FIELD = 'field';
+const DISTRIBUTIONS = "distributions",
+  FUNCTION = "function",
+  FIELD = "field";
 
 /**
  * Parse a parameter object for a probability distribution.
@@ -34,7 +34,7 @@ const DISTRIBUTIONS = 'distributions',
 export default function parse(def, data) {
   const func = def[FUNCTION];
   if (!hasOwnProperty(Distributions, func)) {
-    error('Unknown distribution function: ' + func);
+    error("Unknown distribution function: " + func);
   }
 
   const d = Distributions[func]();
@@ -47,7 +47,7 @@ export default function parse(def, data) {
 
     // if distribution mixture, recurse to parse each definition
     else if (name === DISTRIBUTIONS) {
-      d[name](def[name].map(_ => parse(_, data)));
+      d[name](def[name].map((_) => parse(_, data)));
     }
 
     // otherwise, simply set the parameter

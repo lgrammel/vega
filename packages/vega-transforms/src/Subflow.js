@@ -1,5 +1,5 @@
-import {Operator} from 'vega-dataflow';
-import {inherits} from 'vega-util';
+import { Operator } from "vega-dataflow";
+import { inherits } from "vega-util";
 
 /**
  * Provides a bridge between a parent transform and a target subflow that
@@ -68,5 +68,5 @@ inherits(Subflow, Operator, {
   evaluate() {
     // assert: this.value.stamp === pulse.stamp
     return this.value;
-  }
+  },
 });

@@ -1,36 +1,33 @@
-import {ifOrient, ifX} from './axis-util';
-import {Bottom, GuideLabelStyle, GuideTitleStyle, Top} from './constants';
-import {isSignal} from '../../util';
-import {extend, hasOwnProperty} from 'vega-util';
+import { ifOrient, ifX } from "./axis-util";
+import { Bottom, GuideLabelStyle, GuideTitleStyle, Top } from "./constants";
+import { isSignal } from "../../util";
+import { extend, hasOwnProperty } from "vega-util";
 
 function fallback(prop, config, axisConfig, style) {
   let styleProp;
 
   if (config && hasOwnProperty(config, prop)) {
     return config[prop];
-  }
-  else if (hasOwnProperty(axisConfig, prop)) {
+  } else if (hasOwnProperty(axisConfig, prop)) {
     return axisConfig[prop];
-  }
-  else if (prop.startsWith('title')) {
+  } else if (prop.startsWith("title")) {
     switch (prop) {
-      case 'titleColor':
-        styleProp = 'fill';
+      case "titleColor":
+        styleProp = "fill";
         break;
-      case 'titleFont':
-      case 'titleFontSize':
-      case 'titleFontWeight':
+      case "titleFont":
+      case "titleFontSize":
+      case "titleFontWeight":
         styleProp = prop[5].toLowerCase() + prop.slice(6);
     }
     return style[GuideTitleStyle][styleProp];
-  }
-  else if (prop.startsWith('label')) {
+  } else if (prop.startsWith("label")) {
     switch (prop) {
-      case 'labelColor':
-        styleProp = 'fill';
+      case "labelColor":
+        styleProp = "fill";
         break;
-      case 'labelFont':
-      case 'labelFontSize':
+      case "labelFont":
+      case "labelFontSize":
         styleProp = prop[5].toLowerCase() + prop.slice(6);
     }
     return style[GuideLabelStyle][styleProp];
@@ -48,22 +45,24 @@ function keys(objects) {
   return Object.keys(map);
 }
 
-export default function(spec, scope) {
+export default function (spec, scope) {
   var config = scope.config,
-      style = config.style,
-      axis = config.axis,
-      band = scope.scaleType(spec.scale) === 'band' && config.axisBand,
-      orient = spec.orient,
-      xy, or, key;
+    style = config.style,
+    axis = config.axis,
+    band = scope.scaleType(spec.scale) === "band" && config.axisBand,
+    orient = spec.orient,
+    xy,
+    or,
+    key;
 
   if (isSignal(orient)) {
-    const xyKeys = keys([
-            config.axisX, config.axisY
-          ]),
-          orientKeys = keys([
-            config.axisTop, config.axisBottom,
-            config.axisLeft, config.axisRight
-          ]);
+    const xyKeys = keys([config.axisX, config.axisY]),
+      orientKeys = keys([
+        config.axisTop,
+        config.axisBottom,
+        config.axisLeft,
+        config.axisRight,
+      ]);
 
     xy = {};
     for (key of xyKeys) {
@@ -85,13 +84,11 @@ export default function(spec, scope) {
       );
     }
   } else {
-    xy = (orient === Top || orient === Bottom) ? config.axisX : config.axisY;
-    or = config['axis' + orient[0].toUpperCase() + orient.slice(1)];
+    xy = orient === Top || orient === Bottom ? config.axisX : config.axisY;
+    or = config["axis" + orient[0].toUpperCase() + orient.slice(1)];
   }
 
-  const result = (xy || or || band)
-    ? extend({}, axis, xy, or, band)
-    : axis;
+  const result = xy || or || band ? extend({}, axis, xy, or, band) : axis;
 
   return result;
 }

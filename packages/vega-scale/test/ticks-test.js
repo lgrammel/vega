@@ -1,12 +1,16 @@
-var tape = require('tape'),
-    validTicks = require('../').validTicks,
-    timeInterval = require('vega-time').timeInterval;
+var tape = require("tape"),
+  validTicks = require("../").validTicks,
+  timeInterval = require("vega-time").timeInterval;
 
-tape('validTicks uses count correctly', t => {
+tape("validTicks uses count correctly", (t) => {
   const data = [0, 1, 2, 3, 4, 5, 6, 7];
 
-  const identity = function(x) { return x; };
-  identity.range = function() { return [0, 10]; };
+  const identity = function (x) {
+    return x;
+  };
+  identity.range = function () {
+    return [0, 10];
+  };
 
   const t1 = validTicks(identity, data, 5);
   t.deepEqual(t1, [0, 2, 4, 6]);
@@ -20,7 +24,7 @@ tape('validTicks uses count correctly', t => {
   t.deepEqual(t3, [0, 7]);
 
   // validTicks ignores interval function
-  const t4 = validTicks(identity, data, timeInterval('hour'));
+  const t4 = validTicks(identity, data, timeInterval("hour"));
   t.deepEqual(t4, data);
 
   // single tick should pass through

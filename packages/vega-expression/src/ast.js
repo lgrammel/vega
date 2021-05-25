@@ -1,27 +1,27 @@
-export const RawCode = 'RawCode';
-export const Literal = 'Literal';
-export const Property = 'Property';
-export const Identifier = 'Identifier';
+export const RawCode = "RawCode";
+export const Literal = "Literal";
+export const Property = "Property";
+export const Identifier = "Identifier";
 
-export const ArrayExpression = 'ArrayExpression';
-export const BinaryExpression = 'BinaryExpression';
-export const CallExpression = 'CallExpression';
-export const ConditionalExpression = 'ConditionalExpression';
-export const LogicalExpression = 'LogicalExpression';
-export const MemberExpression = 'MemberExpression';
-export const ObjectExpression = 'ObjectExpression';
-export const UnaryExpression = 'UnaryExpression';
+export const ArrayExpression = "ArrayExpression";
+export const BinaryExpression = "BinaryExpression";
+export const CallExpression = "CallExpression";
+export const ConditionalExpression = "ConditionalExpression";
+export const LogicalExpression = "LogicalExpression";
+export const MemberExpression = "MemberExpression";
+export const ObjectExpression = "ObjectExpression";
+export const UnaryExpression = "UnaryExpression";
 
 export default function ASTNode(type) {
   this.type = type;
 }
 
-ASTNode.prototype.visit = function(visitor) {
+ASTNode.prototype.visit = function (visitor) {
   let c, i, n;
 
   if (visitor(this)) return 1;
 
-  for (c=children(this), i=0, n=c.length; i<n; ++i) {
+  for (c = children(this), i = 0, n = c.length; i < n; ++i) {
     if (c[i].visit(visitor)) return 1;
   }
 };

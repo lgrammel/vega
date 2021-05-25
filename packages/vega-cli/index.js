@@ -1,1 +1,1 @@
-module.exports = require('vega');
+module.exports = require("vega");

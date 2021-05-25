@@ -1,38 +1,38 @@
-import {Center, End, Left, Right, Start, Vertical} from './constants';
-import {value} from '../../util';
-import {isObject, stringValue} from 'vega-util';
+import { Center, End, Left, Right, Start, Vertical } from "./constants";
+import { value } from "../../util";
+import { isObject, stringValue } from "vega-util";
 
 export function lookup(spec, config) {
   const _ = (name, dflt) => value(spec[name], value(config[name], dflt));
 
-  _.isVertical = s => Vertical === value(
-    spec.direction,
-    config.direction || (s ? config.symbolDirection : config.gradientDirection)
-  );
+  _.isVertical = (s) =>
+    Vertical ===
+    value(
+      spec.direction,
+      config.direction ||
+        (s ? config.symbolDirection : config.gradientDirection)
+    );
 
-  _.gradientLength = () => value(
-    spec.gradientLength,
-    config.gradientLength || config.gradientWidth
-  );
+  _.gradientLength = () =>
+    value(spec.gradientLength, config.gradientLength || config.gradientWidth);
 
-  _.gradientThickness = () => value(
-    spec.gradientThickness,
-    config.gradientThickness || config.gradientHeight
-  );
+  _.gradientThickness = () =>
+    value(
+      spec.gradientThickness,
+      config.gradientThickness || config.gradientHeight
+    );
 
-  _.entryColumns = () => value(
-    spec.columns,
-    value(config.columns, +_.isVertical(true))
-  );
+  _.entryColumns = () =>
+    value(spec.columns, value(config.columns, +_.isVertical(true)));
 
   return _;
 }
 
 export function getEncoding(name, encode) {
-  const v = encode && (
-    (encode.update && encode.update[name]) ||
-    (encode.enter && encode.enter[name])
-  );
+  const v =
+    encode &&
+    ((encode.update && encode.update[name]) ||
+      (encode.enter && encode.enter[name]));
   return v && v.signal ? v : v ? v.value : null;
 }
 
@@ -52,22 +52,23 @@ export const alignExpr = anchorExpr(
 );
 
 export function tickBand(_) {
-  const v = _('tickBand');
-  let offset = _('tickOffset'),
-      band, extra;
+  const v = _("tickBand");
+  let offset = _("tickOffset"),
+    band,
+    extra;
 
   if (!v) {
     // if no tick band entry, fall back on other properties
-    band = _('bandPosition');
-    extra = _('tickExtra');
+    band = _("bandPosition");
+    extra = _("tickExtra");
   } else if (v.signal) {
     // if signal, augment code to interpret values
-    band = {signal: `(${v.signal}) === 'extent' ? 1 : 0.5`};
-    extra = {signal: `(${v.signal}) === 'extent'`};
+    band = { signal: `(${v.signal}) === 'extent' ? 1 : 0.5` };
+    extra = { signal: `(${v.signal}) === 'extent'` };
     if (!isObject(offset)) {
-      offset = {signal: `(${v.signal}) === 'extent' ? 0 : ${offset}`};
+      offset = { signal: `(${v.signal}) === 'extent' ? 0 : ${offset}` };
     }
-  } else if (v === 'extent') {
+  } else if (v === "extent") {
     // if constant, simply set values
     band = 1;
     extra = true;
@@ -77,12 +78,15 @@ export function tickBand(_) {
     extra = false;
   }
 
-  return {extra, band, offset};
+  return { extra, band, offset };
 }
 
 export function extendOffset(value, offset) {
-  return !offset ? value
-    : !value ? offset
-    : !isObject(value) ? { value, offset }
+  return !offset
+    ? value
+    : !value
+    ? offset
+    : !isObject(value)
+    ? { value, offset }
     : Object.assign({}, value, { offset: extendOffset(value.offset, offset) });
 }

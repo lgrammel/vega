@@ -1,5 +1,5 @@
-import {Transform} from 'vega-dataflow';
-import {falsy, inherits, isArray} from 'vega-util';
+import { Transform } from "vega-dataflow";
+import { falsy, inherits, isArray } from "vega-util";
 
 /**
  * Invokes encoding functions for visual items.
@@ -20,15 +20,15 @@ export default function Encode(params) {
 inherits(Encode, Transform, {
   transform(_, pulse) {
     var out = pulse.fork(pulse.ADD_REM),
-        fmod = _.mod || false,
-        encoders = _.encoders,
-        encode = pulse.encode;
+      fmod = _.mod || false,
+      encoders = _.encoders,
+      encode = pulse.encode;
 
     // if an array, the encode directive includes additional sets
     // that must be defined in order for the primary set to be invoked
     // e.g., only run the update set if the hover set is defined
     if (isArray(encode)) {
-      if (out.changed() || encode.every(e => encoders[e])) {
+      if (out.changed() || encode.every((e) => encoders[e])) {
         encode = encode[0];
         out.encode = null; // consume targeted encode directive
       } else {
@@ -37,37 +37,44 @@ inherits(Encode, Transform, {
     }
 
     // marshall encoder functions
-    var reenter = encode === 'enter',
-        update = encoders.update || falsy,
-        enter = encoders.enter || falsy,
-        exit = encoders.exit || falsy,
-        set = (encode && !reenter ? encoders[encode] : update) || falsy;
+    var reenter = encode === "enter",
+      update = encoders.update || falsy,
+      enter = encoders.enter || falsy,
+      exit = encoders.exit || falsy,
+      set = (encode && !reenter ? encoders[encode] : update) || falsy;
 
     if (pulse.changed(pulse.ADD)) {
-      pulse.visit(pulse.ADD, t => { enter(t, _); update(t, _); });
+      pulse.visit(pulse.ADD, (t) => {
+        enter(t, _);
+        update(t, _);
+      });
       out.modifies(enter.output);
       out.modifies(update.output);
       if (set !== falsy && set !== update) {
-        pulse.visit(pulse.ADD, t => { set(t, _); });
+        pulse.visit(pulse.ADD, (t) => {
+          set(t, _);
+        });
         out.modifies(set.output);
       }
     }
 
     if (pulse.changed(pulse.REM) && exit !== falsy) {
-      pulse.visit(pulse.REM, t => { exit(t, _); });
+      pulse.visit(pulse.REM, (t) => {
+        exit(t, _);
+      });
       out.modifies(exit.output);
     }
 
     if (reenter || set !== falsy) {
       const flag = pulse.MOD | (_.modified() ? pulse.REFLOW : 0);
       if (reenter) {
-        pulse.visit(flag, t => {
+        pulse.visit(flag, (t) => {
           const mod = enter(t, _) || fmod;
           if (set(t, _) || mod) out.mod.push(t);
         });
         if (out.mod.length) out.modifies(enter.output);
       } else {
-        pulse.visit(flag, t => {
+        pulse.visit(flag, (t) => {
           if (set(t, _) || fmod) out.mod.push(t);
         });
       }
@@ -75,5 +82,5 @@ inherits(Encode, Transform, {
     }
 
     return out.changed() ? out : pulse.StopPropagation;
-  }
+  },
 });

@@ -1,4 +1,4 @@
-import ResourceLoader from './ResourceLoader';
+import ResourceLoader from "./ResourceLoader";
 
 /**
  * Create a new Renderer instance.
@@ -97,7 +97,9 @@ Renderer.prototype = {
 
     // bind arguments into a render call, and cache it
     // this function may be subsequently called for async redraw
-    r._call = function() { r._render(scene); };
+    r._call = function () {
+      r._render(scene);
+    };
 
     // invoke the renderer
     r._call();
@@ -128,9 +130,7 @@ Renderer.prototype = {
    */
   renderAsync(scene) {
     const r = this.render(scene);
-    return this._ready
-      ? this._ready.then(() => r)
-      : Promise.resolve(r);
+    return this._ready ? this._ready.then(() => r) : Promise.resolve(r);
   },
 
   /**
@@ -143,16 +143,15 @@ Renderer.prototype = {
    */
   _load(method, uri) {
     var r = this,
-        p = r._loader[method](uri);
+      p = r._loader[method](uri);
 
     if (!r._ready) {
       // re-render the scene when loading completes
       const call = r._call;
-      r._ready = r._loader.ready()
-        .then(redraw => {
-          if (redraw) call();
-          r._ready = null;
-        });
+      r._ready = r._loader.ready().then((redraw) => {
+        if (redraw) call();
+        r._ready = null;
+      });
     }
 
     return p;
@@ -166,7 +165,7 @@ Renderer.prototype = {
    * @return {Promise} - A Promise that resolves to the sanitized URL.
    */
   sanitizeURL(uri) {
-    return this._load('sanitizeURL', uri);
+    return this._load("sanitizeURL", uri);
   },
 
   /**
@@ -177,6 +176,6 @@ Renderer.prototype = {
    * @return {Promise} - A Promise that resolves to the loaded Image.
    */
   loadImage(uri) {
-    return this._load('loadImage', uri);
-  }
+    return this._load("loadImage", uri);
+  },
 };

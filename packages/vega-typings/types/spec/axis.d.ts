@@ -5,9 +5,9 @@ import {
   SignalRef,
   TextEncodeEntry,
   TimeInterval,
-} from '.';
-import { Text } from './encode';
-import { TimeIntervalStep } from './scale';
+} from ".";
+import { Text } from "./encode";
+import { TimeIntervalStep } from "./scale";
 import {
   AlignValue,
   AnchorValue,
@@ -20,15 +20,15 @@ import {
   StringValue,
   StrokeCapValue,
   TextBaselineValue,
-} from './values';
+} from "./values";
 
-export type AxisOrient = 'top' | 'bottom' | 'left' | 'right';
+export type AxisOrient = "top" | "bottom" | "left" | "right";
 
-export type LabelOverlap = boolean | 'parity' | 'greedy';
+export type LabelOverlap = boolean | "parity" | "greedy";
 
 export type TickCount = number | TimeInterval | TimeIntervalStep | SignalRef;
 
-export type FormatType = 'number' | 'time' | 'utc';
+export type FormatType = "number" | "time" | "utc";
 
 export interface TimeFormatSpecifier {
   year?: string;
@@ -321,7 +321,7 @@ export interface BaseAxis {
   /**
    * For band scales, indicates if ticks and grid lines should be placed at the `"center"` of a band (default) or at the band `"extent"`s to indicate intervals
    */
-  tickBand?: 'center' | 'extent' | SignalRef;
+  tickBand?: "center" | "extent" | SignalRef;
 
   /**
    * The stroke cap for the tick lines' ending style. One of `"butt"`, `"round"` or `"square"`.

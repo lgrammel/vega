@@ -1,4 +1,4 @@
-export default function(item, encode, swap) {
+export default function (item, encode, swap) {
   let t;
 
   if (encode.x2) {

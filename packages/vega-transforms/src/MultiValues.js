@@ -1,5 +1,5 @@
-import {Operator} from 'vega-dataflow';
-import {inherits} from 'vega-util';
+import { Operator } from "vega-dataflow";
+import { inherits } from "vega-util";
 
 /**
  * Merge a collection of value arrays.
@@ -14,7 +14,7 @@ export default function MultiValues(params) {
 inherits(MultiValues, Operator);
 
 function update(_) {
-  return (this.value && !_.modified())
+  return this.value && !_.modified()
     ? this.value
     : _.values.reduce((data, _) => data.concat(_), []);
 }

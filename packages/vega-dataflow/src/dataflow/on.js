@@ -1,8 +1,8 @@
-import Operator from '../Operator';
-import {isChangeSet} from '../ChangeSet';
-import {constant, extend, isFunction} from 'vega-util';
+import Operator from "../Operator";
+import { isChangeSet } from "../ChangeSet";
+import { constant, extend, isFunction } from "vega-util";
 
-const SKIP = {skip: true};
+const SKIP = { skip: true };
 
 /**
  * Perform operator updates in response to events. Applies an
@@ -30,7 +30,7 @@ const SKIP = {skip: true};
  *   be re-evaluated even if its value has not changed.
  * @return {Dataflow}
  */
-export default function(source, target, update, params, options) {
+export default function (source, target, update, params, options) {
   const fn = source instanceof Operator ? onOperator : onStream;
   fn(this, source, target, update, params, options);
   return this;
@@ -43,16 +43,17 @@ function onStream(df, stream, target, update, params, options) {
   if (!isFunction(target)) target = constant(target);
 
   if (update === undefined) {
-    func = e => df.touch(target(e));
+    func = (e) => df.touch(target(e));
   } else if (isFunction(update)) {
     op = new Operator(null, update, params, false);
-    func = e => {
+    func = (e) => {
       op.evaluate(e);
-      const t = target(e), v = op.value;
+      const t = target(e),
+        v = op.value;
       isChangeSet(v) ? df.pulse(t, v, options) : df.update(t, v, opt);
     };
   } else {
-    func = e => df.update(target(e), update, opt);
+    func = (e) => df.update(target(e), update, opt);
   }
 
   stream.apply(func);
@@ -63,16 +64,16 @@ function onOperator(df, source, target, update, params, options) {
     source.targets().add(target);
   } else {
     const opt = options || {},
-          op = new Operator(null, updater(target, update), params, false);
+      op = new Operator(null, updater(target, update), params, false);
     op.modified(opt.force);
-    op.rank = source.rank;       // immediately follow source
-    source.targets().add(op);    // add dependency
+    op.rank = source.rank; // immediately follow source
+    source.targets().add(op); // add dependency
 
     if (target) {
-      op.skip(true);             // skip first invocation
-      op.value = target.value;   // initialize value
-      op.targets().add(target);  // chain dependencies
-      df.connect(target, [op]);  // rerank as needed, #1672
+      op.skip(true); // skip first invocation
+      op.value = target.value; // initialize value
+      op.targets().add(target); // chain dependencies
+      df.connect(target, [op]); // rerank as needed, #1672
     }
   }
 }
@@ -80,7 +81,7 @@ function onOperator(df, source, target, update, params, options) {
 function updater(target, update) {
   update = isFunction(update) ? update : constant(update);
   return target
-    ? function(_, pulse) {
+    ? function (_, pulse) {
         const value = update(_, pulse);
         if (!target.skip()) {
           target.skip(value !== this.value).value = value;

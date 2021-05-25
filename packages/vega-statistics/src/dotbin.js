@@ -1,23 +1,24 @@
 // Dot density binning for dot plot construction.
 // Based on Leland Wilkinson, Dot Plots, The American Statistician, 1999.
 // https://www.cs.uic.edu/~wilkinson/Publications/dotplots.pdf
-export default function(array, step, smooth, f) {
-  f = f || (_ => _);
+export default function (array, step, smooth, f) {
+  f = f || ((_) => _);
 
   const n = array.length,
-        v = new Float64Array(n);
+    v = new Float64Array(n);
 
-  let i = 0, j = 1,
-      a = f(array[0]),
-      b = a,
-      w = a + step,
-      x;
+  let i = 0,
+    j = 1,
+    a = f(array[0]),
+    b = a,
+    w = a + step,
+    x;
 
-  for (; j<n; ++j) {
+  for (; j < n; ++j) {
     x = f(array[j]);
     if (x >= w) {
       b = (a + b) / 2;
-      for (; i<j; ++i) v[i] = b;
+      for (; i < j; ++i) v[i] = b;
       w = x + step;
       a = x;
     }
@@ -25,7 +26,7 @@ export default function(array, step, smooth, f) {
   }
 
   b = (a + b) / 2;
-  for (; i<j; ++i) v[i] = b;
+  for (; i < j; ++i) v[i] = b;
 
   return smooth ? smoothing(v, step + step / 4) : v;
 }
@@ -36,8 +37,9 @@ export default function(array, step, smooth, f) {
 function smoothing(v, thresh) {
   const n = v.length;
   let a = 0,
-      b = 1,
-      c, d;
+    b = 1,
+    c,
+    d;
 
   // get left stack
   while (v[a] === v[b]) ++b;
@@ -49,7 +51,7 @@ function smoothing(v, thresh) {
 
     // are stacks adjacent?
     // if so, compare sizes and swap as needed
-    if (v[b] - v[b-1] < thresh) {
+    if (v[b] - v[b - 1] < thresh) {
       d = b + ((a + c - b - b) >> 1);
       while (d < b) v[d++] = v[b];
       while (d > b) v[d--] = v[a];

@@ -1,5 +1,5 @@
-import {Transform, ingest, tupleid} from 'vega-dataflow';
-import {error, fastmap, inherits, isArray} from 'vega-util';
+import { Transform, ingest, tupleid } from "vega-dataflow";
+import { error, fastmap, inherits, isArray } from "vega-util";
 
 /**
  * Joins a set of data elements against a set of visual items.
@@ -17,18 +17,18 @@ function defaultItemCreate() {
 }
 
 function newMap(key) {
-  const map = fastmap().test(t => t.exit);
-  map.lookup = t => map.get(key(t));
+  const map = fastmap().test((t) => t.exit);
+  map.lookup = (t) => map.get(key(t));
   return map;
 }
 
 inherits(DataJoin, Transform, {
   transform(_, pulse) {
     var df = pulse.dataflow,
-        out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
-        item = _.item || defaultItemCreate,
-        key = _.key || tupleid,
-        map = this.value;
+      out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
+      item = _.item || defaultItemCreate,
+      key = _.key || tupleid,
+      map = this.value;
 
     // prevent transient (e.g., hover) requests from
     // cascading across marks derived from marks
@@ -36,8 +36,8 @@ inherits(DataJoin, Transform, {
       out.encode = null;
     }
 
-    if (map && (_.modified('key') || pulse.modified(key))) {
-      error('DataJoin does not support modified key function or fields.');
+    if (map && (_.modified("key") || pulse.modified(key))) {
+      error("DataJoin does not support modified key function or fields.");
     }
 
     if (!map) {
@@ -45,7 +45,7 @@ inherits(DataJoin, Transform, {
       this.value = map = newMap(key);
     }
 
-    pulse.visit(pulse.ADD, t => {
+    pulse.visit(pulse.ADD, (t) => {
       const k = key(t);
       let x = map.get(k);
 
@@ -66,9 +66,9 @@ inherits(DataJoin, Transform, {
       x.exit = false;
     });
 
-    pulse.visit(pulse.MOD, t => {
+    pulse.visit(pulse.MOD, (t) => {
       const k = key(t),
-            x = map.get(k);
+        x = map.get(k);
 
       if (x) {
         x.datum = t;
@@ -76,9 +76,9 @@ inherits(DataJoin, Transform, {
       }
     });
 
-    pulse.visit(pulse.REM, t => {
+    pulse.visit(pulse.REM, (t) => {
       const k = key(t),
-            x = map.get(k);
+        x = map.get(k);
 
       if (t === x.datum && !x.exit) {
         out.rem.push(x);
@@ -87,12 +87,12 @@ inherits(DataJoin, Transform, {
       }
     });
 
-    if (pulse.changed(pulse.ADD_MOD)) out.modifies('datum');
+    if (pulse.changed(pulse.ADD_MOD)) out.modifies("datum");
 
-    if (pulse.clean() || _.clean && map.empty > df.cleanThreshold) {
+    if (pulse.clean() || (_.clean && map.empty > df.cleanThreshold)) {
       df.runAfter(map.clean);
     }
 
     return out;
-  }
+  },
 });

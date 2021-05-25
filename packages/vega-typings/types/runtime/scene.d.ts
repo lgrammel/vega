@@ -74,14 +74,14 @@ export type SceneSymbol = SceneItem & {
   strokeWidth: number;
 };
 
-export type SceneTextBaseline = 'top' | 'middle' | 'bottom';
-export type SceneTextAlign = 'left' | 'center' | 'right';
+export type SceneTextBaseline = "top" | "middle" | "bottom";
+export type SceneTextAlign = "left" | "center" | "right";
 
 export type SceneText = SceneItem & {
   align?: SceneTextAlign;
   angle?: number;
   baseline: SceneTextBaseline;
-  dir?: 'rtl' | 'ltr';
+  dir?: "rtl" | "ltr";
   dx?: number;
   dy: number;
   ellipsis?: string;
@@ -106,5 +106,5 @@ export interface SceneLegendItem {
 
 export function sceneVisit(
   scene: Scene | SceneGroup,
-  itemCallback: (item: Scene | SceneGroup | SceneItem) => void,
+  itemCallback: (item: Scene | SceneGroup | SceneItem) => void
 ): void;

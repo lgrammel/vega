@@ -1,5 +1,5 @@
-import {Transform, ingest} from 'vega-dataflow';
-import {inherits, truthy} from 'vega-util';
+import { Transform, ingest } from "vega-dataflow";
+import { inherits, truthy } from "vega-util";
 
 /**
  * Perform a cross-product of a tuple stream with itself.
@@ -14,23 +14,25 @@ export default function Cross(params) {
 }
 
 Cross.Definition = {
-  'type': 'Cross',
-  'metadata': {'generates': true},
-  'params': [
-    { 'name': 'filter', 'type': 'expr' },
-    { 'name': 'as', 'type': 'string', 'array': true, 'length': 2, 'default': ['a', 'b'] }
-  ]
+  type: "Cross",
+  metadata: { generates: true },
+  params: [
+    { name: "filter", type: "expr" },
+    { name: "as", type: "string", array: true, length: 2, default: ["a", "b"] },
+  ],
 };
 
 inherits(Cross, Transform, {
   transform(_, pulse) {
     const out = pulse.fork(pulse.NO_SOURCE),
-          as = _.as || ['a', 'b'],
-          a = as[0], b = as[1],
-          reset = !this.value
-              || pulse.changed(pulse.ADD_REM)
-              || _.modified('as')
-              || _.modified('filter');
+      as = _.as || ["a", "b"],
+      a = as[0],
+      b = as[1],
+      reset =
+        !this.value ||
+        pulse.changed(pulse.ADD_REM) ||
+        _.modified("as") ||
+        _.modified("filter");
 
     let data = this.value;
     if (reset) {
@@ -43,19 +45,20 @@ inherits(Cross, Transform, {
 
     out.source = this.value;
     return out.modifies(as);
-  }
+  },
 });
 
 function cross(input, a, b, filter) {
   var data = [],
-      t = {},
-      n = input.length,
-      i = 0,
-      j, left;
+    t = {},
+    n = input.length,
+    i = 0,
+    j,
+    left;
 
-  for (; i<n; ++i) {
+  for (; i < n; ++i) {
     t[a] = left = input[i];
-    for (j=0; j<n; ++j) {
+    for (j = 0; j < n; ++j) {
       t[b] = input[j];
       if (filter(t)) {
         data.push(ingest(t));

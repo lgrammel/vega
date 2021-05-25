@@ -1,5 +1,5 @@
-import {cumulativeNormal, quantileNormal, sampleNormal} from './normal';
-import {SQRT2PI} from './constants';
+import { cumulativeNormal, quantileNormal, sampleNormal } from "./normal";
+import { SQRT2PI } from "./constants";
 
 export function sampleLogNormal(mean, stdev) {
   mean = mean || 0;
@@ -23,7 +23,7 @@ export function quantileLogNormal(p, mean, stdev) {
   return Math.exp(quantileNormal(p, mean, stdev));
 }
 
-export default function(mean, stdev) {
+export default function (mean, stdev) {
   let mu, sigma;
 
   const dist = {
@@ -44,9 +44,9 @@ export default function(mean, stdev) {
       }
     },
     sample: () => sampleLogNormal(mu, sigma),
-    pdf: value => densityLogNormal(value, mu, sigma),
-    cdf: value => cumulativeLogNormal(value, mu, sigma),
-    icdf: p => quantileLogNormal(p, mu, sigma)
+    pdf: (value) => densityLogNormal(value, mu, sigma),
+    cdf: (value) => cumulativeLogNormal(value, mu, sigma),
+    icdf: (p) => quantileLogNormal(p, mu, sigma),
   };
 
   return dist.mean(mean).stdev(stdev);

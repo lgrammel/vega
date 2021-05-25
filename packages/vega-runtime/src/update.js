@@ -1,21 +1,22 @@
-import {error, isObject} from 'vega-util';
+import { error, isObject } from "vega-util";
 
 /**
  * Parse an event-driven operator update.
  */
-export default function(spec) {
+export default function (spec) {
   var ctx = this,
-      srcid = isObject(srcid = spec.source) ? srcid.$ref : srcid,
-      source = ctx.get(srcid),
-      target = null,
-      update = spec.update,
-      params = undefined;
+    srcid = isObject((srcid = spec.source)) ? srcid.$ref : srcid,
+    source = ctx.get(srcid),
+    target = null,
+    update = spec.update,
+    params = undefined;
 
-  if (!source) error('Source not defined: ' + spec.source);
+  if (!source) error("Source not defined: " + spec.source);
 
-  target = spec.target && spec.target.$expr
-    ? ctx.eventExpression(spec.target.$expr)
-    : ctx.get(spec.target);
+  target =
+    spec.target && spec.target.$expr
+      ? ctx.eventExpression(spec.target.$expr)
+      : ctx.get(spec.target);
 
   if (update && update.$expr) {
     if (update.$params) {

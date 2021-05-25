@@ -1,27 +1,30 @@
-import {Tau} from '../util/constants';
-import {path} from 'd3-path';
+import { Tau } from "../util/constants";
+import { path } from "d3-path";
 
-export default function() {
+export default function () {
   var x,
-      y,
-      size,
-      defined,
-      context = null,
-      ready, x1, y1, r1;
+    y,
+    size,
+    defined,
+    context = null,
+    ready,
+    x1,
+    y1,
+    r1;
 
   function point(x2, y2, w2) {
     const r2 = w2 / 2;
 
     if (ready) {
       var ux = y1 - y2,
-          uy = x2 - x1;
+        uy = x2 - x1;
 
       if (ux || uy) {
         // get normal vector
         var ud = Math.sqrt(ux * ux + uy * uy),
-            rx = (ux /= ud) * r1,
-            ry = (uy /= ud) * r1,
-            t = Math.atan2(uy, ux);
+          rx = (ux /= ud) * r1,
+          ry = (uy /= ud) * r1,
+          t = Math.atan2(uy, ux);
 
         // draw segment
         context.moveTo(x1 - rx, y1 - ry);
@@ -43,27 +46,27 @@ export default function() {
 
   function trail(data) {
     var i,
-        n = data.length,
-        d,
-        defined0 = false,
-        buffer;
+      n = data.length,
+      d,
+      defined0 = false,
+      buffer;
 
     if (context == null) context = buffer = path();
 
     for (i = 0; i <= n; ++i) {
-      if (!(i < n && defined(d = data[i], i, data)) === defined0) {
-        if (defined0 = !defined0) ready = 0;
+      if (!(i < n && defined((d = data[i]), i, data)) === defined0) {
+        if ((defined0 = !defined0)) ready = 0;
       }
       if (defined0) point(+x(d, i, data), +y(d, i, data), +size(d, i, data));
     }
 
     if (buffer) {
       context = null;
-      return buffer + '' || null;
+      return buffer + "" || null;
     }
   }
 
-  trail.x = function(_) {
+  trail.x = function (_) {
     if (arguments.length) {
       x = _;
       return trail;
@@ -72,7 +75,7 @@ export default function() {
     }
   };
 
-  trail.y = function(_) {
+  trail.y = function (_) {
     if (arguments.length) {
       y = _;
       return trail;
@@ -81,7 +84,7 @@ export default function() {
     }
   };
 
-  trail.size = function(_) {
+  trail.size = function (_) {
     if (arguments.length) {
       size = _;
       return trail;
@@ -90,7 +93,7 @@ export default function() {
     }
   };
 
-  trail.defined = function(_) {
+  trail.defined = function (_) {
     if (arguments.length) {
       defined = _;
       return trail;
@@ -99,7 +102,7 @@ export default function() {
     }
   };
 
-  trail.context = function(_) {
+  trail.context = function (_) {
     if (arguments.length) {
       if (_ == null) {
         context = null;

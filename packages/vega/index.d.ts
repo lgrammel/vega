@@ -1,3 +1,3 @@
-declare module 'vega' {
-  export * from 'vega-typings';
+declare module "vega" {
+  export * from "vega-typings";
 }

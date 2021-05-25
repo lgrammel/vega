@@ -1,7 +1,7 @@
-import {Feature, FeatureCollection} from './constants';
-import {Transform} from 'vega-dataflow';
-import {projection, projectionProperties} from 'vega-projection';
-import {array, error, inherits, isFunction} from 'vega-util';
+import { Feature, FeatureCollection } from "./constants";
+import { Transform } from "vega-dataflow";
+import { projection, projectionProperties } from "vega-projection";
+import { array, error, inherits, isFunction } from "vega-util";
 
 /**
  * Maintains a cartographic projection.
@@ -17,13 +17,13 @@ inherits(Projection, Transform, {
   transform(_, pulse) {
     let proj = this.value;
 
-    if (!proj || _.modified('type')) {
-      this.value = (proj = create(_.type));
-      projectionProperties.forEach(prop => {
+    if (!proj || _.modified("type")) {
+      this.value = proj = create(_.type);
+      projectionProperties.forEach((prop) => {
         if (_[prop] != null) set(proj, prop, _[prop]);
       });
     } else {
-      projectionProperties.forEach(prop => {
+      projectionProperties.forEach((prop) => {
         if (_.modified(prop)) set(proj, prop, _[prop]);
       });
     }
@@ -32,38 +32,42 @@ inherits(Projection, Transform, {
     if (_.fit) fit(proj, _);
 
     return pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS);
-  }
+  },
 });
 
 function fit(proj, _) {
   const data = collectGeoJSON(_.fit);
-  _.extent ? proj.fitExtent(_.extent, data)
-    : _.size ? proj.fitSize(_.size, data) : 0;
+  _.extent
+    ? proj.fitExtent(_.extent, data)
+    : _.size
+    ? proj.fitSize(_.size, data)
+    : 0;
 }
 
 function create(type) {
-  const constructor = projection((type || 'mercator').toLowerCase());
-  if (!constructor) error('Unrecognized projection type: ' + type);
+  const constructor = projection((type || "mercator").toLowerCase());
+  if (!constructor) error("Unrecognized projection type: " + type);
   return constructor();
 }
 
 function set(proj, key, value) {
-   if (isFunction(proj[key])) proj[key](value);
+  if (isFunction(proj[key])) proj[key](value);
 }
 
 export function collectGeoJSON(data) {
   data = array(data);
-  return data.length === 1 ? data[0]
+  return data.length === 1
+    ? data[0]
     : {
         type: FeatureCollection,
-        features: data.reduce((a, f) => a.concat(featurize(f)), [])
+        features: data.reduce((a, f) => a.concat(featurize(f)), []),
       };
 }
 
 function featurize(f) {
   return f.type === FeatureCollection
     ? f.features
-    : array(f).filter(d => d != null).map(
-        d => d.type === Feature ? d : {type: Feature, geometry: d}
-      );
+    : array(f)
+        .filter((d) => d != null)
+        .map((d) => (d.type === Feature ? d : { type: Feature, geometry: d }));
 }

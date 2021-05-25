@@ -1,5 +1,5 @@
-import {Transform, stableCompare} from 'vega-dataflow';
-import {inherits} from 'vega-util';
+import { Transform, stableCompare } from "vega-dataflow";
+import { inherits } from "vega-util";
 
 /**
  * Extracts an array of values. Assumes the source data has already been
@@ -17,16 +17,17 @@ export default function Values(params) {
 
 inherits(Values, Transform, {
   transform(_, pulse) {
-    const run = !this.value
-      || _.modified('field')
-      || _.modified('sort')
-      || pulse.changed()
-      || (_.sort && pulse.modified(_.sort.fields));
+    const run =
+      !this.value ||
+      _.modified("field") ||
+      _.modified("sort") ||
+      pulse.changed() ||
+      (_.sort && pulse.modified(_.sort.fields));
 
     if (run) {
-      this.value = (_.sort
-        ? pulse.source.slice().sort(stableCompare(_.sort))
-        : pulse.source).map(_.field);
+      this.value = (
+        _.sort ? pulse.source.slice().sort(stableCompare(_.sort)) : pulse.source
+      ).map(_.field);
     }
-  }
+  },
 });

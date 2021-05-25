@@ -1,4 +1,4 @@
-import {error, isArray, isFunction, isString} from 'vega-util';
+import { error, isArray, isFunction, isString } from "vega-util";
 
 function array(seq) {
   return isArray(seq) || ArrayBuffer.isView(seq) ? seq : null;
@@ -25,7 +25,7 @@ export function slice(seq, ...args) {
 }
 
 export function replace(str, pattern, repl) {
-  if (isFunction(repl)) error('Function argument passed to replace.');
+  if (isFunction(repl)) error("Function argument passed to replace.");
   return String(str).replace(pattern, repl);
 }
 export function reverse(seq) {

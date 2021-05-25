@@ -1,4 +1,4 @@
-import { Binding, Expr, OnEvent } from '.';
+import { Binding, Expr, OnEvent } from ".";
 
 // Hide from Vega-Lite schema (Since @hidden isn't used by Vega, we can just add it here for now.)
 /**
@@ -13,7 +13,7 @@ export interface BaseSignal {
   on?: OnEvent[];
 }
 export interface PushSignal extends BaseSignal {
-  push: 'outer';
+  push: "outer";
 }
 export interface NewSignal extends BaseSignal {
   value?: SignalValue;

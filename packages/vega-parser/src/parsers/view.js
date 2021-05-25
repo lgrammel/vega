@@ -1,39 +1,47 @@
-import parseAutosize from './autosize';
-import parsePadding from './padding';
-import parseEncode from './encode';
-import parseSignal from './signal';
-import parseSpec from './scope';
-import {extendEncode} from './encode/util';
-import {GroupMark} from './marks/marktypes';
-import {FrameRole} from './marks/roles';
-import {operator, ref, value} from '../util';
-import DataScope from '../DataScope';
-import {Bound, Collect, Encode, Render, Sieve, ViewLayout} from '../transforms';
-import {array, extend, hasOwnProperty} from 'vega-util';
+import parseAutosize from "./autosize";
+import parsePadding from "./padding";
+import parseEncode from "./encode";
+import parseSignal from "./signal";
+import parseSpec from "./scope";
+import { extendEncode } from "./encode/util";
+import { GroupMark } from "./marks/marktypes";
+import { FrameRole } from "./marks/roles";
+import { operator, ref, value } from "../util";
+import DataScope from "../DataScope";
+import {
+  Bound,
+  Collect,
+  Encode,
+  Render,
+  Sieve,
+  ViewLayout,
+} from "../transforms";
+import { array, extend, hasOwnProperty } from "vega-util";
 
-const rootEncode = spec => extendEncode(
-  {
-    enter: {
-      x: {value: 0},
-      y: {value: 0}
+const rootEncode = (spec) =>
+  extendEncode(
+    {
+      enter: {
+        x: { value: 0 },
+        y: { value: 0 },
+      },
+      update: {
+        width: { signal: "width" },
+        height: { signal: "height" },
+      },
     },
-    update: {
-      width: {signal: 'width'},
-      height: {signal: 'height'}
-    }
-  },
-  spec
-);
+    spec
+  );
 
 export default function parseView(spec, scope) {
   const config = scope.config;
 
   // add scenegraph root
-  const root = ref(scope.root = scope.add(operator()));
+  const root = ref((scope.root = scope.add(operator())));
 
   // parse top-level signal definitions
   const signals = collectSignals(spec, config);
-  signals.forEach(_ => parseSignal(_, scope));
+  signals.forEach((_) => parseSignal(_, scope));
 
   // assign description, event, legend, and locale configuration
   scope.description = spec.description || config.description;
@@ -45,19 +53,29 @@ export default function parseView(spec, scope) {
   const input = scope.add(Collect());
 
   // encode root group item
-  const encode = scope.add(Encode(parseEncode(
-    rootEncode(spec.encode), GroupMark, FrameRole,
-    spec.style, scope, {pulse: ref(input)}
-  )));
+  const encode = scope.add(
+    Encode(
+      parseEncode(
+        rootEncode(spec.encode),
+        GroupMark,
+        FrameRole,
+        spec.style,
+        scope,
+        { pulse: ref(input) }
+      )
+    )
+  );
 
   // perform view layout
-  const parent = scope.add(ViewLayout({
-    layout:   scope.objectProperty(spec.layout),
-    legends:  scope.legends,
-    autosize: scope.signalRef('autosize'),
-    mark:     root,
-    pulse:    ref(encode)
-  }));
+  const parent = scope.add(
+    ViewLayout({
+      layout: scope.objectProperty(spec.layout),
+      legends: scope.legends,
+      autosize: scope.signalRef("autosize"),
+      mark: root,
+      pulse: ref(encode),
+    })
+  );
   scope.operators.pop();
 
   // parse remainder of specification
@@ -66,12 +84,12 @@ export default function parseView(spec, scope) {
   scope.operators.push(parent);
 
   // bound / render / sieve root item
-  let op = scope.add(Bound({mark: root, pulse: ref(parent)}));
-  op = scope.add(Render({pulse: ref(op)}));
-  op = scope.add(Sieve({pulse: ref(op)}));
+  let op = scope.add(Bound({ mark: root, pulse: ref(parent) }));
+  op = scope.add(Render({ pulse: ref(op) }));
+  op = scope.add(Sieve({ pulse: ref(op) }));
 
   // track metadata for root item
-  scope.addData('root', new DataScope(scope, input, input, op));
+  scope.addData("root", new DataScope(scope, input, input, op));
 
   return scope;
 }
@@ -97,19 +115,19 @@ function signalObject(name, value) {
  * overwriting existing 'value' or 'update' properties.
  */
 function collectSignals(spec, config) {
-  const _ = name => value(spec[name], config[name]),
-        signals = [
-          signalObject('background', _('background')),
-          signalObject('autosize', parseAutosize(_('autosize'))),
-          signalObject('padding', parsePadding(_('padding'))),
-          signalObject('width', _('width') || 0),
-          signalObject('height', _('height') || 0)
-        ],
-        pre = signals.reduce((p, s) => (p[s.name] = s, p), {}),
-        map = {};
+  const _ = (name) => value(spec[name], config[name]),
+    signals = [
+      signalObject("background", _("background")),
+      signalObject("autosize", parseAutosize(_("autosize"))),
+      signalObject("padding", parsePadding(_("padding"))),
+      signalObject("width", _("width") || 0),
+      signalObject("height", _("height") || 0),
+    ],
+    pre = signals.reduce((p, s) => ((p[s.name] = s), p), {}),
+    map = {};
 
   // add spec signal array
-  array(spec.signals).forEach(s => {
+  array(spec.signals).forEach((s) => {
     if (hasOwnProperty(pre, s.name)) {
       // merge if built-in signal
       s = extend(pre[s.name], s);
@@ -121,7 +139,7 @@ function collectSignals(spec, config) {
   });
 
   // add config signal array
-  array(config.signals).forEach(s => {
+  array(config.signals).forEach((s) => {
     if (!hasOwnProperty(map, s.name) && !hasOwnProperty(pre, s.name)) {
       // add to signal list if not already defined
       signals.push(s);

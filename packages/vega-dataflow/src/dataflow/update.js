@@ -1,6 +1,6 @@
-import Pulse from '../Pulse';
+import Pulse from "../Pulse";
 
-const NO_OPT = {skip: false, force: false};
+const NO_OPT = { skip: false, force: false };
 
 /**
  * Touches an operator, scheduling it to be evaluated. If invoked outside of
@@ -64,7 +64,7 @@ export function pulse(op, changeset, options) {
   this.touch(op, options || NO_OPT);
 
   const p = new Pulse(this, this._clock + (this._pulse ? 0 : 1)),
-        t = op.pulse && op.pulse.source || [];
+    t = (op.pulse && op.pulse.source) || [];
 
   p.target = op;
   this._input[op.id] = changeset.pulse(p, t);

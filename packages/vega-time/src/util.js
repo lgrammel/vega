@@ -1,6 +1,6 @@
-import {timeDay, timeWeek, utcDay, utcWeek} from 'd3-time';
+import { timeDay, timeWeek, utcDay, utcWeek } from "d3-time";
 
-const t0 = new Date;
+const t0 = new Date();
 
 function localYear(y) {
   t0.setFullYear(y);

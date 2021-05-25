@@ -1,9 +1,14 @@
-import { SignalRef } from '.';
-import { Color } from './color';
-import { Cursor, StrokeCap, StrokeJoin } from './config.d';
-import { TitleAnchor } from './title';
+import { SignalRef } from ".";
+import { Color } from "./color";
+import { Cursor, StrokeCap, StrokeJoin } from "./config.d";
+import { TitleAnchor } from "./title";
 
-export type Field = string | SignalRef | DatumFieldRef | GroupFieldRef | ParentFieldRef;
+export type Field =
+  | string
+  | SignalRef
+  | DatumFieldRef
+  | GroupFieldRef
+  | ParentFieldRef;
 
 export interface DatumFieldRef {
   datum: Field;
@@ -68,7 +73,10 @@ export type TextBaselineValueRef = ScaledValueRef<TextBaseline>;
 export type TextValueRef = ScaledValueRef<Text>;
 export type BooleanValueRef = ScaledValueRef<boolean>;
 export type ArrayValueRef = ScaledValueRef<any[]>;
-export type ArbitraryValueRef = NumericValueRef | ColorValueRef | ScaledValueRef<any>;
+export type ArbitraryValueRef =
+  | NumericValueRef
+  | ColorValueRef
+  | ScaledValueRef<any>;
 
 export interface ColorRGB {
   r: NumericValueRef;
@@ -95,7 +103,7 @@ export interface BaseGradient {
   /**
    * The type of gradient.
    */
-  gradient: 'linear' | 'radial';
+  gradient: "linear" | "radial";
 }
 
 export interface GradientStop {
@@ -115,7 +123,7 @@ export interface LinearGradient extends BaseGradient {
   /**
    * The type of gradient. Use `"linear"` for a linear gradient.
    */
-  gradient: 'linear';
+  gradient: "linear";
   /**
    * An array of gradient stops defining the gradient color sequence.
    */
@@ -151,7 +159,7 @@ export interface RadialGradient extends BaseGradient {
   /**
    * The type of gradient. Use `"radial"` for a radial gradient.
    */
-  gradient: 'radial';
+  gradient: "radial";
   /**
    * An array of gradient stops defining the gradient color sequence.
    */
@@ -216,21 +224,21 @@ export type ProductionRule<T> =
 
 export type Blend =
   | null
-  | 'multiply'
-  | 'screen'
-  | 'overlay'
-  | 'darken'
-  | 'lighten'
-  | 'color-dodge'
-  | 'color-burn'
-  | 'hard-light'
-  | 'soft-light'
-  | 'difference'
-  | 'exclusion'
-  | 'hue'
-  | 'saturation'
-  | 'color'
-  | 'luminosity';
+  | "multiply"
+  | "screen"
+  | "overlay"
+  | "darken"
+  | "lighten"
+  | "color-dodge"
+  | "color-burn"
+  | "hard-light"
+  | "soft-light"
+  | "difference"
+  | "exclusion"
+  | "hue"
+  | "saturation"
+  | "color"
+  | "luminosity";
 
 export interface EncodeEntry {
   x?: ProductionRule<NumericValueRef>;
@@ -281,12 +289,12 @@ export interface EncodeEntry {
   [k: string]: ProductionRule<ArbitraryValueRef> | undefined;
 }
 
-export type Align = 'left' | 'center' | 'right';
+export type Align = "left" | "center" | "right";
 export interface AlignProperty {
   align?: ProductionRule<ScaledValueRef<Align>>;
 }
 
-export type Orient = 'left' | 'right' | 'top' | 'bottom';
+export type Orient = "left" | "right" | "top" | "bottom";
 
 export interface DefinedProperty {
   defined?: ProductionRule<BooleanValueRef>;
@@ -305,7 +313,7 @@ export interface ArcEncodeEntry extends EncodeEntry {
   cornerRadius?: ProductionRule<NumericValueRef>;
 }
 
-export type Orientation = 'horizontal' | 'vertical';
+export type Orientation = "horizontal" | "vertical";
 
 export interface AreaEncodeEntry extends LineEncodeEntry {
   orient?: ProductionRule<ScaledValueRef<Orientation>>;
@@ -317,7 +325,7 @@ export interface GroupEncodeEntry extends RectEncodeEntry {
   strokeOffset?: ProductionRule<NumericValueRef>;
 }
 
-export type Baseline = 'top' | 'middle' | 'bottom';
+export type Baseline = "top" | "middle" | "bottom";
 
 export interface ImageEncodeEntry extends EncodeEntry, AlignProperty {
   url?: ProductionRule<StringValueRef>;
@@ -327,21 +335,21 @@ export interface ImageEncodeEntry extends EncodeEntry, AlignProperty {
 }
 
 export type Interpolate =
-  | 'basis'
-  | 'basis-open'
-  | 'basis-closed'
-  | 'bundle'
-  | 'cardinal'
-  | 'cardinal-open'
-  | 'cardinal-closed'
-  | 'catmull-rom'
-  | 'linear'
-  | 'linear-closed'
-  | 'monotone'
-  | 'natural'
-  | 'step'
-  | 'step-before'
-  | 'step-after';
+  | "basis"
+  | "basis-open"
+  | "basis-closed"
+  | "bundle"
+  | "cardinal"
+  | "cardinal-open"
+  | "cardinal-closed"
+  | "catmull-rom"
+  | "linear"
+  | "linear-closed"
+  | "monotone"
+  | "natural"
+  | "step"
+  | "step-before"
+  | "step-after";
 
 export interface LineEncodeEntry extends EncodeEntry, DefinedProperty {
   interpolate?: ProductionRule<ScaledValueRef<Interpolate>>;
@@ -370,18 +378,18 @@ export interface ShapeEncodeEntry extends EncodeEntry {
 }
 
 export type SymbolShape =
-  | 'circle'
-  | 'square'
-  | 'cross'
-  | 'diamond'
-  | 'triangle-up'
-  | 'triangle-down'
-  | 'triangle-right'
-  | 'triangle-left'
-  | 'arrow'
-  | 'triangle'
-  | 'wedge'
-  | 'stroke'
+  | "circle"
+  | "square"
+  | "cross"
+  | "diamond"
+  | "triangle-up"
+  | "triangle-down"
+  | "triangle-right"
+  | "triangle-left"
+  | "arrow"
+  | "triangle"
+  | "wedge"
+  | "stroke"
   | string;
 
 export interface SymbolEncodeEntry extends EncodeEntry {
@@ -392,15 +400,15 @@ export interface SymbolEncodeEntry extends EncodeEntry {
 
 export type Text = string | string[];
 
-export type TextBaseline = 'alphabetic' | Baseline | 'line-top' | 'line-bottom';
+export type TextBaseline = "alphabetic" | Baseline | "line-top" | "line-bottom";
 
-export type TextDirection = 'ltr' | 'rtl';
+export type TextDirection = "ltr" | "rtl";
 
 export type FontWeight =
-  | 'normal'
-  | 'bold'
-  | 'lighter'
-  | 'bolder'
+  | "normal"
+  | "bold"
+  | "lighter"
+  | "bolder"
   | 100
   | 200
   | 300
@@ -412,9 +420,12 @@ export type FontWeight =
   | 900;
 
 // see https://developer.mozilla.org/en-US/docs/Web/CSS/font-style#Values
-export type FontStyle = 'normal' | 'italic' | 'oblique' | string;
+export type FontStyle = "normal" | "italic" | "oblique" | string;
 
-export interface TextEncodeEntry extends EncodeEntry, AlignProperty, ThetaProperty {
+export interface TextEncodeEntry
+  extends EncodeEntry,
+    AlignProperty,
+    ThetaProperty {
   text?: ProductionRule<TextValueRef>;
   angle?: ProductionRule<NumericValueRef>;
   baseline?: ProductionRule<TextBaselineValueRef>;
@@ -445,10 +456,10 @@ export interface Encodable<T> {
 export type Encode<T> = Partial<Record<EncodeEntryName, T>>;
 
 export type EncodeEntryName =
-  | 'enter'
-  | 'update'
-  | 'exit'
-  | 'hover'
-  | 'leave'
-  | 'select'
-  | 'release';
+  | "enter"
+  | "update"
+  | "exit"
+  | "hover"
+  | "leave"
+  | "select"
+  | "release";

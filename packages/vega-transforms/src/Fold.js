@@ -1,5 +1,5 @@
-import {Transform, derive} from 'vega-dataflow';
-import {accessorName, inherits} from 'vega-util';
+import { Transform, derive } from "vega-dataflow";
+import { accessorName, inherits } from "vega-util";
 
 /**
  * Folds one more tuple fields into multiple tuples in which the field
@@ -16,28 +16,34 @@ export default function Fold(params) {
 }
 
 Fold.Definition = {
-  'type': 'Fold',
-  'metadata': {'generates': true},
-  'params': [
-    { 'name': 'fields', 'type': 'field', 'array': true, 'required': true },
-    { 'name': 'as', 'type': 'string', 'array': true, 'length': 2, 'default': ['key', 'value'] }
-  ]
+  type: "Fold",
+  metadata: { generates: true },
+  params: [
+    { name: "fields", type: "field", array: true, required: true },
+    {
+      name: "as",
+      type: "string",
+      array: true,
+      length: 2,
+      default: ["key", "value"],
+    },
+  ],
 };
 
 inherits(Fold, Transform, {
   transform(_, pulse) {
     const out = pulse.fork(pulse.NO_SOURCE),
-          fields = _.fields,
-          fnames = fields.map(accessorName),
-          as = _.as || ['key', 'value'],
-          k = as[0],
-          v = as[1],
-          n = fields.length;
+      fields = _.fields,
+      fnames = fields.map(accessorName),
+      as = _.as || ["key", "value"],
+      k = as[0],
+      v = as[1],
+      n = fields.length;
 
     out.rem = this.value;
 
-    pulse.visit(pulse.SOURCE, t => {
-      for (let i=0, d; i<n; ++i) {
+    pulse.visit(pulse.SOURCE, (t) => {
+      for (let i = 0, d; i < n; ++i) {
         d = derive(t);
         d[k] = fnames[i];
         d[v] = fields[i](t);
@@ -47,5 +53,5 @@ inherits(Fold, Transform, {
 
     this.value = out.source = out.add;
     return out.modifies(as);
-  }
+  },
 });

@@ -1,5 +1,5 @@
-import {Transform} from 'vega-dataflow';
-import {inherits} from 'vega-util';
+import { Transform } from "vega-dataflow";
+import { inherits } from "vega-util";
 
 /**
  * Geo-code a longitude/latitude point to an x/y coordinate.
@@ -17,24 +17,24 @@ export default function GeoPoint(params) {
 }
 
 GeoPoint.Definition = {
-  'type': 'GeoPoint',
-  'metadata': {'modifies': true},
-  'params': [
-    { 'name': 'projection', 'type': 'projection', 'required': true },
-    { 'name': 'fields', 'type': 'field', 'array': true, 'required': true, 'length': 2 },
-    { 'name': 'as', 'type': 'string', 'array': true, 'length': 2, 'default': ['x', 'y'] }
-  ]
+  type: "GeoPoint",
+  metadata: { modifies: true },
+  params: [
+    { name: "projection", type: "projection", required: true },
+    { name: "fields", type: "field", array: true, required: true, length: 2 },
+    { name: "as", type: "string", array: true, length: 2, default: ["x", "y"] },
+  ],
 };
 
 inherits(GeoPoint, Transform, {
   transform(_, pulse) {
     var proj = _.projection,
-        lon = _.fields[0],
-        lat = _.fields[1],
-        as = _.as || ['x', 'y'],
-        x = as[0],
-        y = as[1],
-        mod;
+      lon = _.fields[0],
+      lat = _.fields[1],
+      as = _.as || ["x", "y"],
+      x = as[0],
+      y = as[1],
+      mod;
 
     function set(t) {
       const xy = proj([lon(t), lat(t)]);
@@ -56,5 +56,5 @@ inherits(GeoPoint, Transform, {
     }
 
     return pulse.modifies(as);
-  }
+  },
 });

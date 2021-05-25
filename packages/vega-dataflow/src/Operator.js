@@ -1,15 +1,15 @@
-import Parameters from './Parameters';
-import UniqueList from './util/UniqueList';
-import {array, error, id, isArray} from 'vega-util';
+import Parameters from "./Parameters";
+import UniqueList from "./util/UniqueList";
+import { array, error, id, isArray } from "vega-util";
 
 let OP_ID = 0;
 
-const PULSE = 'pulse',
-      NO_PARAMS = new Parameters();
+const PULSE = "pulse",
+  NO_PARAMS = new Parameters();
 
 // Boolean Flags
-const SKIP     = 1,
-      MODIFIED = 2;
+const SKIP = 1,
+  MODIFIED = 2;
 
 /**
  * An Operator is a processing node in a dataflow graph.
@@ -43,16 +43,15 @@ export default function Operator(init, update, params, react) {
 }
 
 function flag(bit) {
-  return function(state) {
+  return function (state) {
     const f = this.flags;
     if (arguments.length === 0) return !!(f & bit);
-    this.flags = state ? (f | bit) : (f & ~bit);
+    this.flags = state ? f | bit : f & ~bit;
     return this;
   };
 }
 
 Operator.prototype = {
-
   /**
    * Returns a list of target operators dependent on this operator.
    * If this list does not exist, it is created and then returned.
@@ -115,8 +114,8 @@ Operator.prototype = {
   parameters(params, react, initonly) {
     react = react !== false;
     const argval = (this._argval = this._argval || new Parameters()),
-          argops = (this._argops = this._argops || []),
-          deps = [];
+      argops = (this._argops = this._argops || []),
+      deps = [];
     let name, value, n, i;
 
     const add = (name, index, value) => {
@@ -125,7 +124,7 @@ Operator.prototype = {
           if (react) value.targets().add(this);
           deps.push(value);
         }
-        argops.push({op:value, name:name, index:index});
+        argops.push({ op: value, name: name, index: index });
       } else {
         argval.set(name, index, value);
       }
@@ -135,9 +134,9 @@ Operator.prototype = {
       value = params[name];
 
       if (name === PULSE) {
-        array(value).forEach(op => {
+        array(value).forEach((op) => {
           if (!(op instanceof Operator)) {
-            error('Pulse parameters must be operator instances.');
+            error("Pulse parameters must be operator instances.");
           } else if (op !== this) {
             op.targets().add(this);
             deps.push(op);
@@ -145,7 +144,7 @@ Operator.prototype = {
         });
         this.source = value;
       } else if (isArray(value)) {
-        argval.set(name, -1, Array(n = value.length));
+        argval.set(name, -1, Array((n = value.length)));
         for (i = 0; i < n; ++i) add(name, i, value[i]);
       } else {
         add(name, -1, value);
@@ -165,7 +164,7 @@ Operator.prototype = {
    */
   marshall(stamp) {
     const argval = this._argval || NO_PARAMS,
-          argops = this._argops;
+      argops = this._argops;
     let item, i, op, mod;
 
     if (argops) {
@@ -228,7 +227,7 @@ Operator.prototype = {
     const update = this._update;
     if (update) {
       const params = this.marshall(pulse.stamp),
-            v = update.call(this, params, pulse);
+        v = update.call(this, params, pulse);
 
       params.clear();
       if (v !== this.value) {
@@ -258,5 +257,5 @@ Operator.prototype = {
       rv = this.evaluate(pulse);
     }
     return (this.pulse = rv || pulse);
-  }
+  },
 };

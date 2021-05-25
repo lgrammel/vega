@@ -1,6 +1,6 @@
-import {getScale} from '../scales';
-import {bandSpace} from 'vega-scale';
-import {isArray} from 'vega-util';
+import { getScale } from "../scales";
+import { bandSpace } from "vega-scale";
+import { isArray } from "vega-util";
 
 export function bandspace(count, paddingInner, paddingOuter) {
   return bandSpace(count || 0, paddingInner || 0, paddingOuter || 0);
@@ -23,8 +23,10 @@ export function domain(name, group) {
 
 export function invert(name, range, group) {
   const s = getScale(name, (group || this).context);
-  return !s ? undefined
-    : isArray(range) ? (s.invertRange || s.invert)(range)
+  return !s
+    ? undefined
+    : isArray(range)
+    ? (s.invertRange || s.invert)(range)
     : (s.invert || s.invertExtent)(range);
 }
 

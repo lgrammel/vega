@@ -1,61 +1,82 @@
-import {layoutAlign} from './layout';
+import { layoutAlign } from "./layout";
 
 import {
-  alignValue, allOf, anchorValue, anyOf, arrayOrSignal,
-  baselineValue, booleanType, colorValue, dashArrayValue, def,
-  enums, fontWeightValue, formatTypeOrSignal, formatTypeType,
-  numberOrSignal, numberType, numberValue, object, orSignal,
-  orientValue, pattern, required, stringType, stringValue,
-  textOrSignal, type
-} from './util';
+  alignValue,
+  allOf,
+  anchorValue,
+  anyOf,
+  arrayOrSignal,
+  baselineValue,
+  booleanType,
+  colorValue,
+  dashArrayValue,
+  def,
+  enums,
+  fontWeightValue,
+  formatTypeOrSignal,
+  formatTypeType,
+  numberOrSignal,
+  numberType,
+  numberValue,
+  object,
+  orSignal,
+  orientValue,
+  pattern,
+  required,
+  stringType,
+  stringValue,
+  textOrSignal,
+  type,
+} from "./util";
 
 // types defined elsewhere
-const encodeEntryRef = def('encodeEntry');
-const styleRef = def('style');
-const labelOverlapRef = def('labelOverlap');
-const tickCountRef = def('tickCount');
+const encodeEntryRef = def("encodeEntry");
+const styleRef = def("style");
+const labelOverlapRef = def("labelOverlap");
+const tickCountRef = def("tickCount");
 
-const guideEncodeRef = def('guideEncode');
+const guideEncodeRef = def("guideEncode");
 const guideEncode = pattern(
   object({
     name: stringType,
-    interactive: type('boolean', {default: false}),
-    style: styleRef
-  }), {
-    '^(?!interactive|name|style).+$': encodeEntryRef
+    interactive: type("boolean", { default: false }),
+    style: styleRef,
+  }),
+  {
+    "^(?!interactive|name|style).+$": encodeEntryRef,
   }
 );
 
-const legendTypeEnum = ['gradient', 'symbol'];
+const legendTypeEnum = ["gradient", "symbol"];
 
-const legendDirectionEnum = ['vertical', 'horizontal'];
+const legendDirectionEnum = ["vertical", "horizontal"];
 
 const legendOrientEnum = [
-  'none',
-  'left',
-  'right',
-  'top',
-  'bottom',
-  'top-left',
-  'top-right',
-  'bottom-left',
-  'bottom-right'
+  "none",
+  "left",
+  "right",
+  "top",
+  "bottom",
+  "top-left",
+  "top-right",
+  "bottom-left",
+  "bottom-right",
 ];
 
 const legendProps = object({
   // LEGEND SCALES
-  size:        stringType,
-  shape:       stringType,
-  fill:        stringType,
-  stroke:      stringType,
-  opacity:     stringType,
-  strokeDash:  stringType,
+  size: stringType,
+  shape: stringType,
+  fill: stringType,
+  stroke: stringType,
+  opacity: stringType,
+  strokeDash: stringType,
   strokeWidth: stringType,
 
   // LEGEND TYPE
-  type:        enums(legendTypeEnum),
-  direction:   enums(legendDirectionEnum),
-  orient:      orSignal(enums(legendOrientEnum, {default: 'right'})),
+  type: enums(legendTypeEnum),
+  direction: enums(legendDirectionEnum),
+  orient: orSignal(enums(legendOrientEnum, { default: "right" })),
 
   // LEGEND CONFIG
   tickCount: tickCountRef,
@@ -141,24 +162,24 @@ const legendProps = object({
     legend: guideEncodeRef,
     entries: guideEncodeRef,
     symbols: guideEncodeRef,
-    gradient: guideEncodeRef
-  })
+    gradient: guideEncodeRef,
+  }),
 });
 
 const legend = allOf(
   legendProps,
   anyOf(
-    required('size'),
-    required('shape'),
-    required('fill'),
-    required('stroke'),
-    required('opacity'),
-    required('strokeDash'),
-    required('strokeWidth')
+    required("size"),
+    required("shape"),
+    required("fill"),
+    required("stroke"),
+    required("opacity"),
+    required("strokeDash"),
+    required("strokeWidth")
   )
 );
 
 export default {
   guideEncode,
-  legend
+  legend,
 };

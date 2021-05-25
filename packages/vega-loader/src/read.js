@@ -1,18 +1,18 @@
-import {inferTypes, typeParsers} from './type';
-import {formats} from './formats/index';
-import {timeFormatDefaultLocale} from 'vega-format';
-import {error, hasOwnProperty} from 'vega-util';
+import { inferTypes, typeParsers } from "./type";
+import { formats } from "./formats/index";
+import { timeFormatDefaultLocale } from "vega-format";
+import { error, hasOwnProperty } from "vega-util";
 
-export default function(data, schema, timeParser, utcParser) {
+export default function (data, schema, timeParser, utcParser) {
   schema = schema || {};
 
-  const reader = formats(schema.type || 'json');
-  if (!reader) error('Unknown data format type: ' + schema.type);
+  const reader = formats(schema.type || "json");
+  if (!reader) error("Unknown data format type: " + schema.type);
 
   data = reader(data, schema);
   if (schema.parse) parse(data, schema.parse, timeParser, utcParser);
 
-  if (hasOwnProperty(data, 'columns')) delete data.columns;
+  if (hasOwnProperty(data, "columns")) delete data.columns;
   return data;
 }
 
@@ -24,38 +24,45 @@ function parse(data, types, timeParser, utcParser) {
   utcParser = utcParser || locale.utcParse;
 
   let fields = data.columns || Object.keys(data[0]),
-      datum, field, i, j, n, m;
+    datum,
+    field,
+    i,
+    j,
+    n,
+    m;
 
-  if (types === 'auto') types = inferTypes(data, fields);
+  if (types === "auto") types = inferTypes(data, fields);
 
   fields = Object.keys(types);
-  const parsers = fields.map(field => {
+  const parsers = fields.map((field) => {
     const type = types[field];
     let parts, pattern;
 
-    if (type && (type.startsWith('date:') || type.startsWith('utc:'))) {
-      parts = type.split(/:(.+)?/, 2);  // split on first :
+    if (type && (type.startsWith("date:") || type.startsWith("utc:"))) {
+      parts = type.split(/:(.+)?/, 2); // split on first :
       pattern = parts[1];
 
-      if ((pattern[0] === '\'' && pattern[pattern.length-1] === '\'') ||
-          (pattern[0] === '"'  && pattern[pattern.length-1] === '"')) {
+      if (
+        (pattern[0] === "'" && pattern[pattern.length - 1] === "'") ||
+        (pattern[0] === '"' && pattern[pattern.length - 1] === '"')
+      ) {
         pattern = pattern.slice(1, -1);
       }
 
-      const parse = parts[0] === 'utc' ? utcParser : timeParser;
+      const parse = parts[0] === "utc" ? utcParser : timeParser;
       return parse(pattern);
     }
 
     if (!typeParsers[type]) {
-      throw Error('Illegal format pattern: ' + field + ':' + type);
+      throw Error("Illegal format pattern: " + field + ":" + type);
     }
 
     return typeParsers[type];
   });
 
-  for (i=0, n=data.length, m=fields.length; i<n; ++i) {
+  for (i = 0, n = data.length, m = fields.length; i < n; ++i) {
     datum = data[i];
-    for (j=0; j<m; ++j) {
+    for (j = 0; j < m; ++j) {
       field = fields[j];
       datum[field] = parsers[j](datum[field]);
     }

@@ -1,8 +1,8 @@
-import estimateBandwidth from './bandwidth';
-import gaussian from './normal';
-import {random} from './random';
+import estimateBandwidth from "./bandwidth";
+import gaussian from "./normal";
+import { random } from "./random";
 
-export default function(support, bandwidth) {
+export default function (support, bandwidth) {
   const kernel = gaussian();
   let n = 0;
 
@@ -29,24 +29,26 @@ export default function(support, bandwidth) {
     },
 
     pdf(x) {
-      let y = 0, i = 0;
-      for (; i<n; ++i) {
+      let y = 0,
+        i = 0;
+      for (; i < n; ++i) {
         y += kernel.pdf((x - support[i]) / bandwidth);
       }
       return y / bandwidth / n;
     },
 
     cdf(x) {
-      let y = 0, i = 0;
-      for (; i<n; ++i) {
+      let y = 0,
+        i = 0;
+      for (; i < n; ++i) {
         y += kernel.cdf((x - support[i]) / bandwidth);
       }
       return y / n;
     },
 
     icdf() {
-      throw Error('KDE icdf not supported.');
-    }
+      throw Error("KDE icdf not supported.");
+    },
   };
 
   return dist.data(support);

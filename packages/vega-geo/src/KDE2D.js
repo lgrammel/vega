@@ -1,6 +1,6 @@
-import density2D from './util/density2D';
-import {Transform, ingest} from 'vega-dataflow';
-import {accessorName, inherits} from 'vega-util';
+import density2D from "./util/density2D";
+import { Transform, ingest } from "vega-dataflow";
+import { accessorName, inherits } from "vega-util";
 
 /**
  * Perform 2D kernel-density estimation of point data.
@@ -34,25 +34,25 @@ export default function KDE2D(params) {
 }
 
 KDE2D.Definition = {
-  'type': 'KDE2D',
-  'metadata': {'generates': true},
-  'params': [
-    { 'name': 'size', 'type': 'number', 'array': true, 'length': 2, 'required': true },
-    { 'name': 'x', 'type': 'field', 'required': true },
-    { 'name': 'y', 'type': 'field', 'required': true },
-    { 'name': 'weight', 'type': 'field' },
-    { 'name': 'groupby', 'type': 'field', 'array': true },
-    { 'name': 'cellSize', 'type': 'number' },
-    { 'name': 'bandwidth', 'type': 'number', 'array': true, 'length': 2 },
-    { 'name': 'counts', 'type': 'boolean', 'default': false },
-    { 'name': 'as', 'type': 'string', 'default': 'grid'}
-  ]
+  type: "KDE2D",
+  metadata: { generates: true },
+  params: [
+    { name: "size", type: "number", array: true, length: 2, required: true },
+    { name: "x", type: "field", required: true },
+    { name: "y", type: "field", required: true },
+    { name: "weight", type: "field" },
+    { name: "groupby", type: "field", array: true },
+    { name: "cellSize", type: "number" },
+    { name: "bandwidth", type: "number", array: true, length: 2 },
+    { name: "counts", type: "boolean", default: false },
+    { name: "as", type: "string", default: "grid" },
+  ],
 };
 
-const PARAMS = ['x', 'y', 'weight', 'size', 'cellSize', 'bandwidth'];
+const PARAMS = ["x", "y", "weight", "size", "cellSize", "bandwidth"];
 
 export function params(obj, _) {
-  PARAMS.forEach(param => _[param] != null ? obj[param](_[param]) : 0);
+  PARAMS.forEach((param) => (_[param] != null ? obj[param](_[param]) : 0));
   return obj;
 }
 
@@ -62,45 +62,48 @@ inherits(KDE2D, Transform, {
       return pulse.StopPropagation;
 
     var out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
-        source = pulse.materialize(pulse.SOURCE).source,
-        groups = partition(source, _.groupby),
-        names = (_.groupby || []).map(accessorName),
-        kde = params(density2D(), _),
-        as = _.as || 'grid',
-        values = [];
+      source = pulse.materialize(pulse.SOURCE).source,
+      groups = partition(source, _.groupby),
+      names = (_.groupby || []).map(accessorName),
+      kde = params(density2D(), _),
+      as = _.as || "grid",
+      values = [];
 
     function set(t, vals) {
-      for (let i=0; i<names.length; ++i) t[names[i]] = vals[i];
+      for (let i = 0; i < names.length; ++i) t[names[i]] = vals[i];
       return t;
     }
 
     // generate density raster grids
-    values = groups.map(g => ingest(
-      set({[as]: kde(g, _.counts)}, g.dims)
-    ));
+    values = groups.map((g) => ingest(set({ [as]: kde(g, _.counts) }, g.dims)));
 
     if (this.value) out.rem = this.value;
     this.value = out.source = out.add = values;
 
     return out;
-  }
+  },
 });
 
 export function partition(data, groupby) {
   var groups = [],
-      get = f => f(t),
-      map, i, n, t, k, g;
+    get = (f) => f(t),
+    map,
+    i,
+    n,
+    t,
+    k,
+    g;
 
   // partition data points into groups
   if (groupby == null) {
     groups.push(data);
   } else {
-    for (map={}, i=0, n=data.length; i<n; ++i) {
+    for (map = {}, i = 0, n = data.length; i < n; ++i) {
       t = data[i];
       k = groupby.map(get);
       g = map[k];
       if (!g) {
-        map[k] = (g = []);
+        map[k] = g = [];
         g.dims = k;
         groups.push(g);
       }

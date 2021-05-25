@@ -1,9 +1,9 @@
 /* eslint-disable require-atomic-updates */
-import {default as Pulse, StopPropagation} from '../Pulse';
-import MultiPulse from '../MultiPulse';
-import asyncCallback from '../util/asyncCallback';
-import UniqueList from '../util/UniqueList';
-import {id, isArray} from 'vega-util';
+import { default as Pulse, StopPropagation } from "../Pulse";
+import MultiPulse from "../MultiPulse";
+import asyncCallback from "../util/asyncCallback";
+import UniqueList from "../util/UniqueList";
+import { id, isArray } from "vega-util";
 
 /**
  * Evaluates the dataflow and returns a Promise that resolves when pulse
@@ -27,7 +27,7 @@ import {id, isArray} from 'vega-util';
  */
 export async function evaluate(encode, prerun, postrun) {
   const df = this,
-        async = [];
+    async = [];
 
   // if the pulse value is set, this is a re-entrant call
   if (df._pulse) return reentrant(df);
@@ -40,7 +40,7 @@ export async function evaluate(encode, prerun, postrun) {
 
   // exit early if there are no updates
   if (!df._touched.length) {
-    df.debug('Dataflow invoked, but nothing to do.');
+    df.debug("Dataflow invoked, but nothing to do.");
     return df;
   }
 
@@ -51,10 +51,13 @@ export async function evaluate(encode, prerun, postrun) {
   df._pulse = new Pulse(df, stamp, encode);
 
   // initialize priority queue, reset touched operators
-  df._touched.forEach(op => df._enqueue(op, true));
+  df._touched.forEach((op) => df._enqueue(op, true));
   df._touched = UniqueList(id);
 
-  let count = 0, op, next, error;
+  let count = 0,
+    op,
+    next,
+    error;
 
   try {
     while (df._heap.size() > 0) {
@@ -81,7 +84,7 @@ export async function evaluate(encode, prerun, postrun) {
 
       // propagate evaluation, enqueue dependent operators
       if (next !== StopPropagation) {
-        if (op._targets) op._targets.forEach(op => df._enqueue(op));
+        if (op._targets) op._targets.forEach((op) => df._enqueue(op));
       }
 
       // increment visit counter
@@ -107,7 +110,7 @@ export async function evaluate(encode, prerun, postrun) {
   if (df._postrun.length) {
     const pr = df._postrun.sort((a, b) => b.priority - a.priority);
     df._postrun = [];
-    for (let i=0; i<pr.length; ++i) {
+    for (let i = 0; i < pr.length; ++i) {
       await asyncCallback(df, pr[i].callback);
     }
   }
@@ -117,10 +120,17 @@ export async function evaluate(encode, prerun, postrun) {
 
   // handle non-blocking asynchronous callbacks
   if (async.length) {
-    Promise.all(async)
-      .then(cb => df.runAsync(null, () => {
-        cb.forEach(f => { try { f(df); } catch (err) { df.error(err); } });
-      }));
+    Promise.all(async).then((cb) =>
+      df.runAsync(null, () => {
+        cb.forEach((f) => {
+          try {
+            f(df);
+          } catch (err) {
+            df.error(err);
+          }
+        });
+      })
+    );
   }
 
   return df;
@@ -150,9 +160,8 @@ export async function runAsync(encode, prerun, postrun) {
   while (this._running) await this._running;
 
   // run dataflow, manage running promise
-  const clear = () => this._running = null;
-  (this._running = this.evaluate(encode, prerun, postrun))
-    .then(clear, clear);
+  const clear = () => (this._running = null);
+  (this._running = this.evaluate(encode, prerun, postrun)).then(clear, clear);
 
   return this._running;
 }
@@ -177,7 +186,8 @@ export async function runAsync(encode, prerun, postrun) {
  * @return {Dataflow} - This dataflow instance.
  */
 export function run(encode, prerun, postrun) {
-  return this._pulse ? reentrant(this)
+  return this._pulse
+    ? reentrant(this)
     : (this.evaluate(encode, prerun, postrun), this);
 }
 
@@ -206,11 +216,15 @@ export function runAfter(callback, enqueue, priority) {
     // pulse propagation is currently running, queue to run after
     this._postrun.push({
       priority: priority || 0,
-      callback: callback
+      callback: callback,
     });
   } else {
     // pulse propagation already complete, invoke immediately
-    try { callback(this); } catch (err) { this.error(err); }
+    try {
+      callback(this);
+    } catch (err) {
+      this.error(err);
+    }
   }
 }
 
@@ -218,7 +232,7 @@ export function runAfter(callback, enqueue, priority) {
  * Raise an error for re-entrant dataflow evaluation.
  */
 function reentrant(df) {
-  df.error('Dataflow already running. Use runAsync() to chain invocations.');
+  df.error("Dataflow already running. Use runAsync() to chain invocations.");
   return df;
 }
 
@@ -256,10 +270,15 @@ export function enqueue(op, force) {
  */
 export function getPulse(op, encode) {
   const s = op.source,
-        stamp = this._clock;
+    stamp = this._clock;
 
   return s && isArray(s)
-    ? new MultiPulse(this, stamp, s.map(_ => _.pulse), encode)
+    ? new MultiPulse(
+        this,
+        stamp,
+        s.map((_) => _.pulse),
+        encode
+      )
     : this._input[op.id] || singlePulse(this._pulse, s && s.pulse);
 }
 

@@ -1,22 +1,33 @@
 import {
-  Bottom, BottomLeft, BottomRight, Each, End, Flush, Left, Middle,
-  None, Right, Start, Symbols, Top,
-  TopLeft, TopRight
-} from '../constants';
-import {boundStroke, multiLineOffset} from 'vega-scenegraph';
+  Bottom,
+  BottomLeft,
+  BottomRight,
+  Each,
+  End,
+  Flush,
+  Left,
+  Middle,
+  None,
+  Right,
+  Start,
+  Symbols,
+  Top,
+  TopLeft,
+  TopRight,
+} from "../constants";
+import { boundStroke, multiLineOffset } from "vega-scenegraph";
 
 // utility for looking up legend layout configuration
 function lookup(config, orient) {
   const opt = config[orient] || {};
-  return (key, d) => opt[key] != null ? opt[key]
-    : config[key] != null ? config[key]
-    : d;
+  return (key, d) =>
+    opt[key] != null ? opt[key] : config[key] != null ? config[key] : d;
 }
 
 // if legends specify offset directly, use the maximum specified value
 function offsets(legends, value) {
   let max = -Infinity;
-  legends.forEach(item => {
+  legends.forEach((item) => {
     if (item.offset != null) max = Math.max(max, item.offset);
   });
   return max > -Infinity ? max : value;
@@ -24,55 +35,61 @@ function offsets(legends, value) {
 
 export function legendParams(g, orient, config, xb, yb, w, h) {
   const _ = lookup(config, orient),
-        offset = offsets(g, _('offset', 0)),
-        anchor = _('anchor', Start),
-        mult = anchor === End ? 1 : anchor === Middle ? 0.5 : 0;
+    offset = offsets(g, _("offset", 0)),
+    anchor = _("anchor", Start),
+    mult = anchor === End ? 1 : anchor === Middle ? 0.5 : 0;
 
   const p = {
-    align:   Each,
-    bounds:  _('bounds', Flush),
-    columns: _('direction') === 'vertical' ? 1 : g.length,
-    padding: _('margin', 8),
-    center:  _('center'),
-    nodirty: true
+    align: Each,
+    bounds: _("bounds", Flush),
+    columns: _("direction") === "vertical" ? 1 : g.length,
+    padding: _("margin", 8),
+    center: _("center"),
+    nodirty: true,
   };
 
   switch (orient) {
     case Left:
       p.anchor = {
-        x: Math.floor(xb.x1) - offset, column: End,
-        y: mult * (h || xb.height() + 2 * xb.y1), row: anchor
+        x: Math.floor(xb.x1) - offset,
+        column: End,
+        y: mult * (h || xb.height() + 2 * xb.y1),
+        row: anchor,
       };
       break;
     case Right:
       p.anchor = {
         x: Math.ceil(xb.x2) + offset,
-        y: mult * (h || xb.height() + 2 * xb.y1), row: anchor
+        y: mult * (h || xb.height() + 2 * xb.y1),
+        row: anchor,
       };
       break;
     case Top:
       p.anchor = {
-        y: Math.floor(yb.y1) - offset, row: End,
-        x: mult * (w || yb.width() + 2 * yb.x1), column: anchor
+        y: Math.floor(yb.y1) - offset,
+        row: End,
+        x: mult * (w || yb.width() + 2 * yb.x1),
+        column: anchor,
       };
       break;
     case Bottom:
       p.anchor = {
         y: Math.ceil(yb.y2) + offset,
-        x: mult * (w || yb.width() + 2 * yb.x1), column: anchor
+        x: mult * (w || yb.width() + 2 * yb.x1),
+        column: anchor,
       };
       break;
     case TopLeft:
-      p.anchor = {x: offset, y: offset};
+      p.anchor = { x: offset, y: offset };
       break;
     case TopRight:
-      p.anchor = {x: w - offset, y: offset, column: End};
+      p.anchor = { x: w - offset, y: offset, column: End };
       break;
     case BottomLeft:
-      p.anchor = {x: offset, y: h - offset, row: End};
+      p.anchor = { x: offset, y: h - offset, row: End };
       break;
     case BottomRight:
-      p.anchor = {x: w - offset, y: h - offset, column: End, row: End};
+      p.anchor = { x: w - offset, y: h - offset, column: End, row: End };
       break;
   }
 
@@ -81,15 +98,18 @@ export function legendParams(g, orient, config, xb, yb, w, h) {
 
 export function legendLayout(view, legend) {
   var item = legend.items[0],
-      datum = item.datum,
-      orient = item.orient,
-      bounds = item.bounds,
-      x = item.x, y = item.y, w, h;
+    datum = item.datum,
+    orient = item.orient,
+    bounds = item.bounds,
+    x = item.x,
+    y = item.y,
+    w,
+    h;
 
   // cache current bounds for later comparison
   item._bounds
     ? item._bounds.clear().union(bounds)
-    : item._bounds = bounds.clone();
+    : (item._bounds = bounds.clone());
   bounds.clear();
 
   // adjust legend to accommodate padding and title
@@ -122,7 +142,7 @@ export function legendLayout(view, legend) {
 
 function legendBounds(item, b) {
   // aggregate item bounds
-  item.items.forEach(_ => b.union(_.bounds));
+  item.items.forEach((_) => b.union(_.bounds));
 
   // anchor to legend origin
   b.x1 = item.padding;
@@ -133,17 +153,17 @@ function legendBounds(item, b) {
 
 function legendGroupLayout(view, item, entry) {
   var pad = item.padding,
-      ex = pad - entry.x,
-      ey = pad - entry.y;
+    ex = pad - entry.x,
+    ey = pad - entry.y;
 
   if (!item.datum.title) {
     if (ex || ey) translate(view, entry, ex, ey);
   } else {
     var title = item.items[1].items[0],
-        anchor = title.anchor,
-        tpad = item.titlePadding || 0,
-        tx = pad - title.x,
-        ty = pad - title.y;
+      anchor = title.anchor,
+      tpad = item.titlePadding || 0,
+      tx = pad - title.x,
+      ty = pad - title.y;
 
     switch (title.orient) {
       case Left:
@@ -183,17 +203,17 @@ function legendGroupLayout(view, item, entry) {
 }
 
 function legendTitleOffset(item, entry, title, anchor, y, lr, noBar) {
-  const grad = item.datum.type !== 'symbol',
-        vgrad = title.datum.vgrad,
-        e = grad && (lr || !vgrad) && !noBar ? entry.items[0] : entry,
-        s = e.bounds[y ? 'y2' : 'x2'] - item.padding,
-        u = vgrad && lr ? s : 0,
-        v = vgrad && lr ? 0 : s,
-        o = y <= 0 ? 0 : multiLineOffset(title);
+  const grad = item.datum.type !== "symbol",
+    vgrad = title.datum.vgrad,
+    e = grad && (lr || !vgrad) && !noBar ? entry.items[0] : entry,
+    s = e.bounds[y ? "y2" : "x2"] - item.padding,
+    u = vgrad && lr ? s : 0,
+    v = vgrad && lr ? 0 : s,
+    o = y <= 0 ? 0 : multiLineOffset(title);
 
-  return Math.round(anchor === Start ? u
-    : anchor === End ? (v - o)
-    : 0.5 * (s - o));
+  return Math.round(
+    anchor === Start ? u : anchor === End ? v - o : 0.5 * (s - o)
+  );
 }
 
 function translate(view, item, dx, dy) {
@@ -212,8 +232,8 @@ function legendEntryLayout(entries) {
   }, {});
 
   // set dimensions of legend entry groups
-  entries.forEach(g => {
-    g.width  = widths[g.column];
+  entries.forEach((g) => {
+    g.width = widths[g.column];
     g.height = g.bounds.y2 - g.y;
   });
 }

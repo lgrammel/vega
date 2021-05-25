@@ -1,8 +1,8 @@
-import {partition} from './util/util';
-import {Transform, ingest} from 'vega-dataflow';
-import {quantiles} from 'vega-statistics';
-import {accessorName, inherits} from 'vega-util';
-import {range} from 'd3-array';
+import { partition } from "./util/util";
+import { Transform, ingest } from "vega-dataflow";
+import { quantiles } from "vega-statistics";
+import { accessorName, inherits } from "vega-util";
+import { range } from "d3-array";
 
 /**
  * Generates sample quantile values from an input data stream.
@@ -25,15 +25,15 @@ export default function Quantile(params) {
 }
 
 Quantile.Definition = {
-  'type': 'Quantile',
-  'metadata': {'generates': true, 'changes': true},
-  'params': [
-    { 'name': 'groupby', 'type': 'field', 'array': true },
-    { 'name': 'field', 'type': 'field', 'required': true },
-    { 'name': 'probs', 'type': 'number', 'array': true },
-    { 'name': 'step', 'type': 'number', 'default': 0.01 },
-    { 'name': 'as', 'type': 'string', 'array': true, 'default': ['prob', 'value'] }
-  ]
+  type: "Quantile",
+  metadata: { generates: true, changes: true },
+  params: [
+    { name: "groupby", type: "field", array: true },
+    { name: "field", type: "field", required: true },
+    { name: "probs", type: "number", array: true },
+    { name: "step", type: "number", default: 0.01 },
+    { name: "as", type: "string", array: true, default: ["prob", "value"] },
+  ],
 };
 
 const EPSILON = 1e-14;
@@ -41,7 +41,7 @@ const EPSILON = 1e-14;
 inherits(Quantile, Transform, {
   transform(_, pulse) {
     const out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
-          as = _.as || ['prob', 'value'];
+      as = _.as || ["prob", "value"];
 
     if (this.value && !_.modified() && !pulse.changed()) {
       out.source = this.value;
@@ -49,19 +49,19 @@ inherits(Quantile, Transform, {
     }
 
     const source = pulse.materialize(pulse.SOURCE).source,
-          groups = partition(source, _.groupby, _.field),
-          names = (_.groupby || []).map(accessorName),
-          values = [],
-          step = _.step || 0.01,
-          p = _.probs || range(step/2, 1 - EPSILON, step),
-          n = p.length;
+      groups = partition(source, _.groupby, _.field),
+      names = (_.groupby || []).map(accessorName),
+      values = [],
+      step = _.step || 0.01,
+      p = _.probs || range(step / 2, 1 - EPSILON, step),
+      n = p.length;
 
-    groups.forEach(g => {
+    groups.forEach((g) => {
       const q = quantiles(g, p);
 
-      for (let i=0; i<n; ++i) {
+      for (let i = 0; i < n; ++i) {
         const t = {};
-        for (let i=0; i<names.length; ++i) {
+        for (let i = 0; i < names.length; ++i) {
           t[names[i]] = g.dims[i];
         }
         t[as[0]] = p[i];
@@ -74,5 +74,5 @@ inherits(Quantile, Transform, {
     this.value = out.add = out.source = values;
 
     return out;
-  }
+  },
 });

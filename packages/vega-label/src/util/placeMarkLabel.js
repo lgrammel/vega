@@ -1,31 +1,48 @@
-import {textMetrics} from 'vega-scenegraph';
+import { textMetrics } from "vega-scenegraph";
 
-const Aligns = ['right', 'center', 'left'],
-      Baselines = ['bottom', 'middle', 'top'];
+const Aligns = ["right", "center", "left"],
+  Baselines = ["bottom", "middle", "top"];
 
-export default function($, bitmaps, anchors, offsets) {
+export default function ($, bitmaps, anchors, offsets) {
   const width = $.width,
-        height = $.height,
-        bm0 = bitmaps[0],
-        bm1 = bitmaps[1],
-        n = offsets.length;
+    height = $.height,
+    bm0 = bitmaps[0],
+    bm1 = bitmaps[1],
+    n = offsets.length;
 
-  return function(d) {
+  return function (d) {
     const boundary = d.boundary,
-          textHeight = d.datum.fontSize;
+      textHeight = d.datum.fontSize;
 
     // can not be placed if the mark is not visible in the graph bound
-    if (boundary[2] < 0 || boundary[5] < 0 || boundary[0] > width || boundary[3] > height) {
+    if (
+      boundary[2] < 0 ||
+      boundary[5] < 0 ||
+      boundary[0] > width ||
+      boundary[3] > height
+    ) {
       return false;
     }
 
     let textWidth = 0,
-        dx, dy, isInside, sizeFactor, insideFactor,
-        x1, x2, y1, y2, xc, yc,
-        _x1, _x2, _y1, _y2;
+      dx,
+      dy,
+      isInside,
+      sizeFactor,
+      insideFactor,
+      x1,
+      x2,
+      y1,
+      y2,
+      xc,
+      yc,
+      _x1,
+      _x2,
+      _y1,
+      _y2;
 
     // for each anchor and offset
-    for (let i=0; i<n; ++i) {
+    for (let i = 0; i < n; ++i) {
       dx = (anchors[i] & 0x3) - 1;
       dy = ((anchors[i] >>> 0x2) & 0x3) - 1;
 
@@ -34,7 +51,10 @@ export default function($, bitmaps, anchors, offsets) {
       insideFactor = offsets[i] < 0 ? -1 : 1;
 
       x1 = boundary[1 + dx] + offsets[i] * dx * sizeFactor;
-      yc = boundary[4 + dy] + (insideFactor * textHeight * dy) / 2 + offsets[i] * dy * sizeFactor;
+      yc =
+        boundary[4 + dy] +
+        (insideFactor * textHeight * dy) / 2 +
+        offsets[i] * dy * sizeFactor;
       y1 = yc - textHeight / 2;
       y2 = yc + textHeight / 2;
 
@@ -44,7 +64,22 @@ export default function($, bitmaps, anchors, offsets) {
 
       if (!textWidth) {
         // to avoid finding width of text label,
-        if (!test(_x1, _x1, _y1, _y2, bm0, bm1, x1, x1, y1, y2, boundary, isInside)) {
+        if (
+          !test(
+            _x1,
+            _x1,
+            _y1,
+            _y2,
+            bm0,
+            bm1,
+            x1,
+            x1,
+            y1,
+            y2,
+            boundary,
+            isInside
+          )
+        ) {
           // skip this anchor/offset option if we fail to place a label with 1px width
           continue;
         } else {
@@ -60,7 +95,9 @@ export default function($, bitmaps, anchors, offsets) {
       _x1 = $(x1);
       _x2 = $(x2);
 
-      if (test(_x1, _x2, _y1, _y2, bm0, bm1, x1, x2, y1, y2, boundary, isInside)) {
+      if (
+        test(_x1, _x2, _y1, _y2, bm0, bm1, x1, x2, y1, y2, boundary, isInside)
+      ) {
         // place label if the position is placeable
         d.x = !dx ? xc : dx * insideFactor < 0 ? x2 : x1;
         d.y = !dy ? yc : dy * insideFactor < 0 ? y2 : y1;
@@ -78,16 +115,34 @@ export default function($, bitmaps, anchors, offsets) {
 }
 
 // Test if a label with the given dimensions can be added without overlap
-function test(_x1, _x2, _y1, _y2, bm0, bm1, x1, x2, y1, y2, boundary, isInside) {
+function test(
+  _x1,
+  _x2,
+  _y1,
+  _y2,
+  bm0,
+  bm1,
+  x1,
+  x2,
+  y1,
+  y2,
+  boundary,
+  isInside
+) {
   return !(
     bm0.outOfBounds(_x1, _y1, _x2, _y2) ||
     (isInside && bm1
-      ? bm1.getRange(_x1, _y1, _x2, _y2) || !isInMarkBound(x1, y1, x2, y2, boundary)
+      ? bm1.getRange(_x1, _y1, _x2, _y2) ||
+        !isInMarkBound(x1, y1, x2, y2, boundary)
       : bm0.getRange(_x1, _y1, _x2, _y2))
   );
 }
 
 function isInMarkBound(x1, y1, x2, y2, boundary) {
-  return boundary[0] <= x1 && x2 <= boundary[2]
-      && boundary[3] <= y1 && y2 <= boundary[5];
+  return (
+    boundary[0] <= x1 &&
+    x2 <= boundary[2] &&
+    boundary[3] <= y1 &&
+    y2 <= boundary[5]
+  );
 }

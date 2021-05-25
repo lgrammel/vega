@@ -1,5 +1,5 @@
-import {Transform} from 'vega-dataflow';
-import {accessorName, inherits, toNumber} from 'vega-util';
+import { Transform } from "vega-dataflow";
+import { accessorName, inherits, toNumber } from "vega-util";
 
 /**
  * Computes extents (min/max) for a data field.
@@ -12,29 +12,26 @@ export default function Extent(params) {
 }
 
 Extent.Definition = {
-  'type': 'Extent',
-  'metadata': {},
-  'params': [
-    { 'name': 'field', 'type': 'field', 'required': true }
-  ]
+  type: "Extent",
+  metadata: {},
+  params: [{ name: "field", type: "field", required: true }],
 };
 
 inherits(Extent, Transform, {
   transform(_, pulse) {
     const extent = this.value,
-          field = _.field,
-          mod = pulse.changed()
-            || pulse.modified(field.fields)
-            || _.modified('field');
+      field = _.field,
+      mod =
+        pulse.changed() || pulse.modified(field.fields) || _.modified("field");
 
     let min = extent[0],
-        max = extent[1];
+      max = extent[1];
     if (mod || min == null) {
       min = +Infinity;
       max = -Infinity;
     }
 
-    pulse.visit(mod ? pulse.SOURCE : pulse.ADD, t => {
+    pulse.visit(mod ? pulse.SOURCE : pulse.ADD, (t) => {
       const v = toNumber(field(t));
       if (v != null) {
         // NaNs will fail all comparisons!
@@ -50,5 +47,5 @@ inherits(Extent, Transform, {
       min = max = undefined;
     }
     this.value = [min, max];
-  }
+  },
 });

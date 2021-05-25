@@ -36,10 +36,10 @@ export interface BindInput extends BindBase {
   autocomplete?: string;
 }
 export interface BindCheckbox extends BindBase {
-  input: 'checkbox';
+  input: "checkbox";
 }
 export interface BindRadioSelect extends BindBase {
-  input: 'radio' | 'select';
+  input: "radio" | "select";
   /**
    * An array of options to select from.
    */
@@ -52,7 +52,7 @@ export interface BindRadioSelect extends BindBase {
   labels?: string[];
 }
 export interface BindRange extends BindBase {
-  input: 'range';
+  input: "range";
   /**
    * Sets the minimum slider value. Defaults to the smaller of the signal value and `0`.
    */
@@ -89,4 +89,9 @@ export interface BindDirect {
    */
   debounce?: number;
 }
-export type Binding = BindCheckbox | BindRadioSelect | BindRange | BindInput | BindDirect;
+export type Binding =
+  | BindCheckbox
+  | BindRadioSelect
+  | BindRange
+  | BindInput
+  | BindDirect;

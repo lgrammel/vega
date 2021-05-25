@@ -1,3 +1,3 @@
-export default function(_) {
-  return typeof _ === 'function';
+export default function (_) {
+  return typeof _ === "function";
 }

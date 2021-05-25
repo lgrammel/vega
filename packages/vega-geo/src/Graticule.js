@@ -1,6 +1,6 @@
-import {Transform, ingest, replace} from 'vega-dataflow';
-import {inherits, isFunction} from 'vega-util';
-import {geoGraticule} from 'd3-geo';
+import { Transform, ingest, replace } from "vega-dataflow";
+import { inherits, isFunction } from "vega-util";
+import { geoGraticule } from "d3-geo";
 
 /**
  * GeoJSON feature generator for creating graticules.
@@ -12,26 +12,54 @@ export default function Graticule(params) {
 }
 
 Graticule.Definition = {
-  'type': 'Graticule',
-  'metadata': {'changes': true, 'generates': true},
-  'params': [
-    { 'name': 'extent', 'type': 'array', 'array': true, 'length': 2,
-      'content': {'type': 'number', 'array': true, 'length': 2} },
-    { 'name': 'extentMajor', 'type': 'array', 'array': true, 'length': 2,
-      'content': {'type': 'number', 'array': true, 'length': 2} },
-    { 'name': 'extentMinor', 'type': 'array', 'array': true, 'length': 2,
-      'content': {'type': 'number', 'array': true, 'length': 2} },
-    { 'name': 'step', 'type': 'number', 'array': true, 'length': 2 },
-    { 'name': 'stepMajor', 'type': 'number', 'array': true, 'length': 2, 'default': [90, 360] },
-    { 'name': 'stepMinor', 'type': 'number', 'array': true, 'length': 2, 'default': [10, 10] },
-    { 'name': 'precision', 'type': 'number', 'default': 2.5 }
-  ]
+  type: "Graticule",
+  metadata: { changes: true, generates: true },
+  params: [
+    {
+      name: "extent",
+      type: "array",
+      array: true,
+      length: 2,
+      content: { type: "number", array: true, length: 2 },
+    },
+    {
+      name: "extentMajor",
+      type: "array",
+      array: true,
+      length: 2,
+      content: { type: "number", array: true, length: 2 },
+    },
+    {
+      name: "extentMinor",
+      type: "array",
+      array: true,
+      length: 2,
+      content: { type: "number", array: true, length: 2 },
+    },
+    { name: "step", type: "number", array: true, length: 2 },
+    {
+      name: "stepMajor",
+      type: "number",
+      array: true,
+      length: 2,
+      default: [90, 360],
+    },
+    {
+      name: "stepMinor",
+      type: "number",
+      array: true,
+      length: 2,
+      default: [10, 10],
+    },
+    { name: "precision", type: "number", default: 2.5 },
+  ],
 };
 
 inherits(Graticule, Transform, {
   transform(_, pulse) {
     var src = this.value,
-        gen = this.generator, t;
+      gen = this.generator,
+      t;
 
     if (!src.length || _.modified()) {
       for (const prop in _) {
@@ -50,5 +78,5 @@ inherits(Graticule, Transform, {
     src[0] = t;
 
     return pulse;
-  }
+  },
 });

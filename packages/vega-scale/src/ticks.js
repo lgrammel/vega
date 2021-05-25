@@ -1,11 +1,18 @@
-import {isLogarithmic} from './scales';
-import {Time, UTC} from './scales/types';
-import {timeInterval, utcInterval} from 'vega-time';
-import {error, isArray, isNumber, isObject, isString, peek, span} from 'vega-util';
+import { isLogarithmic } from "./scales";
+import { Time, UTC } from "./scales/types";
+import { timeInterval, utcInterval } from "vega-time";
+import {
+  error,
+  isArray,
+  isNumber,
+  isObject,
+  isString,
+  peek,
+  span,
+} from "vega-util";
 
-const defaultFormatter = value => isArray(value)
-  ? value.map(v => String(v))
-  : String(value);
+const defaultFormatter = (value) =>
+  isArray(value) ? value.map((v) => String(v)) : String(value);
 
 const ascending = (a, b) => a[1] - b[1];
 const descending = (a, b) => b[1] - a[1];
@@ -25,10 +32,7 @@ export function tickCount(scale, count, minStep) {
       count = Math.max(count, scale.bins.length);
     }
     if (minStep != null) {
-      count = Math.min(
-        count,
-        Math.floor((span(scale.domain()) / minStep) || 1)
-      );
+      count = Math.min(count, Math.floor(span(scale.domain()) / minStep || 1));
     }
   }
 
@@ -38,9 +42,12 @@ export function tickCount(scale, count, minStep) {
   }
 
   if (isString(count)) {
-    count = scale.type === Time ? timeInterval(count)
-      : scale.type == UTC ? utcInterval(count)
-      : error('Only time and utc scales accept interval strings.');
+    count =
+      scale.type === Time
+        ? timeInterval(count)
+        : scale.type == UTC
+        ? utcInterval(count)
+        : error("Only time and utc scales accept interval strings.");
     if (step) count = count.every(step);
   }
 
@@ -57,9 +64,9 @@ export function tickCount(scale, count, minStep) {
  */
 export function validTicks(scale, ticks, count) {
   let range = scale.range(),
-      lo = range[0],
-      hi = peek(range),
-      cmp = ascending;
+    lo = range[0],
+    hi = peek(range),
+    cmp = ascending;
 
   if (lo > hi) {
     range = hi;
@@ -73,10 +80,11 @@ export function validTicks(scale, ticks, count) {
 
   // filter ticks to valid values within the range
   // additionally sort ticks in range order (#2579)
-  ticks = ticks.map(v => [v, scale(v)])
-    .filter(_ => lo <= _[1] && _[1] <= hi)
+  ticks = ticks
+    .map((v) => [v, scale(v)])
+    .filter((_) => lo <= _[1] && _[1] <= hi)
     .sort(cmp)
-    .map(_ => _[0]);
+    .map((_) => _[0]);
 
   if (count > 0 && ticks.length > 1) {
     const endpoints = [ticks[0], peek(ticks)];
@@ -101,8 +109,10 @@ export function validTicks(scale, ticks, count) {
  * @return {Array<*>} - The generated tick values.
  */
 export function tickValues(scale, count) {
-  return scale.bins ? validTicks(scale, scale.bins)
-    : scale.ticks ? scale.ticks(count)
+  return scale.bins
+    ? validTicks(scale, scale.bins)
+    : scale.ticks
+    ? scale.ticks(count)
     : scale.domain();
 }
 
@@ -121,31 +131,34 @@ export function tickValues(scale, count) {
  *   time multi-format specifier object.
  * @return {function(*):string} - The generated label formatter.
  */
-export function tickFormat(locale, scale, count, specifier, formatType, noSkip) {
+export function tickFormat(
+  locale,
+  scale,
+  count,
+  specifier,
+  formatType,
+  noSkip
+) {
   const type = scale.type;
   let format = defaultFormatter;
 
   if (type === Time || formatType === Time) {
     format = locale.timeFormat(specifier);
-  }
-  else if (type === UTC || formatType === UTC) {
+  } else if (type === UTC || formatType === UTC) {
     format = locale.utcFormat(specifier);
-  }
-  else if (isLogarithmic(type)) {
+  } else if (isLogarithmic(type)) {
     const varfmt = locale.formatFloat(specifier);
     if (noSkip || scale.bins) {
       format = varfmt;
     } else {
       const test = tickLog(scale, count, false);
-      format = _ => test(_) ? varfmt(_) : '';
+      format = (_) => (test(_) ? varfmt(_) : "");
     }
-  }
-  else if (scale.tickFormat) {
+  } else if (scale.tickFormat) {
     // if d3 scale has tickFormat, it must be continuous
     const d = scale.domain();
     format = locale.formatSpan(d[0], d[d.length - 1], count, specifier);
-  }
-  else if (specifier) {
+  } else if (specifier) {
     format = locale.format(specifier);
   }
 
@@ -154,12 +167,12 @@ export function tickFormat(locale, scale, count, specifier, formatType, noSkip) 
 
 export function tickLog(scale, count, values) {
   const ticks = tickValues(scale, count),
-        base = scale.base(),
-        logb = Math.log(base),
-        k = Math.max(1, base * count / ticks.length);
+    base = scale.base(),
+    logb = Math.log(base),
+    k = Math.max(1, (base * count) / ticks.length);
 
   // apply d3-scale's log format filter criteria
-  const test = d => {
+  const test = (d) => {
     let i = d / Math.pow(base, Math.round(Math.log(d) / logb));
     if (i * base < base - 0.5) i *= base;
     return i <= k;

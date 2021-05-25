@@ -1,7 +1,7 @@
-import Handler from './Handler';
-import {domFind} from './util/dom';
-import {HrefEvent, TooltipHideEvent, TooltipShowEvent} from './util/events';
-import {inherits} from 'vega-util';
+import Handler from "./Handler";
+import { domFind } from "./util/dom";
+import { HrefEvent, TooltipHideEvent, TooltipShowEvent } from "./util/events";
+import { inherits } from "vega-util";
 
 export default function SVGHandler(loader, tooltip) {
   Handler.call(this, loader, tooltip);
@@ -15,7 +15,7 @@ export default function SVGHandler(loader, tooltip) {
 }
 
 // wrap an event listener for the SVG DOM
-const listener = (context, handler) => evt => {
+const listener = (context, handler) => (evt) => {
   let item = evt.target.__data__;
   item = Array.isArray(item) ? item[0] : item;
   evt.vegaType = evt.type;
@@ -30,7 +30,7 @@ inherits(SVGHandler, Handler, {
       svg.removeEventListener(TooltipShowEvent, this._tooltipHandler);
       svg.removeEventListener(TooltipHideEvent, this._tooltipHandler);
     }
-    this._svg = svg = el && domFind(el, 'svg');
+    this._svg = svg = el && domFind(el, "svg");
     if (svg) {
       svg.addEventListener(HrefEvent, this._hrefHandler);
       svg.addEventListener(TooltipShowEvent, this._tooltipHandler);
@@ -46,14 +46,14 @@ inherits(SVGHandler, Handler, {
   // add an event handler
   on(type, handler) {
     const name = this.eventName(type),
-          h = this._handlers,
-          i = this._handlerIndex(h[name], type, handler);
+      h = this._handlers,
+      i = this._handlerIndex(h[name], type, handler);
 
     if (i < 0) {
       const x = {
         type,
         handler,
-        listener: listener(this, handler)
+        listener: listener(this, handler),
       };
 
       (h[name] || (h[name] = [])).push(x);
@@ -68,8 +68,8 @@ inherits(SVGHandler, Handler, {
   // remove an event handler
   off(type, handler) {
     const name = this.eventName(type),
-          h = this._handlers[name],
-          i = this._handlerIndex(h, type, handler);
+      h = this._handlers[name],
+      i = this._handlerIndex(h, type, handler);
 
     if (i >= 0) {
       if (this._svg) {
@@ -79,5 +79,5 @@ inherits(SVGHandler, Handler, {
     }
 
     return this;
-  }
+  },
 });

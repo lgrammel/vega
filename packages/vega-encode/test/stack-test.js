@@ -1,27 +1,27 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    encode = require('../'),
-    changeset = vega.changeset,
-    Collect = require('vega-transforms').collect,
-    Stack = encode.stack;
+var tape = require("tape"),
+  util = require("vega-util"),
+  vega = require("vega-dataflow"),
+  encode = require("../"),
+  changeset = vega.changeset,
+  Collect = require("vega-transforms").collect,
+  Stack = encode.stack;
 
-tape('Stack stacks numeric values', t => {
+tape("Stack stacks numeric values", (t) => {
   const data = [
-    {key: 'a', value: 1},
-    {key: 'a', value: 2},
-    {key: 'b', value: 3},
-    {key: 'b', value: 4}
+    { key: "a", value: 1 },
+    { key: "a", value: 2 },
+    { key: "b", value: 3 },
+    { key: "b", value: 4 },
   ];
 
   var df = new vega.Dataflow(),
-      gb = df.add([]),
-      c0 = df.add(Collect),
-      st = df.add(Stack, {
-        groupby: gb,
-        field: util.field('value'),
-        pulse: c0
-      });
+    gb = df.add([]),
+    c0 = df.add(Collect),
+    st = df.add(Stack, {
+      groupby: gb,
+      field: util.field("value"),
+      pulse: c0,
+    });
 
   // Insert data
   df.pulse(c0, changeset().insert(data)).run();
@@ -40,7 +40,7 @@ tape('Stack stacks numeric values', t => {
   t.equal(d[3].y1, 10);
 
   // Add groupby field
-  df.update(gb, [util.field('key')]).run();
+  df.update(gb, [util.field("key")]).run();
   t.equal(st.pulse.add.length, 0);
   t.equal(st.pulse.rem.length, 0);
   t.equal(st.pulse.mod.length, 4);
@@ -58,22 +58,22 @@ tape('Stack stacks numeric values', t => {
   t.end();
 });
 
-tape('Stack stacks negative values', t => {
+tape("Stack stacks negative values", (t) => {
   const data = [
-    {key: 'a', value: -1},
-    {key: 'a', value: 2},
-    {key: 'b', value: 3},
-    {key: 'b', value: -4}
+    { key: "a", value: -1 },
+    { key: "a", value: 2 },
+    { key: "b", value: 3 },
+    { key: "b", value: -4 },
   ];
 
   var df = new vega.Dataflow(),
-      gb = df.add([]),
-      c0 = df.add(Collect),
-      st = df.add(Stack, {
-        groupby: gb,
-        field: util.field('value'),
-        pulse: c0
-      });
+    gb = df.add([]),
+    c0 = df.add(Collect),
+    st = df.add(Stack, {
+      groupby: gb,
+      field: util.field("value"),
+      pulse: c0,
+    });
 
   // Insert data
   df.pulse(c0, changeset().insert(data)).run();
@@ -92,7 +92,7 @@ tape('Stack stacks negative values', t => {
   t.equal(d[3].y1, -5);
 
   // Add groupby field
-  df.update(gb, [util.field('key')]).run();
+  df.update(gb, [util.field("key")]).run();
   t.equal(st.pulse.add.length, 0);
   t.equal(st.pulse.rem.length, 0);
   t.equal(st.pulse.mod.length, 4);
@@ -110,22 +110,22 @@ tape('Stack stacks negative values', t => {
   t.end();
 });
 
-tape('Stack stacks coerced string values', t => {
+tape("Stack stacks coerced string values", (t) => {
   const data = [
-    {key: 'a', value: '1'},
-    {key: 'a', value: '2'},
-    {key: 'b', value: '3'},
-    {key: 'b', value: '4'}
+    { key: "a", value: "1" },
+    { key: "a", value: "2" },
+    { key: "b", value: "3" },
+    { key: "b", value: "4" },
   ];
 
   var df = new vega.Dataflow(),
-      gb = df.add([]),
-      c0 = df.add(Collect),
-      st = df.add(Stack, {
-        groupby: gb,
-        field: util.field('value'),
-        pulse: c0
-      });
+    gb = df.add([]),
+    c0 = df.add(Collect),
+    st = df.add(Stack, {
+      groupby: gb,
+      field: util.field("value"),
+      pulse: c0,
+    });
 
   // Insert data
   df.pulse(c0, changeset().insert(data)).run();
@@ -144,7 +144,7 @@ tape('Stack stacks coerced string values', t => {
   t.equal(d[3].y1, 10);
 
   // Add groupby field
-  df.update(gb, [util.field('key')]).run();
+  df.update(gb, [util.field("key")]).run();
   t.equal(st.pulse.add.length, 0);
   t.equal(st.pulse.rem.length, 0);
   t.equal(st.pulse.mod.length, 4);

@@ -1,19 +1,19 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    tx = require('../'),
-    changeset = vega.changeset,
-    Collect = tx.collect,
-    Project = tx.project;
+var tape = require("tape"),
+  util = require("vega-util"),
+  vega = require("vega-dataflow"),
+  tx = require("../"),
+  changeset = vega.changeset,
+  Collect = tx.collect,
+  Project = tx.project;
 
-tape('Project copies tuples', t => {
-  const data = [{'id': 0}, {'id': 1}];
+tape("Project copies tuples", (t) => {
+  const data = [{ id: 0 }, { id: 1 }];
 
-  var id = util.field('id'),
-      df = new vega.Dataflow(),
-      c = df.add(Collect),
-      r = df.add(Project, {pulse:c}),
-      p;
+  var id = util.field("id"),
+    df = new vega.Dataflow(),
+    c = df.add(Collect),
+    r = df.add(Project, { pulse: c }),
+    p;
 
   // test initial insert
   df.pulse(c, changeset().insert(data)).run();
@@ -28,11 +28,11 @@ tape('Project copies tuples', t => {
   // test simultaneous remove and add
   // fake changeset to test invalid configuration
   df.pulse(c, {
-    pulse: function(p) {
+    pulse: function (p) {
       p.add.push(data[0]);
       p.rem.push(data[0]);
       return p;
-    }
+    },
   }).run();
   p = r.pulse;
   t.equal(p.add.length, 1);
@@ -44,9 +44,14 @@ tape('Project copies tuples', t => {
   t.equal(id(p.rem[0]), 0);
 
   // test tuple modification
-  df.pulse(c, changeset()
-    .modify(() => 1, 'id', t => t.id + 2))
-    .run();
+  df.pulse(
+    c,
+    changeset().modify(
+      () => 1,
+      "id",
+      (t) => t.id + 2
+    )
+  ).run();
   p = r.pulse;
   t.equal(p.add.length, 0);
   t.equal(p.rem.length, 0);
@@ -69,17 +74,20 @@ tape('Project copies tuples', t => {
   t.end();
 });
 
-tape('Project projects tuples', t => {
-  const data = [{'id': 0, 'foo': 'a'}, {'id': 1, 'foo': 'b'}];
+tape("Project projects tuples", (t) => {
+  const data = [
+    { id: 0, foo: "a" },
+    { id: 1, foo: "b" },
+  ];
 
-  var id = util.field('id'),
-      df = new vega.Dataflow(),
-      c = df.add(Collect),
-      r = df.add(Project, {
-          fields: [id],
-          pulse: c
-        }),
-      p;
+  var id = util.field("id"),
+    df = new vega.Dataflow(),
+    c = df.add(Collect),
+    r = df.add(Project, {
+      fields: [id],
+      pulse: c,
+    }),
+    p;
 
   // test initial insert
   df.pulse(c, changeset().insert(data)).run();
@@ -94,11 +102,11 @@ tape('Project projects tuples', t => {
   // test simultaneous remove and add
   // fake changeset to test invalid configuration
   df.pulse(c, {
-    pulse: function(p) {
+    pulse: function (p) {
       p.add.push(data[0]);
       p.rem.push(data[0]);
       return p;
-    }
+    },
   }).run();
   p = r.pulse;
   t.equal(p.add.length, 1);
@@ -110,9 +118,14 @@ tape('Project projects tuples', t => {
   t.equal(id(p.rem[0]), 0);
 
   // test tuple modification
-  df.pulse(c, changeset()
-    .modify(() => 1, 'id', t => t.id + 2))
-    .run();
+  df.pulse(
+    c,
+    changeset().modify(
+      () => 1,
+      "id",
+      (t) => t.id + 2
+    )
+  ).run();
   p = r.pulse;
   t.equal(p.add.length, 0);
   t.equal(p.rem.length, 0);
@@ -135,20 +148,23 @@ tape('Project projects tuples', t => {
   t.end();
 });
 
-tape('Project aliases tuples', t => {
-  const data = [{'id': 0, 'foo': 'a'}, {'id': 1, 'foo': 'b'}];
+tape("Project aliases tuples", (t) => {
+  const data = [
+    { id: 0, foo: "a" },
+    { id: 1, foo: "b" },
+  ];
 
-  var id = util.field('id'),
-      foo = util.field('foo'),
-      key = util.field('key'),
-      df = new vega.Dataflow(),
-      c = df.add(Collect),
-      r = df.add(Project, {
-          fields: [id, foo],
-          as: ['key'],
-          pulse: c
-        }),
-      p;
+  var id = util.field("id"),
+    foo = util.field("foo"),
+    key = util.field("key"),
+    df = new vega.Dataflow(),
+    c = df.add(Collect),
+    r = df.add(Project, {
+      fields: [id, foo],
+      as: ["key"],
+      pulse: c,
+    }),
+    p;
 
   // test initial insert
   df.pulse(c, changeset().insert(data)).run();
@@ -159,16 +175,16 @@ tape('Project aliases tuples', t => {
   t.notEqual(p.add[0], data[0]);
   t.notEqual(p.add[1], data[1]);
   t.deepEqual(p.add.map(key), [0, 1]);
-  t.deepEqual(p.add.map(foo), ['a', 'b']);
+  t.deepEqual(p.add.map(foo), ["a", "b"]);
 
   // test simultaneous remove and add
   // fake changeset to test invalid configuration
   df.pulse(c, {
-    pulse: function(p) {
+    pulse: function (p) {
       p.add.push(data[0]);
       p.rem.push(data[0]);
       return p;
-    }
+    },
   }).run();
   p = r.pulse;
   t.equal(p.add.length, 1);
@@ -180,9 +196,14 @@ tape('Project aliases tuples', t => {
   t.equal(key(p.rem[0]), 0);
 
   // test tuple modification
-  df.pulse(c, changeset()
-    .modify(() => 1, 'id', t => t.id + 2))
-    .run();
+  df.pulse(
+    c,
+    changeset().modify(
+      () => 1,
+      "id",
+      (t) => t.id + 2
+    )
+  ).run();
   p = r.pulse;
   t.equal(p.add.length, 0);
   t.equal(p.rem.length, 0);
@@ -190,7 +211,7 @@ tape('Project aliases tuples', t => {
   t.notEqual(p.mod[0], data[0]);
   t.notEqual(p.mod[1], data[1]);
   t.deepEqual(p.mod.map(key), [2, 3]);
-  t.deepEqual(p.mod.map(foo), ['a', 'b']);
+  t.deepEqual(p.mod.map(foo), ["a", "b"]);
 
   // test tuple removal
   df.pulse(c, changeset().remove(data)).run();
@@ -202,28 +223,28 @@ tape('Project aliases tuples', t => {
   t.notEqual(p.rem[0], data[0]);
   t.notEqual(p.rem[1], data[1]);
   t.deepEqual(p.rem.map(key), [2, 3]);
-  t.deepEqual(p.rem.map(foo), ['a', 'b']);
+  t.deepEqual(p.rem.map(foo), ["a", "b"]);
 
   t.end();
 });
 
-tape('Project projects tuples with nested properties', t => {
+tape("Project projects tuples with nested properties", (t) => {
   const data = [
-    {'id': 0, 'obj': {'foo': {'bar': 'a'}}},
-    {'id': 1, 'obj': {'foo': {'bar': 'b'}}}
+    { id: 0, obj: { foo: { bar: "a" } } },
+    { id: 1, obj: { foo: { bar: "b" } } },
   ];
 
-  var id = util.field('id'),
-      foo = util.field('foo'),
-      obj = util.field('obj.foo.bar'),
-      df = new vega.Dataflow(),
-      c = df.add(Collect),
-      r = df.add(Project, {
-          fields: [id, obj],
-          as: ['id', 'foo'],
-          pulse: c
-        }),
-      p;
+  var id = util.field("id"),
+    foo = util.field("foo"),
+    obj = util.field("obj.foo.bar"),
+    df = new vega.Dataflow(),
+    c = df.add(Collect),
+    r = df.add(Project, {
+      fields: [id, obj],
+      as: ["id", "foo"],
+      pulse: c,
+    }),
+    p;
 
   // test initial insert
   df.pulse(c, changeset().insert(data)).run();
@@ -234,16 +255,16 @@ tape('Project projects tuples with nested properties', t => {
   t.notEqual(p.add[0], data[0]);
   t.notEqual(p.add[1], data[1]);
   t.deepEqual(p.add.map(id), [0, 1]);
-  t.deepEqual(p.add.map(foo), ['a', 'b']);
+  t.deepEqual(p.add.map(foo), ["a", "b"]);
 
   // test simultaneous remove and add
   // fake changeset to test invalid configuration
   df.pulse(c, {
-    pulse: function(p) {
+    pulse: function (p) {
       p.add.push(data[0]);
       p.rem.push(data[0]);
       return p;
-    }
+    },
   }).run();
   p = r.pulse;
   t.equal(p.add.length, 1);
@@ -255,9 +276,14 @@ tape('Project projects tuples with nested properties', t => {
   t.equal(id(p.rem[0]), 0);
 
   // test tuple modification
-  df.pulse(c, changeset()
-    .modify(() => 1, 'id', t => t.id + 2))
-    .run();
+  df.pulse(
+    c,
+    changeset().modify(
+      () => 1,
+      "id",
+      (t) => t.id + 2
+    )
+  ).run();
   p = r.pulse;
   t.equal(p.add.length, 0);
   t.equal(p.rem.length, 0);
@@ -265,7 +291,7 @@ tape('Project projects tuples with nested properties', t => {
   t.notEqual(p.mod[0], data[0]);
   t.notEqual(p.mod[1], data[1]);
   t.deepEqual(p.mod.map(id), [2, 3]);
-  t.deepEqual(p.mod.map(foo), ['a', 'b']);
+  t.deepEqual(p.mod.map(foo), ["a", "b"]);
 
   // test tuple removal
   df.pulse(c, changeset().remove(data)).run();
@@ -277,7 +303,7 @@ tape('Project projects tuples with nested properties', t => {
   t.notEqual(p.rem[0], data[0]);
   t.notEqual(p.rem[1], data[1]);
   t.deepEqual(p.rem.map(id), [2, 3]);
-  t.deepEqual(p.rem.map(foo), ['a', 'b']);
+  t.deepEqual(p.rem.map(foo), ["a", "b"]);
 
   t.end();
 });

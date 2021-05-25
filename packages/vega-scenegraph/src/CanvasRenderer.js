@@ -1,12 +1,12 @@
-import Renderer from './Renderer';
-import Bounds from './Bounds';
-import marks from './marks/index';
+import Renderer from "./Renderer";
+import Bounds from "./Bounds";
+import marks from "./marks/index";
 
-import {domClear} from './util/dom';
-import clip from './util/canvas/clip';
-import resize from './util/canvas/resize';
-import {canvas} from 'vega-canvas';
-import {error, inherits} from 'vega-util';
+import { domClear } from "./util/dom";
+import clip from "./util/canvas/clip";
+import resize from "./util/canvas/resize";
+import { canvas } from "vega-canvas";
+import { error, inherits } from "vega-util";
 
 export default function CanvasRenderer(loader) {
   Renderer.call(this, loader);
@@ -18,9 +18,8 @@ export default function CanvasRenderer(loader) {
 
 const base = Renderer.prototype;
 
-const viewBounds = (origin, width, height) => new Bounds()
-  .set(0, 0, width, height)
-  .translate(-origin[0], -origin[1]);
+const viewBounds = (origin, width, height) =>
+  new Bounds().set(0, 0, width, height).translate(-origin[0], -origin[1]);
 
 function clipToBounds(g, b, origin) {
   // expand bounds by 1 pixel, then round to pixel boundaries
@@ -28,7 +27,9 @@ function clipToBounds(g, b, origin) {
 
   // align to base pixel grid in case of non-integer scaling (#2425)
   if (g.pixelRatio % 1) {
-    b.scale(g.pixelRatio).round().scale(1 / g.pixelRatio);
+    b.scale(g.pixelRatio)
+      .round()
+      .scale(1 / g.pixelRatio);
   }
 
   // to avoid artifacts translate if origin has fractional pixels
@@ -52,7 +53,7 @@ inherits(CanvasRenderer, Renderer, {
 
     if (el && this._canvas) {
       domClear(el, 0).appendChild(this._canvas);
-      this._canvas.setAttribute('class', 'marks');
+      this._canvas.setAttribute("class", "marks");
     }
 
     // this method will invoke resize to size the canvas appropriately
@@ -64,12 +65,18 @@ inherits(CanvasRenderer, Renderer, {
 
     if (this._canvas) {
       // configure canvas size and transform
-      resize(this._canvas, this._width, this._height,
-        this._origin, this._scale, this._options.context);
+      resize(
+        this._canvas,
+        this._width,
+        this._height,
+        this._origin,
+        this._scale,
+        this._options.context
+      );
     } else {
       // external context needs to be scaled and positioned to origin
       const ctx = this._options.externalContext;
-      if (!ctx) error('CanvasRenderer is missing a valid canvas or context');
+      if (!ctx) error("CanvasRenderer is missing a valid canvas or context");
       ctx.scale(this._scale, this._scale);
       ctx.translate(this._origin[0], this._origin[1]);
     }
@@ -83,8 +90,10 @@ inherits(CanvasRenderer, Renderer, {
   },
 
   context() {
-    return this._options.externalContext
-      || (this._canvas ? this._canvas.getContext('2d') : null);
+    return (
+      this._options.externalContext ||
+      (this._canvas ? this._canvas.getContext("2d") : null)
+    );
   },
 
   dirty(item) {
@@ -101,17 +110,18 @@ inherits(CanvasRenderer, Renderer, {
 
   _render(scene) {
     const g = this.context(),
-          o = this._origin,
-          w = this._width,
-          h = this._height,
-          db = this._dirty,
-          vb = viewBounds(o, w, h);
+      o = this._origin,
+      w = this._width,
+      h = this._height,
+      db = this._dirty,
+      vb = viewBounds(o, w, h);
 
     // setup
     g.save();
-    const b = this._redraw || db.empty()
-      ? (this._redraw = false, vb.expand(1))
-      : clipToBounds(g, vb.intersect(db), o);
+    const b =
+      this._redraw || db.empty()
+        ? ((this._redraw = false), vb.expand(1))
+        : clipToBounds(g, vb.intersect(db), o);
 
     this.clear(-o[0], -o[1], w, h);
 
@@ -134,9 +144,9 @@ inherits(CanvasRenderer, Renderer, {
 
   clear(x, y, w, h) {
     const opt = this._options,
-          g = this.context();
+      g = this.context();
 
-    if (opt.type !== 'pdf' && !opt.externalContext) {
+    if (opt.type !== "pdf" && !opt.externalContext) {
       // calling clear rect voids vector output in pdf mode
       // and could remove external context content (#2615)
       g.clearRect(x, y, w, h);
@@ -146,5 +156,5 @@ inherits(CanvasRenderer, Renderer, {
       g.fillStyle = this._bgcolor;
       g.fillRect(x, y, w, h);
     }
-  }
+  },
 });

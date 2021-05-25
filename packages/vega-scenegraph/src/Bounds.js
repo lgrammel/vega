@@ -102,17 +102,21 @@ Bounds.prototype = {
   },
 
   rotatedPoints(angle, x, y) {
-    var {x1, y1, x2, y2} = this,
-        cos = Math.cos(angle),
-        sin = Math.sin(angle),
-        cx = x - x * cos + y * sin,
-        cy = y - x * sin - y * cos;
+    var { x1, y1, x2, y2 } = this,
+      cos = Math.cos(angle),
+      sin = Math.sin(angle),
+      cx = x - x * cos + y * sin,
+      cy = y - x * sin - y * cos;
 
     return [
-      cos * x1 - sin * y1 + cx, sin * x1 + cos * y1 + cy,
-      cos * x1 - sin * y2 + cx, sin * x1 + cos * y2 + cy,
-      cos * x2 - sin * y1 + cx, sin * x2 + cos * y1 + cy,
-      cos * x2 - sin * y2 + cx, sin * x2 + cos * y2 + cy
+      cos * x1 - sin * y1 + cx,
+      sin * x1 + cos * y1 + cy,
+      cos * x1 - sin * y2 + cx,
+      sin * x1 + cos * y2 + cy,
+      cos * x2 - sin * y1 + cx,
+      sin * x2 + cos * y1 + cy,
+      cos * x2 - sin * y2 + cx,
+      sin * x2 + cos * y2 + cy,
     ];
   },
 
@@ -133,7 +137,8 @@ Bounds.prototype = {
   },
 
   encloses(b) {
-    return b && (
+    return (
+      b &&
       this.x1 <= b.x1 &&
       this.x2 >= b.x2 &&
       this.y1 <= b.y1 &&
@@ -142,30 +147,21 @@ Bounds.prototype = {
   },
 
   alignsWith(b) {
-    return b && (
-      this.x1 == b.x1 ||
-      this.x2 == b.x2 ||
-      this.y1 == b.y1 ||
-      this.y2 == b.y2
+    return (
+      b &&
+      (this.x1 == b.x1 || this.x2 == b.x2 || this.y1 == b.y1 || this.y2 == b.y2)
     );
   },
 
   intersects(b) {
-    return b && !(
-      this.x2 < b.x1 ||
-      this.x1 > b.x2 ||
-      this.y2 < b.y1 ||
-      this.y1 > b.y2
+    return (
+      b &&
+      !(this.x2 < b.x1 || this.x1 > b.x2 || this.y2 < b.y1 || this.y1 > b.y2)
     );
   },
 
   contains(x, y) {
-    return !(
-      x < this.x1 ||
-      x > this.x2 ||
-      y < this.y1 ||
-      y > this.y2
-    );
+    return !(x < this.x1 || x > this.x2 || y < this.y1 || y > this.y2);
   },
 
   width() {
@@ -174,5 +170,5 @@ Bounds.prototype = {
 
   height() {
     return this.y2 - this.y1;
-  }
+  },
 };

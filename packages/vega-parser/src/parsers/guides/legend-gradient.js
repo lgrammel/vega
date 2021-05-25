@@ -1,16 +1,16 @@
-import {one, zero} from './constants';
-import guideMark from './guide-mark';
-import {lookup} from './guide-util';
-import {addEncoders, encoder} from '../encode/util';
-import {RectMark} from '../marks/marktypes';
-import {LegendGradientRole} from '../marks/roles';
-import {extend} from 'vega-util';
+import { one, zero } from "./constants";
+import guideMark from "./guide-mark";
+import { lookup } from "./guide-util";
+import { addEncoders, encoder } from "../encode/util";
+import { RectMark } from "../marks/marktypes";
+import { LegendGradientRole } from "../marks/roles";
+import { extend } from "vega-util";
 
-export default function(spec, scale, config, userEncode) {
+export default function (spec, scale, config, userEncode) {
   const _ = lookup(spec, config),
-        vertical = _.isVertical(),
-        thickness = _.gradientThickness(),
-        length = _.gradientLength();
+    vertical = _.isVertical(),
+    thickness = _.gradientThickness(),
+    length = _.gradientLength();
 
   let enter, start, stop, width, height;
 
@@ -27,32 +27,40 @@ export default function(spec, scale, config, userEncode) {
   }
 
   const encode = {
-    enter: enter = {
+    enter: (enter = {
       opacity: zero,
       x: zero,
       y: zero,
       width: encoder(width),
-      height: encoder(height)
-    },
+      height: encoder(height),
+    }),
     update: extend({}, enter, {
       opacity: one,
-      fill: {gradient: scale, start: start, stop: stop}
+      fill: { gradient: scale, start: start, stop: stop },
     }),
     exit: {
-      opacity: zero
-    }
+      opacity: zero,
+    },
   };
 
-  addEncoders(encode, {
-    stroke:      _('gradientStrokeColor'),
-    strokeWidth: _('gradientStrokeWidth')
-  }, { // update
-    opacity:     _('gradientOpacity')
-  });
+  addEncoders(
+    encode,
+    {
+      stroke: _("gradientStrokeColor"),
+      strokeWidth: _("gradientStrokeWidth"),
+    },
+    {
+      // update
+      opacity: _("gradientOpacity"),
+    }
+  );
 
-  return guideMark({
-    type: RectMark,
-    role: LegendGradientRole,
-    encode
-  }, userEncode);
+  return guideMark(
+    {
+      type: RectMark,
+      role: LegendGradientRole,
+      encode,
+    },
+    userEncode
+  );
 }

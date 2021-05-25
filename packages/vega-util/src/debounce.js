@@ -1,11 +1,8 @@
-export default function(delay, handler) {
+export default function (delay, handler) {
   let tid;
 
-  return e => {
+  return (e) => {
     if (tid) clearTimeout(tid);
-    tid = setTimeout(
-      () => (handler(e), tid = null),
-      delay
-    );
+    tid = setTimeout(() => (handler(e), (tid = null)), delay);
   };
 }

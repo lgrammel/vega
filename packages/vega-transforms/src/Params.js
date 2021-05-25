@@ -1,5 +1,5 @@
-import {Transform} from 'vega-dataflow';
-import {inherits} from 'vega-util';
+import { Transform } from "vega-dataflow";
+import { inherits } from "vega-util";
 
 /**
  * Operator whose value is simply its parameter hash. This operator is
@@ -16,5 +16,5 @@ inherits(Params, Transform, {
     this.modified(_.modified());
     this.value = _;
     return pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS); // do not pass tuples
-  }
+  },
 });

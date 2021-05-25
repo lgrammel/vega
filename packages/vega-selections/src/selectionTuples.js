@@ -1,4 +1,4 @@
-import {extend, field} from 'vega-util';
+import { extend, field } from "vega-util";
 
 /**
  * Maps an array of scene graph items to an array of selection tuples.
@@ -8,7 +8,14 @@ import {extend, field} from 'vega-util';
  * @returns {array} An array of selection entries for the given unit.
  */
 export function selectionTuples(array, base) {
-  return array.map(x => extend({
-    values: base.fields.map(f => (f.getter || (f.getter = field(f.field)))(x.datum))
-  }, base));
+  return array.map((x) =>
+    extend(
+      {
+        values: base.fields.map((f) =>
+          (f.getter || (f.getter = field(f.field)))(x.datum)
+        ),
+      },
+      base
+    )
+  );
 }

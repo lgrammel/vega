@@ -1,40 +1,79 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    transforms = util.extend({}, require('vega-transforms'), require('vega-encode')),
-    runtime = require('../');
+var tape = require("tape"),
+  util = require("vega-util"),
+  vega = require("vega-dataflow"),
+  transforms = util.extend(
+    {},
+    require("vega-transforms"),
+    require("vega-encode")
+  ),
+  runtime = require("../");
 
-tape('Parser parses dataflow specs', t => {
+tape("Parser parses dataflow specs", (t) => {
   const values = [
-    {'x': 1,  'y': 28},
-    {'x': 2,  'y': 43},
-    {'x': 3,  'y': 81},
-    {'x': 4,  'y': 19},
-    {'x': 4,  'y': 20}
+    { x: 1, y: 28 },
+    { x: 2, y: 43 },
+    { x: 3, y: 81 },
+    { x: 4, y: 19 },
+    { x: 4, y: 20 },
   ];
-  const spec = {operators: [
-    {id:0, type:'Operator', value:500},
-    {id:1, type:'Operator', value:300},
-    {id:2, type:'Collect',  value:{$ingest: values}},
-    {id:3, type:'Aggregate', params:{groupby:{$field:'x'}, pulse:{$ref:2}}},
-    {id:4, type:'Collect',  params:{pulse:{$ref:3}}},
-    {id:5, type:'Values', params:{field:{$field:'x'}, pulse:{$ref:4}}},
-    {id:6, type:'Scale', params:{type:'band', range:[0,{$ref:0}], zero:false, domain:{$ref:5}}},
-    {id:7, type:'Extent', params:{field:{$field:'y'}, pulse:{$ref:2}}},
-    {id:8, type:'Scale', params:{type:'linear', range:[{$ref:1},0], zero:false, domain:{$ref:7}}}
-  ]};
+  const spec = {
+    operators: [
+      { id: 0, type: "Operator", value: 500 },
+      { id: 1, type: "Operator", value: 300 },
+      { id: 2, type: "Collect", value: { $ingest: values } },
+      {
+        id: 3,
+        type: "Aggregate",
+        params: { groupby: { $field: "x" }, pulse: { $ref: 2 } },
+      },
+      { id: 4, type: "Collect", params: { pulse: { $ref: 3 } } },
+      {
+        id: 5,
+        type: "Values",
+        params: { field: { $field: "x" }, pulse: { $ref: 4 } },
+      },
+      {
+        id: 6,
+        type: "Scale",
+        params: {
+          type: "band",
+          range: [0, { $ref: 0 }],
+          zero: false,
+          domain: { $ref: 5 },
+        },
+      },
+      {
+        id: 7,
+        type: "Extent",
+        params: { field: { $field: "y" }, pulse: { $ref: 2 } },
+      },
+      {
+        id: 8,
+        type: "Scale",
+        params: {
+          type: "linear",
+          range: [{ $ref: 1 }, 0],
+          zero: false,
+          domain: { $ref: 7 },
+        },
+      },
+    ],
+  };
 
-  var df  = new vega.Dataflow(),
-      ctx = runtime.context(df, transforms).parse(spec),
-      ops = ctx.nodes,
-      ids = Object.keys(ops);
+  var df = new vega.Dataflow(),
+    ctx = runtime.context(df, transforms).parse(spec),
+    ops = ctx.nodes,
+    ids = Object.keys(ops);
 
   t.equal(Object.keys(ctx.fn).length, 2);
   t.equal(ids.length, spec.operators.length);
 
   df.run();
 
-  t.equal(ids.reduce((sum, id) => sum + +(ops[id].stamp === df.stamp()), 0), spec.operators.length);
+  t.equal(
+    ids.reduce((sum, id) => sum + +(ops[id].stamp === df.stamp()), 0),
+    spec.operators.length
+  );
 
   t.equal(ops[0].value, 500);
 

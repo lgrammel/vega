@@ -1,12 +1,6 @@
-export {
-  data,
-  indata,
-  setdata
-} from './src/functions/data';
+export { data, indata, setdata } from "./src/functions/data";
 
-export {
-  default as encode
-} from './src/functions/encode';
+export { default as encode } from "./src/functions/encode";
 
 export {
   format,
@@ -17,46 +11,24 @@ export {
   monthFormat,
   monthAbbrevFormat,
   dayFormat,
-  dayAbbrevFormat
-} from './src/functions/format';
+  dayAbbrevFormat,
+} from "./src/functions/format";
 
-export {
-  geoArea,
-  geoBounds,
-  geoCentroid
-} from './src/functions/geo';
+export { geoArea, geoBounds, geoCentroid } from "./src/functions/geo";
 
-export {
-  default as inScope
-} from './src/functions/inscope';
+export { default as inScope } from "./src/functions/inscope";
 
-export {
-  warn,
-  info,
-  debug
-} from './src/functions/log';
+export { warn, info, debug } from "./src/functions/log";
 
-export {
-  luminance,
-  contrast
-} from './src/functions/luminance';
+export { luminance, contrast } from "./src/functions/luminance";
 
-export {
-  default as merge
-} from './src/functions/merge';
+export { default as merge } from "./src/functions/merge";
 
-export {
-  default as modify
-} from './src/functions/modify';
+export { default as modify } from "./src/functions/modify";
 
-export {
-  pinchDistance,
-  pinchAngle
-} from './src/functions/pinch';
+export { pinchDistance, pinchAngle } from "./src/functions/pinch";
 
-export {
-  default as pluck
-} from './src/functions/pluck';
+export { default as pluck } from "./src/functions/pluck";
 
 export {
   indexof,
@@ -64,8 +36,8 @@ export {
   lastindexof,
   replace,
   reverse,
-  slice
-} from './src/functions/sequence';
+  slice,
+} from "./src/functions/sequence";
 
 export {
   range,
@@ -74,49 +46,31 @@ export {
   bandspace,
   copy,
   scale,
-  invert
-} from './src/functions/scale';
+  invert,
+} from "./src/functions/scale";
 
-export {
-  default as scaleGradient
-} from './src/functions/scale-gradient';
+export { default as scaleGradient } from "./src/functions/scale-gradient";
 
-export {
-  geoShape,
-  pathShape
-} from './src/functions/shape';
+export { geoShape, pathShape } from "./src/functions/shape";
 
-export {
-  treePath,
-  treeAncestors
-} from './src/functions/tree';
+export { treePath, treeAncestors } from "./src/functions/tree";
 
-export {
-  containerSize,
-  screen,
-  windowSize
-} from './src/functions/window';
+export { containerSize, screen, windowSize } from "./src/functions/window";
 
 export {
   codegenParams,
   codeGenerator,
   expressionFunction,
-  functionContext
-} from './src/codegen';
+  functionContext,
+} from "./src/codegen";
 
 export {
   DataPrefix,
   IndexPrefix,
   ScalePrefix,
-  SignalPrefix
-} from './src/constants.js';
+  SignalPrefix,
+} from "./src/constants.js";
 
-export {
-  default as parseExpression
-} from './src/parser';
+export { default as parseExpression } from "./src/parser";
 
-export {
-  dataVisitor,
-  indataVisitor,
-  scaleVisitor
-} from './src/visitors';
+export { dataVisitor, indataVisitor, scaleVisitor } from "./src/visitors";

@@ -1,14 +1,26 @@
-import Handler from './Handler';
-import Marks from './marks/index';
+import Handler from "./Handler";
+import Marks from "./marks/index";
 import {
-  ClickEvent, DragEnterEvent, DragLeaveEvent, DragOverEvent, Events,
-  HrefEvent, MouseDownEvent, MouseMoveEvent, MouseOutEvent, MouseOverEvent,
-  MouseWheelEvent, TooltipHideEvent, TooltipShowEvent,
-  TouchEndEvent, TouchMoveEvent, TouchStartEvent
-} from './util/events';
-import point from './util/point';
-import {domFind} from './util/dom';
-import {inherits} from 'vega-util';
+  ClickEvent,
+  DragEnterEvent,
+  DragLeaveEvent,
+  DragOverEvent,
+  Events,
+  HrefEvent,
+  MouseDownEvent,
+  MouseMoveEvent,
+  MouseOutEvent,
+  MouseOverEvent,
+  MouseWheelEvent,
+  TooltipHideEvent,
+  TooltipShowEvent,
+  TouchEndEvent,
+  TouchMoveEvent,
+  TouchStartEvent,
+} from "./util/events";
+import point from "./util/point";
+import { domFind } from "./util/dom";
+import { inherits } from "vega-util";
 
 export default function CanvasHandler(loader, tooltip) {
   Handler.call(this, loader, tooltip);
@@ -18,34 +30,33 @@ export default function CanvasHandler(loader, tooltip) {
   this._events = {};
 }
 
-const eventBundle = type => (
-  type === TouchStartEvent ||
-  type === TouchMoveEvent ||
-  type === TouchEndEvent
-)
-? [TouchStartEvent, TouchMoveEvent, TouchEndEvent]
-: [type];
+const eventBundle = (type) =>
+  type === TouchStartEvent || type === TouchMoveEvent || type === TouchEndEvent
+    ? [TouchStartEvent, TouchMoveEvent, TouchEndEvent]
+    : [type];
 
 // lazily add listeners to the canvas as needed
 function eventListenerCheck(handler, type) {
-  eventBundle(type).forEach(_ => addEventListener(handler, _));
+  eventBundle(type).forEach((_) => addEventListener(handler, _));
 }
 
 function addEventListener(handler, type) {
   const canvas = handler.canvas();
   if (canvas && !handler._events[type]) {
     handler._events[type] = 1;
-    canvas.addEventListener(type, handler[type]
-      ? evt => handler[type](evt)
-      : evt => handler.fire(type, evt)
+    canvas.addEventListener(
+      type,
+      handler[type]
+        ? (evt) => handler[type](evt)
+        : (evt) => handler.fire(type, evt)
     );
   }
 }
 
 function move(moveEvent, overEvent, outEvent) {
-  return function(evt) {
+  return function (evt) {
     const a = this._active,
-          p = this.pickEvent(evt);
+      p = this.pickEvent(evt);
 
     if (p === a) {
       // active item and picked item are the same
@@ -57,7 +68,7 @@ function move(moveEvent, overEvent, outEvent) {
         // suppress if active item was removed from scene
         this.fire(outEvent, evt);
       }
-      this._active = p;          // set new active item
+      this._active = p; // set new active item
       this.fire(overEvent, evt); // fire over for new active item
       this.fire(moveEvent, evt); // fire move for new active item
     }
@@ -65,7 +76,7 @@ function move(moveEvent, overEvent, outEvent) {
 }
 
 function inactive(type) {
-  return function(evt) {
+  return function (evt) {
     this.fire(type, evt);
     this._active = null;
   };
@@ -73,11 +84,16 @@ function inactive(type) {
 
 inherits(CanvasHandler, Handler, {
   initialize(el, origin, obj) {
-    this._canvas = el && domFind(el, 'canvas');
+    this._canvas = el && domFind(el, "canvas");
 
     // add minimal events required for proper state management
-    [ClickEvent, MouseDownEvent, MouseMoveEvent, MouseOutEvent, DragLeaveEvent]
-      .forEach(type => eventListenerCheck(this, type));
+    [
+      ClickEvent,
+      MouseDownEvent,
+      MouseMoveEvent,
+      MouseOutEvent,
+      DragLeaveEvent,
+    ].forEach((type) => eventListenerCheck(this, type));
 
     return Handler.prototype.initialize.call(this, el, origin, obj);
   },
@@ -89,7 +105,7 @@ inherits(CanvasHandler, Handler, {
 
   // retrieve the current canvas context
   context() {
-    return this._canvas.getContext('2d');
+    return this._canvas.getContext("2d");
   },
 
   // supported events
@@ -141,7 +157,7 @@ inherits(CanvasHandler, Handler, {
   // fire an event
   fire(type, evt, touch) {
     const a = touch ? this._touch : this._active,
-          h = this._handlers[type];
+      h = this._handlers[type];
 
     // set event type relative to scenegraph items
     evt.vegaType = type;
@@ -155,7 +171,7 @@ inherits(CanvasHandler, Handler, {
 
     // invoke all registered handlers
     if (h) {
-      for (let i=0, len=h.length; i<len; ++i) {
+      for (let i = 0, len = h.length; i < len; ++i) {
         h[i].handler.call(this._obj, evt, a);
       }
     }
@@ -164,14 +180,14 @@ inherits(CanvasHandler, Handler, {
   // add an event handler
   on(type, handler) {
     const name = this.eventName(type),
-          h = this._handlers,
-          i = this._handlerIndex(h[name], type, handler);
+      h = this._handlers,
+      i = this._handlerIndex(h[name], type, handler);
 
     if (i < 0) {
       eventListenerCheck(this, type);
       (h[name] || (h[name] = [])).push({
-        type:    type,
-        handler: handler
+        type: type,
+        handler: handler,
       });
     }
 
@@ -181,8 +197,8 @@ inherits(CanvasHandler, Handler, {
   // remove an event handler
   off(type, handler) {
     const name = this.eventName(type),
-          h = this._handlers[name],
-          i = this._handlerIndex(h, type, handler);
+      h = this._handlers[name],
+      i = this._handlerIndex(h, type, handler);
 
     if (i >= 0) {
       h.splice(i, 1);
@@ -193,7 +209,7 @@ inherits(CanvasHandler, Handler, {
 
   pickEvent(evt) {
     const p = point(evt, this._canvas),
-          o = this._origin;
+      o = this._origin;
     return this.pick(this._scene, p[0], p[1], p[0] - o[0], p[1] - o[1]);
   },
 
@@ -202,7 +218,7 @@ inherits(CanvasHandler, Handler, {
   // gx, gy -- the relative coordinates within the current group
   pick(scene, x, y, gx, gy) {
     const g = this.context(),
-          mark = Marks[scene.marktype];
+      mark = Marks[scene.marktype];
     return mark.pick.call(this, g, scene, x, y, gx, gy);
-  }
+  },
 });

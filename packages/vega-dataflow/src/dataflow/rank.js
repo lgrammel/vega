@@ -1,4 +1,4 @@
-import {error} from 'vega-util';
+import { error } from "vega-util";
 
 /**
  * Assigns a rank to an operator. Ranks are assigned in increasing order
@@ -20,11 +20,11 @@ export function rerank(op) {
   let cur, list, i;
 
   while (queue.length) {
-    this.rank(cur = queue.pop());
-    if (list = cur._targets) {
-      for (i=list.length; --i >= 0;) {
-        queue.push(cur = list[i]);
-        if (cur === op) error('Cycle detected in dataflow graph.');
+    this.rank((cur = queue.pop()));
+    if ((list = cur._targets)) {
+      for (i = list.length; --i >= 0; ) {
+        queue.push((cur = list[i]));
+        if (cur === op) error("Cycle detected in dataflow graph.");
       }
     }
   }

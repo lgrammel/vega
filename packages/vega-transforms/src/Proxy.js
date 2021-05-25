@@ -1,5 +1,5 @@
-import {Transform} from 'vega-dataflow';
-import {inherits} from 'vega-util';
+import { Transform } from "vega-dataflow";
+import { inherits } from "vega-util";
 
 /**
  * Proxy the value of another operator as a pure signal value.
@@ -15,8 +15,8 @@ export default function Proxy(params) {
 inherits(Proxy, Transform, {
   transform(_, pulse) {
     this.value = _.value;
-    return _.modified('value')
+    return _.modified("value")
       ? pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS)
       : pulse.StopPropagation;
-  }
+  },
 });

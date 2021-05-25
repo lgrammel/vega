@@ -1,25 +1,21 @@
-import {isObject, stringValue} from 'vega-util';
+import { isObject, stringValue } from "vega-util";
 
-export default function(clip, scope) {
+export default function (clip, scope) {
   let expr;
 
   if (isObject(clip)) {
     if (clip.signal) {
       expr = clip.signal;
     } else if (clip.path) {
-      expr = 'pathShape(' + param(clip.path) + ')';
+      expr = "pathShape(" + param(clip.path) + ")";
     } else if (clip.sphere) {
-      expr = 'geoShape(' + param(clip.sphere) + ', {type: "Sphere"})';
+      expr = "geoShape(" + param(clip.sphere) + ', {type: "Sphere"})';
     }
   }
 
-  return expr
-    ? scope.signalRef(expr)
-    : !!clip;
+  return expr ? scope.signalRef(expr) : !!clip;
 }
 
 function param(value) {
-  return isObject(value) && value.signal
-    ? value.signal
-    : stringValue(value);
+  return isObject(value) && value.signal ? value.signal : stringValue(value);
 }

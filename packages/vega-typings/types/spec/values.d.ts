@@ -1,5 +1,5 @@
-import { Color } from './color';
-import { StrokeCap } from './config';
+import { Color } from "./color";
+import { StrokeCap } from "./config";
 import {
   Align,
   AlignValueRef,
@@ -20,8 +20,8 @@ import {
   SymbolShapeValueRef,
   TextBaseline,
   TextBaselineValueRef,
-} from './encode';
-import { TitleAnchor } from './title';
+} from "./encode";
+import { TitleAnchor } from "./title";
 
 export type NumberValue = number | NumericValueRef;
 

@@ -1,5 +1,5 @@
-import {Transform} from 'vega-dataflow';
-import {inherits} from 'vega-util';
+import { Transform } from "vega-dataflow";
+import { inherits } from "vega-util";
 
 /**
  * Invokes a function for each data tuple and saves the results as a new field.
@@ -15,24 +15,27 @@ export default function Formula(params) {
 }
 
 Formula.Definition = {
-  'type': 'Formula',
-  'metadata': {'modifies': true},
-  'params': [
-    { 'name': 'expr', 'type': 'expr', 'required': true },
-    { 'name': 'as', 'type': 'string', 'required': true },
-    { 'name': 'initonly', 'type': 'boolean' }
-  ]
+  type: "Formula",
+  metadata: { modifies: true },
+  params: [
+    { name: "expr", type: "expr", required: true },
+    { name: "as", type: "string", required: true },
+    { name: "initonly", type: "boolean" },
+  ],
 };
 
 inherits(Formula, Transform, {
-  transform (_, pulse) {
+  transform(_, pulse) {
     const func = _.expr,
-          as = _.as,
-          mod = _.modified(),
-          flag = _.initonly ? pulse.ADD
-            : mod ? pulse.SOURCE
-            : pulse.modified(func.fields) || pulse.modified(as) ? pulse.ADD_MOD
-            : pulse.ADD;
+      as = _.as,
+      mod = _.modified(),
+      flag = _.initonly
+        ? pulse.ADD
+        : mod
+        ? pulse.SOURCE
+        : pulse.modified(func.fields) || pulse.modified(as)
+        ? pulse.ADD_MOD
+        : pulse.ADD;
 
     if (mod) {
       // parameters updated, need to reflow
@@ -43,6 +46,6 @@ inherits(Formula, Transform, {
       pulse.modifies(as);
     }
 
-    return pulse.visit(flag, t => t[as] = func(t, _));
-  }
+    return pulse.visit(flag, (t) => (t[as] = func(t, _)));
+  },
 });

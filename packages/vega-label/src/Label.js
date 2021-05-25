@@ -1,24 +1,18 @@
-import labelLayout from './LabelLayout';
-import {Transform} from 'vega-dataflow';
-import {array, error, inherits, isFunction} from 'vega-util';
+import labelLayout from "./LabelLayout";
+import { Transform } from "vega-dataflow";
+import { array, error, inherits, isFunction } from "vega-util";
 
-const Output = [
-  'x',
-  'y',
-  'opacity',
-  'align',
-  'baseline'
-];
+const Output = ["x", "y", "opacity", "align", "baseline"];
 
 const Anchors = [
-  'top-left',
-  'left',
-  'bottom-left',
-  'top',
-  'bottom',
-  'top-right',
-  'right',
-  'bottom-right'
+  "top-left",
+  "left",
+  "bottom-left",
+  "top",
+  "bottom",
+  "top-right",
+  "right",
+  "bottom-right",
 ];
 
 /**
@@ -52,21 +46,32 @@ export default function Label(params) {
 }
 
 Label.Definition = {
-  type: 'Label',
+  type: "Label",
   metadata: { modifies: true },
   params: [
-    { name: 'size', type: 'number', array: true, length: 2, required: true },
-    { name: 'sort', type: 'compare' },
-    { name: 'anchor', type: 'string', array: true, default: Anchors },
-    { name: 'offset', type: 'number', array: true, default: [1] },
-    { name: 'padding', type: 'number', default: 0 },
-    { name: 'lineAnchor', type: 'string', values: ['start', 'end'], default: 'end' },
-    { name: 'markIndex', type: 'number', default: 0 },
-    { name: 'avoidBaseMark', type: 'boolean', default: true },
-    { name: 'avoidMarks', type: 'data', array: true },
-    { name: 'method', type: 'string', default: 'naive'},
-    { name: 'as', type: 'string', array: true, length: Output.length, default: Output }
-  ]
+    { name: "size", type: "number", array: true, length: 2, required: true },
+    { name: "sort", type: "compare" },
+    { name: "anchor", type: "string", array: true, default: Anchors },
+    { name: "offset", type: "number", array: true, default: [1] },
+    { name: "padding", type: "number", default: 0 },
+    {
+      name: "lineAnchor",
+      type: "string",
+      values: ["start", "end"],
+      default: "end",
+    },
+    { name: "markIndex", type: "number", default: 0 },
+    { name: "avoidBaseMark", type: "boolean", default: true },
+    { name: "avoidMarks", type: "data", array: true },
+    { name: "method", type: "string", default: "naive" },
+    {
+      name: "as",
+      type: "string",
+      array: true,
+      length: Output.length,
+      default: Output,
+    },
+  ],
 };
 
 inherits(Label, Transform, {
@@ -77,9 +82,9 @@ inherits(Label, Transform, {
     }
 
     const mod = _.modified();
-    if (!(mod || pulse.changed(pulse.ADD_REM) || modp('sort'))) return;
+    if (!(mod || pulse.changed(pulse.ADD_REM) || modp("sort"))) return;
     if (!_.size || _.size.length !== 2) {
-      error('Size parameter should be specified as a [width, height] array.');
+      error("Size parameter should be specified as a [width, height] array.");
     }
 
     const as = _.as || Output;
@@ -93,11 +98,11 @@ inherits(Label, Transform, {
       array(_.anchor || Anchors),
       _.avoidMarks || [],
       _.avoidBaseMark !== false,
-      _.lineAnchor || 'end',
+      _.lineAnchor || "end",
       _.markIndex || 0,
       _.padding || 0,
-      _.method || 'naive'
-    ).forEach(l => {
+      _.method || "naive"
+    ).forEach((l) => {
       // write layout results to data stream
       const t = l.datum;
       t[as[0]] = l.x;
@@ -108,5 +113,5 @@ inherits(Label, Transform, {
     });
 
     return pulse.reflow(mod).modifies(as);
-  }
+  },
 });

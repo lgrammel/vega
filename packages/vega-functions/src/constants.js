@@ -1,4 +1,4 @@
-export const DataPrefix   = ':';
-export const IndexPrefix  = '@';
-export const ScalePrefix  = '%';
-export const SignalPrefix = '$';
+export const DataPrefix = ":";
+export const IndexPrefix = "@";
+export const ScalePrefix = "%";
+export const SignalPrefix = "$";

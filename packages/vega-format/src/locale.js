@@ -1,16 +1,16 @@
 import {
   numberFormatDefaultLocale,
   numberFormatLocale,
-  resetNumberFormatDefaultLocale
-} from './number';
+  resetNumberFormatDefaultLocale,
+} from "./number";
 
 import {
   resetTimeFormatDefaultLocale,
   timeFormatDefaultLocale,
-  timeFormatLocale
-} from './time';
+  timeFormatLocale,
+} from "./time";
 
-import {error, extend} from 'vega-util';
+import { error, extend } from "vega-util";
 
 const createLocale = (number, time) => extend({}, number, time);
 
@@ -29,7 +29,7 @@ export function locale(numberSpec, timeSpec) {
 export function defaultLocale(numberSpec, timeSpec) {
   const args = arguments.length;
   if (args && args !== 2) {
-    error('defaultLocale expects either zero or two arguments.');
+    error("defaultLocale expects either zero or two arguments.");
   }
 
   return args
@@ -37,10 +37,7 @@ export function defaultLocale(numberSpec, timeSpec) {
         numberFormatDefaultLocale(numberSpec),
         timeFormatDefaultLocale(timeSpec)
       )
-    : createLocale(
-        numberFormatDefaultLocale(),
-        timeFormatDefaultLocale()
-      );
+    : createLocale(numberFormatDefaultLocale(), timeFormatDefaultLocale());
 }
 
 export function resetDefaultLocale() {

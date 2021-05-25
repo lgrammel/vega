@@ -1,5 +1,5 @@
-import {transforms} from 'vega-dataflow';
-import {isArray} from 'vega-util';
+import { transforms } from "vega-dataflow";
+import { isArray } from "vega-util";
 
 /**
  * Get the current view state, consisting of signal values and/or data sets.
@@ -18,21 +18,21 @@ import {isArray} from 'vega-util';
  * @return {object} - An object containing the exported state values.
  */
 export function getState(options) {
-  return this._runtime.getState(options || {
-    data:    dataTest,
-    signals: signalTest,
-    recurse: true
-  });
+  return this._runtime.getState(
+    options || {
+      data: dataTest,
+      signals: signalTest,
+      recurse: true,
+    }
+  );
 }
 
 function dataTest(name, data) {
-  return data.modified
-      && isArray(data.input.value)
-      && name.indexOf('_:vega:_');
+  return data.modified && isArray(data.input.value) && name.indexOf("_:vega:_");
 }
 
 function signalTest(name, op) {
-  return !(name === 'parent' || op instanceof transforms.proxy);
+  return !(name === "parent" || op instanceof transforms.proxy);
 }
 
 /**
@@ -42,9 +42,15 @@ function signalTest(name, op) {
  * @return {View} - This view instance.
  */
 export function setState(state) {
-  this.runAsync(null,
-    v => { v._trigger = false; v._runtime.setState(state); },
-    v => { v._trigger = true; }
+  this.runAsync(
+    null,
+    (v) => {
+      v._trigger = false;
+      v._runtime.setState(state);
+    },
+    (v) => {
+      v._trigger = true;
+    }
   );
   return this;
 }

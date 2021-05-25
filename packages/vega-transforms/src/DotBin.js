@@ -1,9 +1,9 @@
-import {partition} from './util/util';
-import {Transform, stableCompare} from 'vega-dataflow';
-import {dotbin} from 'vega-statistics';
-import {extent, identity, inherits, span} from 'vega-util';
+import { partition } from "./util/util";
+import { Transform, stableCompare } from "vega-dataflow";
+import { dotbin } from "vega-statistics";
+import { extent, identity, inherits, span } from "vega-util";
 
-const Output = 'bin';
+const Output = "bin";
 
 /**
  * Dot density binning for dot plot construction.
@@ -23,15 +23,15 @@ export default function DotBin(params) {
 }
 
 DotBin.Definition = {
-  'type': 'DotBin',
-  'metadata': {'modifies': true},
-  'params': [
-    { 'name': 'field', 'type': 'field', 'required': true },
-    { 'name': 'groupby', 'type': 'field', 'array': true },
-    { 'name': 'step', 'type': 'number' },
-    { 'name': 'smooth', 'type': 'boolean', 'default': false },
-    { 'name': 'as', 'type': 'string', 'default': Output }
-  ]
+  type: "DotBin",
+  metadata: { modifies: true },
+  params: [
+    { name: "field", type: "field", required: true },
+    { name: "groupby", type: "field", array: true },
+    { name: "step", type: "number" },
+    { name: "smooth", type: "boolean", default: false },
+    { name: "as", type: "string", default: Output },
+  ],
 };
 
 const autostep = (data, field) => span(extent(data, field)) / 30;
@@ -43,17 +43,20 @@ inherits(DotBin, Transform, {
     }
 
     const source = pulse.materialize(pulse.SOURCE).source,
-          groups = partition(pulse.source, _.groupby, identity),
-          smooth = _.smooth || false,
-          field = _.field,
-          step = _.step || autostep(source, field),
-          sort = stableCompare((a, b) => field(a) - field(b)),
-          as = _.as || Output,
-          n = groups.length;
+      groups = partition(pulse.source, _.groupby, identity),
+      smooth = _.smooth || false,
+      field = _.field,
+      step = _.step || autostep(source, field),
+      sort = stableCompare((a, b) => field(a) - field(b)),
+      as = _.as || Output,
+      n = groups.length;
 
     // compute dotplot bins per group
-    let min = Infinity, max = -Infinity, i = 0, j;
-    for (; i<n; ++i) {
+    let min = Infinity,
+      max = -Infinity,
+      i = 0,
+      j;
+    for (; i < n; ++i) {
       const g = groups[i].sort(sort);
       j = -1;
       for (const v of dotbin(g, step, smooth, field)) {
@@ -66,8 +69,8 @@ inherits(DotBin, Transform, {
     this.value = {
       start: min,
       stop: max,
-      step: step
+      step: step,
     };
     return pulse.reflow(true).modifies(as);
-  }
+  },
 });

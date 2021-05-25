@@ -1,38 +1,47 @@
 // -- Transforms -----
 
-import pkg from './package.json';
-import {extend} from 'vega-util';
-import {transforms} from 'vega-dataflow';
-import * as tx from 'vega-transforms';
-import * as vtx from 'vega-view-transforms';
-import * as encode from 'vega-encode';
-import * as geo from 'vega-geo';
-import * as force from 'vega-force';
-import * as tree from 'vega-hierarchy';
-import * as label from 'vega-label';
-import * as reg from 'vega-regression';
-import * as voronoi from 'vega-voronoi';
-import * as wordcloud from 'vega-wordcloud';
-import * as xf from 'vega-crossfilter';
+import pkg from "./package.json";
+import { extend } from "vega-util";
+import { transforms } from "vega-dataflow";
+import * as tx from "vega-transforms";
+import * as vtx from "vega-view-transforms";
+import * as encode from "vega-encode";
+import * as geo from "vega-geo";
+import * as force from "vega-force";
+import * as tree from "vega-hierarchy";
+import * as label from "vega-label";
+import * as reg from "vega-regression";
+import * as voronoi from "vega-voronoi";
+import * as wordcloud from "vega-wordcloud";
+import * as xf from "vega-crossfilter";
 extend(
   transforms,
-  tx, vtx, encode, geo, force, label, tree, reg, voronoi, wordcloud, xf
+  tx,
+  vtx,
+  encode,
+  geo,
+  force,
+  label,
+  tree,
+  reg,
+  voronoi,
+  wordcloud,
+  xf
 );
-
 
 // -- Exports -----
 
 export const version = pkg.version;
 
-export * from 'vega-statistics';
+export * from "vega-statistics";
 
-export * from 'vega-time';
+export * from "vega-time";
 
-export * from 'vega-util';
+export * from "vega-util";
 
-export * from 'vega-loader';
+export * from "vega-loader";
 
-export * from 'vega-scenegraph';
+export * from "vega-scenegraph";
 
 export {
   Dataflow,
@@ -48,8 +57,8 @@ export {
   definition,
   transform,
   transforms,
-  tupleid
-} from 'vega-dataflow';
+  tupleid,
+} from "vega-dataflow";
 
 export {
   scale,
@@ -57,42 +66,30 @@ export {
   interpolate,
   interpolateColors,
   interpolateRange,
-  quantizeInterpolator
-} from 'vega-scale';
+  quantizeInterpolator,
+} from "vega-scale";
 
-export {
-  projection
-} from 'vega-projection';
+export { projection } from "vega-projection";
 
-export {
-  View
-} from 'vega-view';
+export { View } from "vega-view";
 
 export {
   numberFormatDefaultLocale as formatLocale,
   timeFormatDefaultLocale as timeFormatLocale,
   locale,
   defaultLocale,
-  resetDefaultLocale
-} from 'vega-format';
+  resetDefaultLocale,
+} from "vega-format";
 
-export {
-  expressionFunction
-} from 'vega-functions';
+export { expressionFunction } from "vega-functions";
 
-export {
-  parse
-} from 'vega-parser';
+export { parse } from "vega-parser";
 
-export {
-  context as runtimeContext
-} from 'vega-runtime';
+export { context as runtimeContext } from "vega-runtime";
 
 export {
   codegen as codegenExpression,
-  parse as parseExpression
-} from 'vega-expression';
+  parse as parseExpression,
+} from "vega-expression";
 
-export {
-  selector as parseSelector
-} from 'vega-event-selector';
+export { selector as parseSelector } from "vega-event-selector";

@@ -1,5 +1,5 @@
-import {Transform, tupleid} from 'vega-dataflow';
-import {fastmap, inherits} from 'vega-util';
+import { Transform, tupleid } from "vega-dataflow";
+import { fastmap, inherits } from "vega-util";
 
 /**
  * Filters data tuples according to a predicate function.
@@ -13,39 +13,37 @@ export default function Filter(params) {
 }
 
 Filter.Definition = {
-  'type': 'Filter',
-  'metadata': {'changes': true},
-  'params': [
-    { 'name': 'expr', 'type': 'expr', 'required': true }
-  ]
+  type: "Filter",
+  metadata: { changes: true },
+  params: [{ name: "expr", type: "expr", required: true }],
 };
 
 inherits(Filter, Transform, {
   transform(_, pulse) {
     const df = pulse.dataflow,
-          cache = this.value, // cache ids of filtered tuples
-          output = pulse.fork(),
-          add = output.add,
-          rem = output.rem,
-          mod = output.mod,
-          test = _.expr;
+      cache = this.value, // cache ids of filtered tuples
+      output = pulse.fork(),
+      add = output.add,
+      rem = output.rem,
+      mod = output.mod,
+      test = _.expr;
     let isMod = true;
 
-    pulse.visit(pulse.REM, t => {
+    pulse.visit(pulse.REM, (t) => {
       const id = tupleid(t);
       if (!cache.has(id)) rem.push(t);
       else cache.delete(id);
     });
 
-    pulse.visit(pulse.ADD, t => {
+    pulse.visit(pulse.ADD, (t) => {
       if (test(t, _)) add.push(t);
       else cache.set(tupleid(t), 1);
     });
 
     function revisit(t) {
       const id = tupleid(t),
-            b = test(t, _),
-            s = cache.get(id);
+        b = test(t, _),
+        s = cache.get(id);
       if (b && s) {
         cache.delete(id);
         add.push(t);
@@ -66,5 +64,5 @@ inherits(Filter, Transform, {
 
     if (cache.empty > df.cleanThreshold) df.runAfter(cache.clean);
     return output;
-  }
+  },
 });

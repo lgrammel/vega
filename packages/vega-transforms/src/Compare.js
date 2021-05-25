@@ -1,5 +1,5 @@
-import {Operator} from 'vega-dataflow';
-import {compare, inherits} from 'vega-util';
+import { Operator } from "vega-dataflow";
+import { compare, inherits } from "vega-util";
 
 /**
  * Generates a comparator function.
@@ -16,7 +16,5 @@ export default function Compare(params) {
 inherits(Compare, Operator);
 
 function update(_) {
-  return (this.value && !_.modified())
-    ? this.value
-    : compare(_.fields, _.orders);
+  return this.value && !_.modified() ? this.value : compare(_.fields, _.orders);
 }

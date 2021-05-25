@@ -1,16 +1,18 @@
-import peek from './peek';
+import peek from "./peek";
 
-export default function(range, value, threshold, left, right, center) {
+export default function (range, value, threshold, left, right, center) {
   if (!threshold && threshold !== 0) return center;
 
   const t = +threshold;
   let a = range[0],
-      b = peek(range),
-      l;
+    b = peek(range),
+    l;
 
   // swap endpoints if range is reversed
   if (b < a) {
-    l = a; a = b; b = l;
+    l = a;
+    a = b;
+    b = l;
   }
 
   // compare value to endpoints

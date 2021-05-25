@@ -1,7 +1,7 @@
-import {Transform} from 'vega-dataflow';
-import {inherits} from 'vega-util';
+import { Transform } from "vega-dataflow";
+import { inherits } from "vega-util";
 
-const COUNTER_NAME = ':vega_identifier:';
+const COUNTER_NAME = ":vega_identifier:";
 
 /**
  * Adds a unique identifier to all added tuples.
@@ -19,26 +19,25 @@ export default function Identifier(params) {
 }
 
 Identifier.Definition = {
-  'type': 'Identifier',
-  'metadata': {'modifies': true},
-  'params': [
-    { 'name': 'as', 'type': 'string', 'required': true }
-  ]
+  type: "Identifier",
+  metadata: { modifies: true },
+  params: [{ name: "as", type: "string", required: true }],
 };
 
 inherits(Identifier, Transform, {
   transform(_, pulse) {
     const counter = getCounter(pulse.dataflow),
-          as = _.as;
+      as = _.as;
     let id = counter.value;
 
-    pulse.visit(pulse.ADD, t => (t[as] = t[as] || ++id));
-    counter.set(this.value = id);
+    pulse.visit(pulse.ADD, (t) => (t[as] = t[as] || ++id));
+    counter.set((this.value = id));
     return pulse;
-  }
+  },
 });
 
 function getCounter(view) {
-  return view._signals[COUNTER_NAME]
-     || (view._signals[COUNTER_NAME] = view.add(0));
+  return (
+    view._signals[COUNTER_NAME] || (view._signals[COUNTER_NAME] = view.add(0))
+  );
 }

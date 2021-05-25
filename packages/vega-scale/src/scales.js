@@ -1,30 +1,37 @@
-import {array, hasOwnProperty, toSet} from 'vega-util';
-import invertRange from './scales/invertRange';
-import invertRangeExtent from './scales/invertRangeExtent';
+import { array, hasOwnProperty, toSet } from "vega-util";
+import invertRange from "./scales/invertRange";
+import invertRangeExtent from "./scales/invertRangeExtent";
 
 import {
   Band,
-  BinOrdinal, Continuous as C, Discrete as D, Diverging, Interpolating as I,
-  Identity, Linear, Log, Ordinal,
-  Point, Pow, Quantile,
-  Quantize, Sequential, Sqrt, Symlog,
+  BinOrdinal,
+  Continuous as C,
+  Discrete as D,
+  Diverging,
+  Interpolating as I,
+  Identity,
+  Linear,
+  Log,
+  Ordinal,
+  Point,
+  Pow,
+  Quantile,
+  Quantize,
+  Sequential,
+  Sqrt,
+  Symlog,
   Temporal as T,
   Threshold,
   Time,
   UTC,
-  Discretizing as Z
-} from './scales/types';
+  Discretizing as Z,
+} from "./scales/types";
 
-import {
-  band as scaleBand,
-  point as scalePoint
-} from './scales/scaleBand';
+import { band as scaleBand, point as scalePoint } from "./scales/scaleBand";
 
-import {
-  scaleBinOrdinal
-} from './scales/scaleBinOrdinal';
+import { scaleBinOrdinal } from "./scales/scaleBinOrdinal";
 
-import * as $ from 'd3-scale';
+import * as $ from "d3-scale";
 
 // scale registry
 const scales = {};
@@ -37,8 +44,10 @@ function create(type, constructor, metadata) {
     const s = constructor();
 
     if (!s.invertRange) {
-      s.invertRange = s.invert ? invertRange(s)
-        : s.invertExtent ? invertRangeExtent(s)
+      s.invertRange = s.invert
+        ? invertRange(s)
+        : s.invertExtent
+        ? invertRangeExtent(s)
         : undefined;
     }
 

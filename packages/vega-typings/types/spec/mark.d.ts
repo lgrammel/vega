@@ -1,6 +1,6 @@
-import * as Encode from './encode';
-import { ExprRef } from './expr';
-import { SortOrder, Scope, SignalRef, Transforms, OnMarkTrigger } from '.';
+import * as Encode from "./encode";
+import { ExprRef } from "./expr";
+import { SortOrder, Scope, SignalRef, Transforms, OnMarkTrigger } from ".";
 
 export type Facet =
   | {
@@ -59,42 +59,67 @@ export interface BaseMark {
   on?: OnMarkTrigger[];
   style?: string | string[];
 }
-export interface ArcMark extends BaseMark, Encode.Encodable<Encode.ArcEncodeEntry> {
-  type: 'arc';
+export interface ArcMark
+  extends BaseMark,
+    Encode.Encodable<Encode.ArcEncodeEntry> {
+  type: "arc";
 }
-export interface AreaMark extends BaseMark, Encode.Encodable<Encode.AreaEncodeEntry> {
-  type: 'area';
+export interface AreaMark
+  extends BaseMark,
+    Encode.Encodable<Encode.AreaEncodeEntry> {
+  type: "area";
 }
-export interface ImageMark extends BaseMark, Encode.Encodable<Encode.ImageEncodeEntry> {
-  type: 'image';
+export interface ImageMark
+  extends BaseMark,
+    Encode.Encodable<Encode.ImageEncodeEntry> {
+  type: "image";
 }
-export interface GroupMark extends BaseMark, Scope, Encode.Encodable<Encode.GroupEncodeEntry> {
-  type: 'group';
+export interface GroupMark
+  extends BaseMark,
+    Scope,
+    Encode.Encodable<Encode.GroupEncodeEntry> {
+  type: "group";
   from?: FromFacet;
 }
-export interface LineMark extends BaseMark, Encode.Encodable<Encode.LineEncodeEntry> {
-  type: 'line';
+export interface LineMark
+  extends BaseMark,
+    Encode.Encodable<Encode.LineEncodeEntry> {
+  type: "line";
 }
-export interface PathMark extends BaseMark, Encode.Encodable<Encode.PathEncodeEntry> {
-  type: 'path';
+export interface PathMark
+  extends BaseMark,
+    Encode.Encodable<Encode.PathEncodeEntry> {
+  type: "path";
 }
-export interface RectMark extends BaseMark, Encode.Encodable<Encode.RectEncodeEntry> {
-  type: 'rect';
+export interface RectMark
+  extends BaseMark,
+    Encode.Encodable<Encode.RectEncodeEntry> {
+  type: "rect";
 }
-export interface RuleMark extends BaseMark, Encode.Encodable<Encode.RuleEncodeEntry> {
-  type: 'rule';
+export interface RuleMark
+  extends BaseMark,
+    Encode.Encodable<Encode.RuleEncodeEntry> {
+  type: "rule";
 }
-export interface ShapeMark extends BaseMark, Encode.Encodable<Encode.ShapeEncodeEntry> {
-  type: 'shape';
+export interface ShapeMark
+  extends BaseMark,
+    Encode.Encodable<Encode.ShapeEncodeEntry> {
+  type: "shape";
 }
-export interface SymbolMark extends BaseMark, Encode.Encodable<Encode.SymbolEncodeEntry> {
-  type: 'symbol';
+export interface SymbolMark
+  extends BaseMark,
+    Encode.Encodable<Encode.SymbolEncodeEntry> {
+  type: "symbol";
 }
-export interface TextMark extends BaseMark, Encode.Encodable<Encode.TextEncodeEntry> {
-  type: 'text';
+export interface TextMark
+  extends BaseMark,
+    Encode.Encodable<Encode.TextEncodeEntry> {
+  type: "text";
 }
-export interface TrailMark extends BaseMark, Encode.Encodable<Encode.TrailEncodeEntry> {
-  type: 'trail';
+export interface TrailMark
+  extends BaseMark,
+    Encode.Encodable<Encode.TrailEncodeEntry> {
+  type: "trail";
 }
 export type Mark =
   | ArcMark

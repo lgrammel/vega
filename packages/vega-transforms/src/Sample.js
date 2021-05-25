@@ -1,6 +1,6 @@
-import {Transform, tupleid} from 'vega-dataflow';
-import {random} from 'vega-statistics';
-import {inherits} from 'vega-util';
+import { Transform, tupleid } from "vega-dataflow";
+import { random } from "vega-statistics";
+import { inherits } from "vega-util";
 
 /**
  * Samples tuples passing through this operator.
@@ -15,23 +15,21 @@ export default function Sample(params) {
 }
 
 Sample.Definition = {
-  'type': 'Sample',
-  'metadata': {},
-  'params': [
-    { 'name': 'size', 'type': 'number', 'default': 1000 }
-  ]
+  type: "Sample",
+  metadata: {},
+  params: [{ name: "size", type: "number", default: 1000 }],
 };
 
 inherits(Sample, Transform, {
   transform(_, pulse) {
     const out = pulse.fork(pulse.NO_SOURCE),
-          mod = _.modified('size'),
-          num = _.size,
-          map = this.value.reduce((m, t) => (m[tupleid(t)] = 1, m), {});
+      mod = _.modified("size"),
+      num = _.size,
+      map = this.value.reduce((m, t) => ((m[tupleid(t)] = 1), m), {});
 
     let res = this.value,
-        cnt = this.count,
-        cap = 0;
+      cnt = this.count,
+      cap = 0;
 
     // sample reservoir update function
     function update(t) {
@@ -52,7 +50,7 @@ inherits(Sample, Transform, {
 
     if (pulse.rem.length) {
       // find all tuples that should be removed, add to output
-      pulse.visit(pulse.REM, t => {
+      pulse.visit(pulse.REM, (t) => {
         const id = tupleid(t);
         if (map[id]) {
           map[id] = -1;
@@ -62,13 +60,13 @@ inherits(Sample, Transform, {
       });
 
       // filter removed tuples out of the sample reservoir
-      res = res.filter(t => map[tupleid(t)] !== -1);
+      res = res.filter((t) => map[tupleid(t)] !== -1);
     }
 
     if ((pulse.rem.length || mod) && res.length < num && pulse.source) {
       // replenish sample if backing data source is available
       cap = cnt = res.length;
-      pulse.visit(pulse.SOURCE, t => {
+      pulse.visit(pulse.SOURCE, (t) => {
         // update, but skip previously sampled tuples
         if (!map[tupleid(t)]) update(t);
       });
@@ -76,8 +74,8 @@ inherits(Sample, Transform, {
     }
 
     if (mod && res.length > num) {
-      const n = res.length-num;
-      for (let i=0; i<n; ++i) {
+      const n = res.length - num;
+      for (let i = 0; i < n; ++i) {
         map[tupleid(res[i])] = -1;
         out.rem.push(res[i]);
       }
@@ -86,7 +84,7 @@ inherits(Sample, Transform, {
 
     if (pulse.mod.length) {
       // propagate modified tuples in the sample reservoir
-      pulse.visit(pulse.MOD, t => {
+      pulse.visit(pulse.MOD, (t) => {
         if (map[tupleid(t)]) out.mod.push(t);
       });
     }
@@ -98,11 +96,11 @@ inherits(Sample, Transform, {
 
     if (pulse.add.length || cap < 0) {
       // output newly added tuples
-      out.add = res.filter(t => !map[tupleid(t)]);
+      out.add = res.filter((t) => !map[tupleid(t)]);
     }
 
     this.count = cnt;
     this.value = out.source = res;
     return out;
-  }
+  },
 });

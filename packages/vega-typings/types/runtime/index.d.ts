@@ -9,11 +9,11 @@ import {
   SignalValue,
   Spec,
   TimeLocale,
-} from '../spec';
-import { Renderers } from './renderer';
-import { Changeset, Transform } from './dataflow';
-import { Scene } from './scene';
-import { LoggerInterface } from 'vega-util';
+} from "../spec";
+import { Renderers } from "./renderer";
+import { Changeset, Transform } from "./dataflow";
+import { Scene } from "./scene";
+import { LoggerInterface } from "vega-util";
 
 // TODO
 export type Runtime = any;
@@ -25,7 +25,11 @@ export function formatLocale(definition: object): void;
 export function timeFormatLocale(definition: object): void;
 
 // Parser
-export function parse(spec: Spec, config?: Config, opt?: { ast?: boolean }): Runtime;
+export function parse(
+  spec: Spec,
+  config?: Config,
+  opt?: { ast?: boolean }
+): Runtime;
 
 export interface Loader {
   load: (uri: string, options?: any) => Promise<string>;
@@ -42,7 +46,12 @@ export interface LocaleFormatters {
   format: (spec: string) => NumberFormat;
   formatPrefix: (spec: string, value: number) => NumberFormat;
   formatFloat: (spec: string) => NumberFormat;
-  formatSpan: (start: number, stop: number, count: number, spec: string) => NumberFormat;
+  formatSpan: (
+    start: number,
+    stop: number,
+    count: number,
+    spec: string
+  ) => NumberFormat;
   timeFormat: (spec: string) => TimeFormat;
   utcFormat: (spec: string) => TimeFormat;
   timeParse: (spec: string) => TimeParse;
@@ -74,7 +83,10 @@ export class View {
 
   // View Configuration
 
-  initialize(container?: Element | string, bindContainer?: Element | string): this;
+  initialize(
+    container?: Element | string,
+    bindContainer?: Element | string
+  ): this;
 
   finalize(): this;
 
@@ -116,7 +128,11 @@ export class View {
 
   run(encode?: string): this;
 
-  runAfter(callback: (view: this) => void, enqueue?: boolean, priority?: number): this;
+  runAfter(
+    callback: (view: this) => void,
+    enqueue?: boolean,
+    priority?: number
+  ): this;
 
   dirty(item: any): void;
 
@@ -157,7 +173,10 @@ export class View {
 
   // Image Export
 
-  toCanvas(scaleFactor?: number, options?: ToCanvasOptions): Promise<HTMLCanvasElement>;
+  toCanvas(
+    scaleFactor?: number,
+    options?: ToCanvasOptions
+  ): Promise<HTMLCanvasElement>;
   toSVG(scaleFactor?: number): Promise<string>;
   toImageURL(type: string, scaleFactor?: number): Promise<string>;
 
@@ -186,8 +205,8 @@ export type ScenegraphEvent = MouseEvent | TouchEvent | KeyboardEvent;
 
 export interface LoaderOptions {
   baseURL?: string;
-  mode?: 'file' | 'http';
-  defaultProtocol?: 'http' | 'https' | string;
+  mode?: "file" | "http";
+  defaultProtocol?: "http" | "https" | string;
   target?: string;
   http?: RequestInit;
 }
@@ -195,21 +214,32 @@ export function loader(opt?: LoaderOptions): Loader;
 export function read(
   data: string,
   schema: Format,
-  dateParse?: (dateString: string) => Date,
+  dateParse?: (dateString: string) => Date
 ): object[];
 
-export type TypeInference = DataType | 'integer';
-export function inferType(values: readonly any[], field?: string): TypeInference;
+export type TypeInference = DataType | "integer";
+export function inferType(
+  values: readonly any[],
+  field?: string
+): TypeInference;
 export function inferTypes(
   values: readonly any[],
-  fields: readonly string[],
+  fields: readonly string[]
 ): { [field: string]: TypeInference };
 
-export type EventListenerHandler = (event: ScenegraphEvent, item?: Item) => void;
+export type EventListenerHandler = (
+  event: ScenegraphEvent,
+  item?: Item
+) => void;
 export type SignalListenerHandler = (name: string, value: SignalValue) => void;
 export type DataListenerHandler = (name: string, value: any) => void;
 export type ResizeHandler = (width: number, height: number) => void;
-export type TooltipHandler = (handler: any, event: MouseEvent, item: Item, value: any) => void;
+export type TooltipHandler = (
+  handler: any,
+  event: MouseEvent,
+  item: Item,
+  value: any
+) => void;
 
 export interface Item<T = any> {
   /**
@@ -223,19 +253,26 @@ export interface Item<T = any> {
 }
 
 export type RuntimeMark =
-  | DefineMark<'group'>
-  | DefineMark<'rect', { x: number; y: number; width: number; height: number; fill: number }>
-  | DefineMark<'symbol', {}, 'legend-symbol'>
-  | DefineMark<'path'>
-  | DefineMark<'arc'>
-  | DefineMark<'area'>
-  | DefineMark<'line'>
-  | DefineMark<'image'>
-  | DefineMark<'text', {}, 'axis-label' | 'legend-label'>;
+  | DefineMark<"group">
+  | DefineMark<
+      "rect",
+      { x: number; y: number; width: number; height: number; fill: number }
+    >
+  | DefineMark<"symbol", {}, "legend-symbol">
+  | DefineMark<"path">
+  | DefineMark<"arc">
+  | DefineMark<"area">
+  | DefineMark<"line">
+  | DefineMark<"image">
+  | DefineMark<"text", {}, "axis-label" | "legend-label">;
 
-export interface DefineMark<T extends string, I = {}, R extends string = never> {
+export interface DefineMark<
+  T extends string,
+  I = {},
+  R extends string = never
+> {
   marktype: T;
-  role: 'mark' | R;
+  role: "mark" | R;
   items: Item<I>[];
   group: any;
 }
@@ -247,17 +284,24 @@ export function projection(type: string, projection: any): View;
 export function scale(type: string, scale?: any): any;
 
 export function scheme(name: string, scheme?: any): any;
-export function schemeDiscretized(name: string, scheme?: any, interpolator?: any): any;
+export function schemeDiscretized(
+  name: string,
+  scheme?: any,
+  interpolator?: any
+): any;
 
 export function expressionFunction(name: string, fn?: any, visitor?: any): any;
 
 export const transforms: { [name: string]: Transform };
 
-export * from 'vega-util';
-export * from './dataflow';
-export * from './renderer';
-export * from './scene';
+export * from "vega-util";
+export * from "./dataflow";
+export * from "./renderer";
+export * from "./scene";
 
-export { codegen as codegenExpression, parse as parseExpression } from 'vega-expression';
+export {
+  codegen as codegenExpression,
+  parse as parseExpression,
+} from "vega-expression";
 
-export { selector as parseSelector } from 'vega-event-selector';
+export { selector as parseSelector } from "vega-event-selector";

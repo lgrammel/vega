@@ -1,18 +1,18 @@
-import {textMetrics} from 'vega-scenegraph';
-import {collision, outOfBounds} from './common';
+import { textMetrics } from "vega-scenegraph";
+import { collision, outOfBounds } from "./common";
 
-export default function($, bitmaps, avoidBaseMark, markIndex) {
+export default function ($, bitmaps, avoidBaseMark, markIndex) {
   const width = $.width,
-      height = $.height,
-      bm0 = bitmaps[0], // where labels have been placed
-      bm1 = bitmaps[1]; // area outlines
-  
+    height = $.height,
+    bm0 = bitmaps[0], // where labels have been placed
+    bm1 = bitmaps[1]; // area outlines
+
   function tryLabel(_x, _y, maxSize, textWidth, textHeight) {
     const x = $.invert(_x),
-          y = $.invert(_y);
+      y = $.invert(_y);
     let lo = maxSize,
-        hi = height,
-        mid;
+      hi = height,
+      mid;
     if (
       !outOfBounds(x, y, textWidth, textHeight, width, height) &&
       !collision($, x, y, textHeight, textWidth, lo, bm0, bm1) &&
@@ -36,20 +36,36 @@ export default function($, bitmaps, avoidBaseMark, markIndex) {
   }
 
   // try to place a label within an input area mark
-  return function(d) {
+  return function (d) {
     const items = d.datum.datum.items[markIndex].items, // area points
-          n = items.length, // number of points
-          textHeight = d.datum.fontSize, // label width
-          textWidth = textMetrics.width(d.datum, d.datum.text); // label height
+      n = items.length, // number of points
+      textHeight = d.datum.fontSize, // label width
+      textWidth = textMetrics.width(d.datum, d.datum.text); // label height
 
     let maxSize = avoidBaseMark ? textHeight : 0,
-        labelPlaced = false,
-        labelPlaced2 = false,
-        maxAreaWidth = 0,
-        x1, x2, y1, y2, x, y, _x, _y, _x1, _xMid, _x2, _y1, _yMid, _y2, areaWidth, result, swapTmp;
+      labelPlaced = false,
+      labelPlaced2 = false,
+      maxAreaWidth = 0,
+      x1,
+      x2,
+      y1,
+      y2,
+      x,
+      y,
+      _x,
+      _y,
+      _x1,
+      _xMid,
+      _x2,
+      _y1,
+      _yMid,
+      _y2,
+      areaWidth,
+      result,
+      swapTmp;
 
     // for each area sample point
-    for (let i=0; i<n; ++i) {
+    for (let i = 0; i < n; ++i) {
       x1 = items[i].x;
       y1 = items[i].y;
       x2 = items[i].x2 === undefined ? x1 : items[i].x2;
@@ -121,8 +137,8 @@ export default function($, bitmaps, avoidBaseMark, markIndex) {
       x = textWidth / 2;
       y = textHeight / 2;
       bm0.setRange($(d.x - x), $(d.y - y), $(d.x + x), $(d.y + y));
-      d.align = 'center';
-      d.baseline = 'middle';
+      d.align = "center";
+      d.baseline = "middle";
       return true;
     } else {
       return false;

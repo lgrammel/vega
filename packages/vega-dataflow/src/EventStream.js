@@ -1,5 +1,5 @@
-import UniqueList from './util/UniqueList';
-import {debounce, id, identity, truthy} from 'vega-util';
+import UniqueList from "./util/UniqueList";
+import { debounce, id, identity, truthy } from "vega-util";
 
 let STREAM_ID = 0;
 
@@ -52,8 +52,8 @@ EventStream.prototype = {
   receive(evt) {
     if (this._filter(evt)) {
       const val = (this.value = this._apply(evt)),
-          trg = this._targets,
-          n = trg ? trg.length : 0;
+        trg = this._targets,
+        n = trg ? trg.length : 0;
 
       for (let i = 0; i < n; ++i) trg[i].receive(val);
 
@@ -80,7 +80,7 @@ EventStream.prototype = {
     const s = stream();
 
     this.targets().add(s);
-    for (let i=0, n=arguments.length; i<n; ++i) {
+    for (let i = 0, n = arguments.length; i < n; ++i) {
       arguments[i].targets().add(s);
     }
 
@@ -91,7 +91,7 @@ EventStream.prototype = {
     let t = -1;
     return this.filter(() => {
       const now = Date.now();
-      if ((now - t) > pause) {
+      if (now - t > pause) {
         t = now;
         return 1;
       } else {
@@ -103,21 +103,25 @@ EventStream.prototype = {
   debounce(delay) {
     const s = stream();
 
-    this.targets().add(stream(null, null,
-      debounce(delay, e => {
-        const df = e.dataflow;
-        s.receive(e);
-        if (df && df.run) df.run();
-      })
-    ));
+    this.targets().add(
+      stream(
+        null,
+        null,
+        debounce(delay, (e) => {
+          const df = e.dataflow;
+          s.receive(e);
+          if (df && df.run) df.run();
+        })
+      )
+    );
 
     return s;
   },
 
   between(a, b) {
     let active = false;
-    a.targets().add(stream(null, null, () => active = true));
-    b.targets().add(stream(null, null, () => active = false));
+    a.targets().add(stream(null, null, () => (active = true)));
+    b.targets().add(stream(null, null, () => (active = false)));
     return this.filter(() => active);
   },
 
@@ -127,5 +131,5 @@ EventStream.prototype = {
     // be bound to subcontexts that need to be garbage collected.
     this._filter = truthy;
     this._targets = null;
-  }
+  },
 };

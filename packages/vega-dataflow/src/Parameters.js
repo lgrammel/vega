@@ -1,13 +1,13 @@
-import {isArray} from 'vega-util';
+import { isArray } from "vega-util";
 
-const CACHE = '_:mod:_';
+const CACHE = "_:mod:_";
 
 /**
  * Hash that tracks modifications to assigned values.
  * Callers *must* use the set method to update values.
  */
 export default function Parameters() {
-  Object.defineProperty(this, CACHE, {writable: true, value: {}});
+  Object.defineProperty(this, CACHE, { writable: true, value: {} });
 }
 
 Parameters.prototype = {
@@ -24,13 +24,13 @@ Parameters.prototype = {
    */
   set(name, index, value, force) {
     const o = this,
-          v = o[name],
-          mod = o[CACHE];
+      v = o[name],
+      mod = o[CACHE];
 
     if (index != null && index >= 0) {
       if (v[index] !== value || force) {
         v[index] = value;
-        mod[index + ':' + name] = -1;
+        mod[index + ":" + name] = -1;
         mod[name] = -1;
       }
     } else if (v !== value || force) {
@@ -54,7 +54,9 @@ Parameters.prototype = {
   modified(name, index) {
     const mod = this[CACHE];
     if (!arguments.length) {
-      for (const k in mod) { if (mod[k]) return true; }
+      for (const k in mod) {
+        if (mod[k]) return true;
+      }
       return false;
     } else if (isArray(name)) {
       for (let k = 0; k < name.length; ++k) {
@@ -62,8 +64,8 @@ Parameters.prototype = {
       }
       return false;
     }
-    return (index != null && index >= 0)
-      ? (index + 1 < mod[name] || !!mod[index + ':' + name])
+    return index != null && index >= 0
+      ? index + 1 < mod[name] || !!mod[index + ":" + name]
       : !!mod[name];
   },
 
@@ -74,5 +76,5 @@ Parameters.prototype = {
   clear() {
     this[CACHE] = {};
     return this;
-  }
+  },
 };

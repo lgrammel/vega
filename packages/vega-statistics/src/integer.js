@@ -1,6 +1,6 @@
-import {random} from './random';
+import { random } from "./random";
 
-export default function(min, max) {
+export default function (min, max) {
   if (max == null) {
     max = min;
     min = 0;
@@ -31,15 +31,15 @@ export default function(min, max) {
       return a + Math.floor(d * random());
     },
     pdf(x) {
-      return (x === Math.floor(x) && x >= a && x < b) ? 1 / d : 0;
+      return x === Math.floor(x) && x >= a && x < b ? 1 / d : 0;
     },
     cdf(x) {
       const v = Math.floor(x);
       return v < a ? 0 : v >= b ? 1 : (v - a + 1) / d;
     },
     icdf(p) {
-      return (p >= 0 && p <= 1) ? a - 1 + Math.floor(p * d) : NaN;
-    }
+      return p >= 0 && p <= 1 ? a - 1 + Math.floor(p * d) : NaN;
+    },
   };
 
   return dist.min(min).max(max);

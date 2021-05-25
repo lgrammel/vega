@@ -1,4 +1,4 @@
-import {hasOwnProperty} from 'vega-util';
+import { hasOwnProperty } from "vega-util";
 
 import {
   curveBasis,
@@ -18,84 +18,84 @@ import {
   curveNatural,
   curveStep,
   curveStepAfter,
-  curveStepBefore
-} from 'd3-shape';
+  curveStepBefore,
+} from "d3-shape";
 
 const lookup = {
-  'basis': {
-    curve: curveBasis
+  basis: {
+    curve: curveBasis,
   },
-  'basis-closed': {
-    curve: curveBasisClosed
+  "basis-closed": {
+    curve: curveBasisClosed,
   },
-  'basis-open': {
-    curve: curveBasisOpen
+  "basis-open": {
+    curve: curveBasisOpen,
   },
-  'bundle': {
+  bundle: {
     curve: curveBundle,
-    tension: 'beta',
-    value: 0.85
+    tension: "beta",
+    value: 0.85,
   },
-  'cardinal': {
+  cardinal: {
     curve: curveCardinal,
-    tension: 'tension',
-    value: 0
+    tension: "tension",
+    value: 0,
   },
-  'cardinal-open': {
+  "cardinal-open": {
     curve: curveCardinalOpen,
-    tension: 'tension',
-    value: 0
+    tension: "tension",
+    value: 0,
   },
-  'cardinal-closed': {
+  "cardinal-closed": {
     curve: curveCardinalClosed,
-    tension: 'tension',
-    value: 0
+    tension: "tension",
+    value: 0,
   },
-  'catmull-rom': {
+  "catmull-rom": {
     curve: curveCatmullRom,
-    tension: 'alpha',
-    value: 0.5
+    tension: "alpha",
+    value: 0.5,
   },
-  'catmull-rom-closed': {
+  "catmull-rom-closed": {
     curve: curveCatmullRomClosed,
-    tension: 'alpha',
-    value: 0.5
+    tension: "alpha",
+    value: 0.5,
   },
-  'catmull-rom-open': {
+  "catmull-rom-open": {
     curve: curveCatmullRomOpen,
-    tension: 'alpha',
-    value: 0.5
+    tension: "alpha",
+    value: 0.5,
   },
-  'linear': {
-    curve: curveLinear
+  linear: {
+    curve: curveLinear,
   },
-  'linear-closed': {
-    curve: curveLinearClosed
+  "linear-closed": {
+    curve: curveLinearClosed,
   },
-  'monotone': {
+  monotone: {
     horizontal: curveMonotoneY,
-    vertical:   curveMonotoneX
+    vertical: curveMonotoneX,
   },
-  'natural': {
-    curve: curveNatural
+  natural: {
+    curve: curveNatural,
   },
-  'step': {
-    curve: curveStep
+  step: {
+    curve: curveStep,
   },
-  'step-after': {
-    curve: curveStepAfter
+  "step-after": {
+    curve: curveStepAfter,
   },
-  'step-before': {
-    curve: curveStepBefore
-  }
+  "step-before": {
+    curve: curveStepBefore,
+  },
 };
 
 export default function curves(type, orientation, tension) {
   var entry = hasOwnProperty(lookup, type) && lookup[type],
-      curve = null;
+    curve = null;
 
   if (entry) {
-    curve = entry.curve || entry[orientation || 'vertical'];
+    curve = entry.curve || entry[orientation || "vertical"];
     if (entry.tension && tension != null) {
       curve = curve[entry.tension](tension);
     }

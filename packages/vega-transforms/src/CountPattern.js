@@ -1,5 +1,5 @@
-import {Transform, ingest} from 'vega-dataflow';
-import {inherits} from 'vega-util';
+import { Transform, ingest } from "vega-dataflow";
+import { inherits } from "vega-util";
 
 /**
  * Count regexp-defined pattern occurrences in a text field.
@@ -15,42 +15,58 @@ export default function CountPattern(params) {
 }
 
 CountPattern.Definition = {
-  'type': 'CountPattern',
-  'metadata': {'generates': true, 'changes': true},
-  'params': [
-    { 'name': 'field', 'type': 'field', 'required': true },
-    { 'name': 'case', 'type': 'enum', 'values': ['upper', 'lower', 'mixed'], 'default': 'mixed' },
-    { 'name': 'pattern', 'type': 'string', 'default': '[\\w"]+' },
-    { 'name': 'stopwords', 'type': 'string', 'default': '' },
-    { 'name': 'as', 'type': 'string', 'array': true, 'length': 2, 'default': ['text', 'count'] }
-  ]
+  type: "CountPattern",
+  metadata: { generates: true, changes: true },
+  params: [
+    { name: "field", type: "field", required: true },
+    {
+      name: "case",
+      type: "enum",
+      values: ["upper", "lower", "mixed"],
+      default: "mixed",
+    },
+    { name: "pattern", type: "string", default: '[\\w"]+' },
+    { name: "stopwords", type: "string", default: "" },
+    {
+      name: "as",
+      type: "string",
+      array: true,
+      length: 2,
+      default: ["text", "count"],
+    },
+  ],
 };
 
 function tokenize(text, tcase, match) {
   switch (tcase) {
-    case 'upper': text = text.toUpperCase(); break;
-    case 'lower': text = text.toLowerCase(); break;
+    case "upper":
+      text = text.toUpperCase();
+      break;
+    case "lower":
+      text = text.toLowerCase();
+      break;
   }
   return text.match(match);
 }
 
 inherits(CountPattern, Transform, {
   transform(_, pulse) {
-    const process = update => tuple => {
-      var tokens = tokenize(get(tuple), _.case, match) || [], t;
-      for (var i=0, n=tokens.length; i<n; ++i) {
-        if (!stop.test(t = tokens[i])) update(t);
+    const process = (update) => (tuple) => {
+      var tokens = tokenize(get(tuple), _.case, match) || [],
+        t;
+      for (var i = 0, n = tokens.length; i < n; ++i) {
+        if (!stop.test((t = tokens[i]))) update(t);
       }
     };
 
     const init = this._parameterCheck(_, pulse),
-          counts = this._counts,
-          match = this._match,
-          stop = this._stop,
-          get = _.field,
-          as = _.as || ['text', 'count'],
-          add = process(t => counts[t] = 1 + (counts[t] || 0)),
-          rem = process(t => counts[t] -= 1);
+      counts = this._counts,
+      match = this._match,
+      stop = this._stop,
+      get = _.field,
+      as = _.as || ["text", "count"],
+      add = process((t) => (counts[t] = 1 + (counts[t] || 0))),
+      rem = process((t) => (counts[t] -= 1));
 
     if (init) {
       pulse.visit(pulse.SOURCE, add);
@@ -65,17 +81,17 @@ inherits(CountPattern, Transform, {
   _parameterCheck(_, pulse) {
     let init = false;
 
-    if (_.modified('stopwords') || !this._stop) {
-      this._stop = new RegExp('^' + (_.stopwords || '') + '$', 'i');
+    if (_.modified("stopwords") || !this._stop) {
+      this._stop = new RegExp("^" + (_.stopwords || "") + "$", "i");
       init = true;
     }
 
-    if (_.modified('pattern') || !this._match) {
-      this._match = new RegExp((_.pattern || '[\\w\']+'), 'g');
+    if (_.modified("pattern") || !this._match) {
+      this._match = new RegExp(_.pattern || "[\\w']+", "g");
       init = true;
     }
 
-    if (_.modified('field') || pulse.modified(_.field.fields)) {
+    if (_.modified("field") || pulse.modified(_.field.fields)) {
       init = true;
     }
 
@@ -85,17 +101,17 @@ inherits(CountPattern, Transform, {
 
   _finish(pulse, as) {
     const counts = this._counts,
-          tuples = this._tuples || (this._tuples = {}),
-          text = as[0],
-          count = as[1],
-          out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS);
+      tuples = this._tuples || (this._tuples = {}),
+      text = as[0],
+      count = as[1],
+      out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS);
     let w, t, c;
 
     for (w in counts) {
       t = tuples[w];
       c = counts[w] || 0;
       if (!t && c) {
-        tuples[w] = (t = ingest({}));
+        tuples[w] = t = ingest({});
         t[text] = w;
         t[count] = c;
         out.add.push(t);
@@ -110,5 +126,5 @@ inherits(CountPattern, Transform, {
     }
 
     return out.modifies(as);
-  }
+  },
 });

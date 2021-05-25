@@ -1,10 +1,10 @@
-import Bounds from '../Bounds';
-import boundContext from './boundContext';
-import {isFunction} from 'vega-util';
+import Bounds from "../Bounds";
+import boundContext from "./boundContext";
+import { isFunction } from "vega-util";
 
 const clipBounds = new Bounds();
 
-export default function(mark) {
+export default function (mark) {
   const clip = mark.clip;
 
   if (isFunction(clip)) {

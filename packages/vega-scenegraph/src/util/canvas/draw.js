@@ -1,11 +1,11 @@
-import blend from './blend';
-import fill from './fill';
-import stroke from './stroke';
-import {visit} from '../visit';
+import blend from "./blend";
+import fill from "./fill";
+import stroke from "./stroke";
+import { visit } from "../visit";
 
 export function drawAll(path) {
-  return function(context, scene, bounds) {
-    visit(scene, item => {
+  return function (context, scene, bounds) {
+    visit(scene, (item) => {
       if (!bounds || bounds.intersects(item.bounds)) {
         drawPath(path, context, item, item);
       }
@@ -14,7 +14,7 @@ export function drawAll(path) {
 }
 
 export function drawOne(path) {
-  return function(context, scene, bounds) {
+  return function (context, scene, bounds) {
     if (scene.items.length && (!bounds || bounds.intersects(scene.bounds))) {
       drawPath(path, context, scene.items[0], scene.items);
     }

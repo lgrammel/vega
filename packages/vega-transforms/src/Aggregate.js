@@ -1,8 +1,19 @@
-import {groupkey} from './util/AggregateKeys';
-import {ValidAggregateOps, compileMeasures, createMeasure, measureName} from './util/AggregateOps';
-import TupleStore from './util/TupleStore';
-import {Transform, ingest, replace} from 'vega-dataflow';
-import {accessorFields, accessorName, array, error, inherits} from 'vega-util';
+import { groupkey } from "./util/AggregateKeys";
+import {
+  ValidAggregateOps,
+  compileMeasures,
+  createMeasure,
+  measureName,
+} from "./util/AggregateOps";
+import TupleStore from "./util/TupleStore";
+import { Transform, ingest, replace } from "vega-dataflow";
+import {
+  accessorFields,
+  accessorName,
+  array,
+  error,
+  inherits,
+} from "vega-util";
 
 /**
  * Group-by aggregation operator.
@@ -22,53 +33,53 @@ export default function Aggregate(params) {
 
   this._adds = []; // array of added output tuples
   this._mods = []; // array of modified output tuples
-  this._alen = 0;  // number of active added tuples
-  this._mlen = 0;  // number of active modified tuples
-  this._drop = true;   // should empty aggregation cells be removed
+  this._alen = 0; // number of active added tuples
+  this._mlen = 0; // number of active modified tuples
+  this._drop = true; // should empty aggregation cells be removed
   this._cross = false; // produce full cross-product of group-by values
 
-  this._dims = [];   // group-by dimension accessors
+  this._dims = []; // group-by dimension accessors
   this._dnames = []; // group-by dimension names
 
   this._measures = []; // collection of aggregation monoids
   this._countOnly = false; // flag indicating only count aggregation
   this._counts = null; // collection of count fields
-  this._prev = null;   // previous aggregation cells
+  this._prev = null; // previous aggregation cells
 
-  this._inputs = null;  // array of dependent input tuple field names
+  this._inputs = null; // array of dependent input tuple field names
   this._outputs = null; // array of output tuple field names
 }
 
 Aggregate.Definition = {
-  'type': 'Aggregate',
-  'metadata': {'generates': true, 'changes': true},
-  'params': [
-    { 'name': 'groupby', 'type': 'field', 'array': true },
-    { 'name': 'ops', 'type': 'enum', 'array': true, 'values': ValidAggregateOps },
-    { 'name': 'fields', 'type': 'field', 'null': true, 'array': true },
-    { 'name': 'as', 'type': 'string', 'null': true, 'array': true },
-    { 'name': 'drop', 'type': 'boolean', 'default': true },
-    { 'name': 'cross', 'type': 'boolean', 'default': false },
-    { 'name': 'key', 'type': 'field' }
-  ]
+  type: "Aggregate",
+  metadata: { generates: true, changes: true },
+  params: [
+    { name: "groupby", type: "field", array: true },
+    { name: "ops", type: "enum", array: true, values: ValidAggregateOps },
+    { name: "fields", type: "field", null: true, array: true },
+    { name: "as", type: "string", null: true, array: true },
+    { name: "drop", type: "boolean", default: true },
+    { name: "cross", type: "boolean", default: false },
+    { name: "key", type: "field" },
+  ],
 };
 
 inherits(Aggregate, Transform, {
   transform(_, pulse) {
     const aggr = this,
-          out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
-          mod = _.modified();
+      out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
+      mod = _.modified();
 
     aggr.stamp = out.stamp;
 
     if (aggr.value && (mod || pulse.modified(aggr._inputs, true))) {
       aggr._prev = aggr.value;
       aggr.value = mod ? aggr.init(_) : {};
-      pulse.visit(pulse.SOURCE, t => aggr.add(t));
+      pulse.visit(pulse.SOURCE, (t) => aggr.add(t));
     } else {
       aggr.value = aggr.value || aggr.init(_);
-      pulse.visit(pulse.REM, t => aggr.rem(t));
-      pulse.visit(pulse.ADD, t => aggr.add(t));
+      pulse.visit(pulse.REM, (t) => aggr.rem(t));
+      pulse.visit(pulse.ADD, (t) => aggr.add(t));
     }
 
     // Indicate output fields and return aggregate tuples.
@@ -93,17 +104,17 @@ inherits(Aggregate, Transform, {
 
   cross() {
     const aggr = this,
-          curr = aggr.value,
-          dims = aggr._dnames,
-          vals = dims.map(() => ({})),
-          n = dims.length;
+      curr = aggr.value,
+      dims = aggr._dnames,
+      vals = dims.map(() => ({})),
+      n = dims.length;
 
     // collect all group-by domain values
     function collect(cells) {
       let key, i, t, v;
       for (key in cells) {
         t = cells[key].tuple;
-        for (i=0; i<n; ++i) {
+        for (i = 0; i < n; ++i) {
           vals[i][(v = t[dims[i]])] = v;
         }
       }
@@ -114,30 +125,31 @@ inherits(Aggregate, Transform, {
     // iterate over key cross-product, create cells as needed
     function generate(base, tuple, index) {
       const name = dims[index],
-          v = vals[index++];
+        v = vals[index++];
 
       for (const k in v) {
-        const key = base ? base + '|' + k : k;
+        const key = base ? base + "|" + k : k;
         tuple[name] = v[k];
         if (index < n) generate(key, tuple, index);
         else if (!curr[key]) aggr.cell(key, tuple);
       }
     }
-    generate('', {}, 0);
+    generate("", {}, 0);
   },
 
   init(_) {
     // initialize input and output fields
     const inputs = (this._inputs = []),
-          outputs = (this._outputs = []),
-          inputMap = {};
+      outputs = (this._outputs = []),
+      inputMap = {};
 
     function inputVisit(get) {
       const fields = array(accessorFields(get)),
-            n = fields.length;
-      let i = 0, f;
-      for (; i<n; ++i) {
-        if (!inputMap[f=fields[i]]) {
+        n = fields.length;
+      let i = 0,
+        f;
+      for (; i < n; ++i) {
+        if (!inputMap[(f = fields[i])]) {
           inputMap[f] = 1;
           inputs.push(f);
         }
@@ -146,7 +158,7 @@ inherits(Aggregate, Transform, {
 
     // initialize group-by dimensions
     this._dims = array(_.groupby);
-    this._dnames = this._dims.map(d => {
+    this._dnames = this._dims.map((d) => {
       const dname = accessorName(d);
       inputVisit(d);
       outputs.push(dname);
@@ -160,28 +172,28 @@ inherits(Aggregate, Transform, {
     this._measures = [];
 
     const fields = _.fields || [null],
-          ops = _.ops || ['count'],
-          as = _.as || [],
-          n = fields.length,
-          map = {};
+      ops = _.ops || ["count"],
+      as = _.as || [],
+      n = fields.length,
+      map = {};
     let field, op, m, mname, outname, i;
 
     if (n !== ops.length) {
-      error('Unmatched number of fields and aggregate ops.');
+      error("Unmatched number of fields and aggregate ops.");
     }
 
-    for (i=0; i<n; ++i) {
+    for (i = 0; i < n; ++i) {
       field = fields[i];
       op = ops[i];
 
-      if (field == null && op !== 'count') {
-        error('Null aggregate field specified.');
+      if (field == null && op !== "count") {
+        error("Null aggregate field specified.");
       }
       mname = accessorName(field);
       outname = measureName(op, mname, as[i]);
       outputs.push(outname);
 
-      if (op === 'count') {
+      if (op === "count") {
         this._counts.push(outname);
         continue;
       }
@@ -189,16 +201,16 @@ inherits(Aggregate, Transform, {
       m = map[mname];
       if (!m) {
         inputVisit(field);
-        m = (map[mname] = []);
+        m = map[mname] = [];
         m.field = field;
         this._measures.push(m);
       }
 
-      if (op !== 'count') this._countOnly = false;
+      if (op !== "count") this._countOnly = false;
       m.push(createMeasure(op, outname));
     }
 
-    this._measures = this._measures.map(m => compileMeasures(m, m.field));
+    this._measures = this._measures.map((m) => compileMeasures(m, m.field));
 
     return {}; // aggregation cells (this.value)
   },
@@ -224,20 +236,20 @@ inherits(Aggregate, Transform, {
 
   newcell(key, t) {
     const cell = {
-      key:   key,
-      num:   0,
-      agg:   null,
+      key: key,
+      num: 0,
+      agg: null,
       tuple: this.newtuple(t, this._prev && this._prev[key]),
       stamp: this.stamp,
-      store: false
+      store: false,
     };
 
     if (!this._countOnly) {
       const measures = this._measures,
-            n = measures.length;
+        n = measures.length;
 
       cell.agg = Array(n);
-      for (let i=0; i<n; ++i) {
+      for (let i = 0; i < n; ++i) {
         cell.agg[i] = new measures[i](cell);
       }
     }
@@ -251,11 +263,11 @@ inherits(Aggregate, Transform, {
 
   newtuple(t, p) {
     const names = this._dnames,
-          dims = this._dims,
-          n = dims.length,
-          x = {};
+      dims = this._dims,
+      n = dims.length,
+      x = {};
 
-    for (let i=0; i<n; ++i) {
+    for (let i = 0; i < n; ++i) {
       x[names[i]] = dims[i](t);
     }
 
@@ -275,7 +287,7 @@ inherits(Aggregate, Transform, {
 
   add(t) {
     const key = this.cellkey(t),
-          cell = this.cell(key, t);
+      cell = this.cell(key, t);
 
     cell.num += 1;
     if (this._countOnly) return;
@@ -283,14 +295,14 @@ inherits(Aggregate, Transform, {
     if (cell.store) cell.data.add(t);
 
     const agg = cell.agg;
-    for (let i=0, n=agg.length; i<n; ++i) {
+    for (let i = 0, n = agg.length; i < n; ++i) {
       agg[i].add(agg[i].get(t), t);
     }
   },
 
   rem(t) {
     const key = this.cellkey(t),
-          cell = this.cell(key, t);
+      cell = this.cell(key, t);
 
     cell.num -= 1;
     if (this._countOnly) return;
@@ -298,14 +310,14 @@ inherits(Aggregate, Transform, {
     if (cell.store) cell.data.rem(t);
 
     const agg = cell.agg;
-    for (let i=0, n=agg.length; i<n; ++i) {
+    for (let i = 0, n = agg.length; i < n; ++i) {
       agg[i].rem(agg[i].get(t), t);
     }
   },
 
   celltuple(cell) {
     const tuple = cell.tuple,
-          counts = this._counts;
+      counts = this._counts;
 
     // consolidate stored values
     if (cell.store) {
@@ -313,12 +325,12 @@ inherits(Aggregate, Transform, {
     }
 
     // update tuple properties
-    for (let i=0, n=counts.length; i<n; ++i) {
+    for (let i = 0, n = counts.length; i < n; ++i) {
       tuple[counts[i]] = cell.num;
     }
     if (!this._countOnly) {
       const agg = cell.agg;
-      for (let i=0, n=agg.length; i<n; ++i) {
+      for (let i = 0, n = agg.length; i < n; ++i) {
         agg[i].set(tuple);
       }
     }
@@ -328,26 +340,27 @@ inherits(Aggregate, Transform, {
 
   changes(out) {
     const adds = this._adds,
-          mods = this._mods,
-          prev = this._prev,
-          drop = this._drop,
-          add = out.add,
-          rem = out.rem,
-          mod = out.mod;
+      mods = this._mods,
+      prev = this._prev,
+      drop = this._drop,
+      add = out.add,
+      rem = out.rem,
+      mod = out.mod;
 
     let cell, key, i, n;
 
-    if (prev) for (key in prev) {
-      cell = prev[key];
-      if (!drop || cell.num) rem.push(cell.tuple);
-    }
+    if (prev)
+      for (key in prev) {
+        cell = prev[key];
+        if (!drop || cell.num) rem.push(cell.tuple);
+      }
 
-    for (i=0, n=this._alen; i<n; ++i) {
+    for (i = 0, n = this._alen; i < n; ++i) {
       add.push(this.celltuple(adds[i]));
       adds[i] = null; // for garbage collection
     }
 
-    for (i=0, n=this._mlen; i<n; ++i) {
+    for (i = 0, n = this._mlen; i < n; ++i) {
       cell = mods[i];
       (cell.num === 0 && drop ? rem : mod).push(this.celltuple(cell));
       mods[i] = null; // for garbage collection
@@ -356,5 +369,5 @@ inherits(Aggregate, Transform, {
     this._alen = this._mlen = 0; // reset list of active cells
     this._prev = null;
     return out;
-  }
+  },
 });

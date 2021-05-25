@@ -1,7 +1,7 @@
-import {Group} from './constants';
-import {Transform} from 'vega-dataflow';
-import {GroupItem, Item} from 'vega-scenegraph';
-import {inherits} from 'vega-util';
+import { Group } from "./constants";
+import { Transform } from "vega-dataflow";
+import { GroupItem, Item } from "vega-scenegraph";
+import { inherits } from "vega-util";
 
 /**
  * Bind scenegraph items to a scenegraph mark instance.
@@ -32,10 +32,10 @@ inherits(Mark, Transform, {
 
     // initialize entering items
     const Init = mark.marktype === Group ? GroupItem : Item;
-    pulse.visit(pulse.ADD, item => Init.call(item, mark));
+    pulse.visit(pulse.ADD, (item) => Init.call(item, mark));
 
     // update clipping and/or interactive status
-    if (_.modified('clip') || _.modified('interactive')) {
+    if (_.modified("clip") || _.modified("interactive")) {
       mark.clip = _.clip;
       mark.interactive = !!_.interactive;
       mark.zdirty = true; // force scenegraph re-eval
@@ -45,12 +45,15 @@ inherits(Mark, Transform, {
     // bind items array to scenegraph mark
     mark.items = pulse.source;
     return pulse;
-  }
+  },
 });
 
 function lookup(_) {
-  const g = _.groups, p = _.parent;
-  return g && g.size === 1 ? g.get(Object.keys(g.object)[0])
-    : g && p ? g.lookup(p)
+  const g = _.groups,
+    p = _.parent;
+  return g && g.size === 1
+    ? g.get(Object.keys(g.object)[0])
+    : g && p
+    ? g.lookup(p)
     : null;
 }

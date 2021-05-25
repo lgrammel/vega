@@ -1,15 +1,15 @@
-import {visit} from '../util/visit';
-import blend from '../util/canvas/blend';
-import {pick} from '../util/canvas/pick';
-import metadata from '../util/svg/metadata';
-import {translate} from '../util/svg/transform';
-import {truthy} from 'vega-util';
+import { visit } from "../util/visit";
+import blend from "../util/canvas/blend";
+import { pick } from "../util/canvas/pick";
+import metadata from "../util/svg/metadata";
+import { translate } from "../util/svg/transform";
+import { truthy } from "vega-util";
 
 function getImage(item, renderer) {
   var image = item.image;
-  if (!image || item.url && item.url !== image.url) {
-    image = {complete: false, width: 0, height: 0};
-    renderer.loadImage(item.url).then(image => {
+  if (!image || (item.url && item.url !== image.url)) {
+    image = { complete: false, width: 0, height: 0 };
+    renderer.loadImage(item.url).then((image) => {
       item.image = image;
       item.image.url = item.url;
     });
@@ -18,54 +18,60 @@ function getImage(item, renderer) {
 }
 
 function imageWidth(item, image) {
-  return item.width != null ? item.width
-    : !image || !image.width ? 0
-    : item.aspect !== false && item.height ? item.height * image.width / image.height
+  return item.width != null
+    ? item.width
+    : !image || !image.width
+    ? 0
+    : item.aspect !== false && item.height
+    ? (item.height * image.width) / image.height
     : image.width;
 }
 
 function imageHeight(item, image) {
-  return item.height != null ? item.height
-    : !image || !image.height ? 0
-    : item.aspect !== false && item.width ? item.width * image.height / image.width
+  return item.height != null
+    ? item.height
+    : !image || !image.height
+    ? 0
+    : item.aspect !== false && item.width
+    ? (item.width * image.height) / image.width
     : image.height;
 }
 
 function imageXOffset(align, w) {
-  return align === 'center' ? w / 2 : align === 'right' ? w : 0;
+  return align === "center" ? w / 2 : align === "right" ? w : 0;
 }
 
 function imageYOffset(baseline, h) {
-  return baseline === 'middle' ? h / 2 : baseline === 'bottom' ? h : 0;
+  return baseline === "middle" ? h / 2 : baseline === "bottom" ? h : 0;
 }
 
 function attr(emit, item, renderer) {
   const img = getImage(item, renderer),
-        w = imageWidth(item, img),
-        h = imageHeight(item, img),
-        x = (item.x || 0) - imageXOffset(item.align, w),
-        y = (item.y || 0) - imageYOffset(item.baseline, h),
-        i = !img.src && img.toDataURL ? img.toDataURL() : img.src || '';
+    w = imageWidth(item, img),
+    h = imageHeight(item, img),
+    x = (item.x || 0) - imageXOffset(item.align, w),
+    y = (item.y || 0) - imageYOffset(item.baseline, h),
+    i = !img.src && img.toDataURL ? img.toDataURL() : img.src || "";
 
-  emit('href', i, metadata['xmlns:xlink'], 'xlink:href');
-  emit('transform', translate(x, y));
-  emit('width', w);
-  emit('height', h);
-  emit('preserveAspectRatio', item.aspect === false ? 'none' : 'xMidYMid');
+  emit("href", i, metadata["xmlns:xlink"], "xlink:href");
+  emit("transform", translate(x, y));
+  emit("width", w);
+  emit("height", h);
+  emit("preserveAspectRatio", item.aspect === false ? "none" : "xMidYMid");
 }
 
 function bound(bounds, item) {
   const img = item.image,
-        w = imageWidth(item, img),
-        h = imageHeight(item, img),
-        x = (item.x || 0) - imageXOffset(item.align, w),
-        y = (item.y || 0) - imageYOffset(item.baseline, h);
+    w = imageWidth(item, img),
+    h = imageHeight(item, img),
+    x = (item.x || 0) - imageXOffset(item.align, w),
+    y = (item.y || 0) - imageYOffset(item.baseline, h);
 
   return bounds.set(x, y, x + w, y + h);
 }
 
 function draw(context, scene, bounds) {
-  visit(scene, item => {
+  visit(scene, (item) => {
     if (bounds && !bounds.intersects(item.bounds)) return; // bounds check
 
     const img = getImage(item, this);
@@ -75,8 +81,11 @@ function draw(context, scene, bounds) {
     if (w === 0 || h === 0) return; // early exit
 
     let x = (item.x || 0) - imageXOffset(item.align, w),
-        y = (item.y || 0) - imageYOffset(item.baseline, h),
-        opacity, ar0, ar1, t;
+      y = (item.y || 0) - imageYOffset(item.baseline, h),
+      opacity,
+      ar0,
+      ar1,
+      t;
 
     if (item.aspect !== false) {
       ar0 = img.width / img.height;
@@ -104,15 +113,15 @@ function draw(context, scene, bounds) {
 }
 
 export default {
-  type:     'image',
-  tag:      'image',
-  nested:   false,
-  attr:     attr,
-  bound:    bound,
-  draw:     draw,
-  pick:     pick(),
-  isect:    truthy, // bounds check is sufficient
-  get:      getImage,
-  xOffset:  imageXOffset,
-  yOffset:  imageYOffset
+  type: "image",
+  tag: "image",
+  nested: false,
+  attr: attr,
+  bound: bound,
+  draw: draw,
+  pick: pick(),
+  isect: truthy, // bounds check is sufficient
+  get: getImage,
+  xOffset: imageXOffset,
+  yOffset: imageYOffset,
 };

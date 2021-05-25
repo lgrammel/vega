@@ -1,29 +1,29 @@
-import {ifX, ifY} from './axis-util';
-import {one, zero} from './constants';
-import guideMark from './guide-mark';
-import {lookup} from './guide-util';
-import {addEncoders} from '../encode/util';
-import {RuleMark} from '../marks/marktypes';
-import {AxisDomainRole} from '../marks/roles';
+import { ifX, ifY } from "./axis-util";
+import { one, zero } from "./constants";
+import guideMark from "./guide-mark";
+import { lookup } from "./guide-util";
+import { addEncoders } from "../encode/util";
+import { RuleMark } from "../marks/marktypes";
+import { AxisDomainRole } from "../marks/roles";
 
-export default function(spec, config, userEncode, dataRef) {
+export default function (spec, config, userEncode, dataRef) {
   const _ = lookup(spec, config),
-        orient = spec.orient;
+    orient = spec.orient;
 
   let enter, update;
   const encode = {
-    enter: enter = {opacity: zero},
-    update: update = {opacity: one},
-    exit: {opacity: zero}
+    enter: (enter = { opacity: zero }),
+    update: (update = { opacity: one }),
+    exit: { opacity: zero },
   };
 
   addEncoders(encode, {
-    stroke:           _('domainColor'),
-    strokeCap:        _('domainCap'),
-    strokeDash:       _('domainDash'),
-    strokeDashOffset: _('domainDashOffset'),
-    strokeWidth:      _('domainWidth'),
-    strokeOpacity:    _('domainOpacity')
+    stroke: _("domainColor"),
+    strokeCap: _("domainCap"),
+    strokeDash: _("domainDash"),
+    strokeDashOffset: _("domainDashOffset"),
+    strokeWidth: _("domainWidth"),
+    strokeOpacity: _("domainOpacity"),
   });
 
   const pos0 = position(spec, 0);
@@ -35,14 +35,17 @@ export default function(spec, config, userEncode, dataRef) {
   enter.y = update.y = ifY(orient, pos0, zero);
   enter.y2 = update.y2 = ifY(orient, pos1);
 
-  return guideMark({
-    type: RuleMark,
-    role: AxisDomainRole,
-    from: dataRef,
-    encode
-  }, userEncode);
+  return guideMark(
+    {
+      type: RuleMark,
+      role: AxisDomainRole,
+      from: dataRef,
+      encode,
+    },
+    userEncode
+  );
 }
 
 function position(spec, pos) {
-  return {scale: spec.scale, range: pos};
+  return { scale: spec.scale, range: pos };
 }

@@ -1,7 +1,7 @@
-import parseDist from './util/Distributions';
-import {Transform, ingest} from 'vega-dataflow';
-import {sampleCurve} from 'vega-statistics';
-import {error, extent, inherits} from 'vega-util';
+import parseDist from "./util/Distributions";
+import { Transform, ingest } from "vega-dataflow";
+import { sampleCurve } from "vega-statistics";
+import { error, extent, inherits } from "vega-util";
 
 /**
  * Grid sample points for a probability density. Given a distribution and
@@ -33,60 +33,65 @@ export default function Density(params) {
 
 const distributions = [
   {
-    'key': {'function': 'normal'},
-    'params': [
-      { 'name': 'mean', 'type': 'number', 'default': 0 },
-      { 'name': 'stdev', 'type': 'number', 'default': 1 }
-    ]
+    key: { function: "normal" },
+    params: [
+      { name: "mean", type: "number", default: 0 },
+      { name: "stdev", type: "number", default: 1 },
+    ],
   },
   {
-    'key': {'function': 'lognormal'},
-    'params': [
-      { 'name': 'mean', 'type': 'number', 'default': 0 },
-      { 'name': 'stdev', 'type': 'number', 'default': 1 }
-    ]
+    key: { function: "lognormal" },
+    params: [
+      { name: "mean", type: "number", default: 0 },
+      { name: "stdev", type: "number", default: 1 },
+    ],
   },
   {
-    'key': {'function': 'uniform'},
-    'params': [
-      { 'name': 'min', 'type': 'number', 'default': 0 },
-      { 'name': 'max', 'type': 'number', 'default': 1 }
-    ]
+    key: { function: "uniform" },
+    params: [
+      { name: "min", type: "number", default: 0 },
+      { name: "max", type: "number", default: 1 },
+    ],
   },
   {
-    'key': {'function': 'kde'},
-    'params': [
-      { 'name': 'field', 'type': 'field', 'required': true },
-      { 'name': 'from', 'type': 'data' },
-      { 'name': 'bandwidth', 'type': 'number', 'default': 0 }
-    ]
-  }
+    key: { function: "kde" },
+    params: [
+      { name: "field", type: "field", required: true },
+      { name: "from", type: "data" },
+      { name: "bandwidth", type: "number", default: 0 },
+    ],
+  },
 ];
 
 const mixture = {
-  'key': {'function': 'mixture'},
-  'params': [
-    { 'name': 'distributions', 'type': 'param', 'array': true,
-      'params': distributions },
-    { 'name': 'weights', 'type': 'number', 'array': true }
-  ]
+  key: { function: "mixture" },
+  params: [
+    {
+      name: "distributions",
+      type: "param",
+      array: true,
+      params: distributions,
+    },
+    { name: "weights", type: "number", array: true },
+  ],
 };
 
 Density.Definition = {
-  'type': 'Density',
-  'metadata': {'generates': true},
-  'params': [
-    { 'name': 'extent', 'type': 'number', 'array': true, 'length': 2 },
-    { 'name': 'steps', 'type': 'number' },
-    { 'name': 'minsteps', 'type': 'number', 'default': 25 },
-    { 'name': 'maxsteps', 'type': 'number', 'default': 200 },
-    { 'name': 'method', 'type': 'string', 'default': 'pdf',
-      'values': ['pdf', 'cdf'] },
-    { 'name': 'distribution', 'type': 'param',
-      'params': distributions.concat(mixture) },
-    { 'name': 'as', 'type': 'string', 'array': true,
-      'default': ['value', 'density'] }
-  ]
+  type: "Density",
+  metadata: { generates: true },
+  params: [
+    { name: "extent", type: "number", array: true, length: 2 },
+    { name: "steps", type: "number" },
+    { name: "minsteps", type: "number", default: 25 },
+    { name: "maxsteps", type: "number", default: 200 },
+    { name: "method", type: "string", default: "pdf", values: ["pdf", "cdf"] },
+    {
+      name: "distribution",
+      type: "param",
+      params: distributions.concat(mixture),
+    },
+    { name: "as", type: "string", array: true, default: ["value", "density"] },
+  ],
 };
 
 inherits(Density, Transform, {
@@ -95,34 +100,33 @@ inherits(Density, Transform, {
 
     if (!this.value || pulse.changed() || _.modified()) {
       const dist = parseDist(_.distribution, source(pulse)),
-            minsteps = _.steps || _.minsteps || 25,
-            maxsteps = _.steps || _.maxsteps || 200;
-      let method = _.method || 'pdf';
+        minsteps = _.steps || _.minsteps || 25,
+        maxsteps = _.steps || _.maxsteps || 200;
+      let method = _.method || "pdf";
 
-      if (method !== 'pdf' && method !== 'cdf') {
-        error('Invalid density method: ' + method);
+      if (method !== "pdf" && method !== "cdf") {
+        error("Invalid density method: " + method);
       }
       if (!_.extent && !dist.data) {
-        error('Missing density extent parameter.');
+        error("Missing density extent parameter.");
       }
       method = dist[method];
 
-      const as = _.as || ['value', 'density'],
-            domain = _.extent || extent(dist.data()),
-            values = sampleCurve(method, domain, minsteps, maxsteps)
-              .map(v => {
-                const tuple = {};
-                tuple[as[0]] = v[0];
-                tuple[as[1]] = v[1];
-                return ingest(tuple);
-              });
+      const as = _.as || ["value", "density"],
+        domain = _.extent || extent(dist.data()),
+        values = sampleCurve(method, domain, minsteps, maxsteps).map((v) => {
+          const tuple = {};
+          tuple[as[0]] = v[0];
+          tuple[as[1]] = v[1];
+          return ingest(tuple);
+        });
 
       if (this.value) out.rem = this.value;
       this.value = out.add = out.source = values;
     }
 
     return out;
-  }
+  },
 });
 
 function source(pulse) {

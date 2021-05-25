@@ -1,10 +1,10 @@
-import {bezier, segments} from './arc';
+import { bezier, segments } from "./arc";
 
-const temp = ['l', 0, 0, 0, 0, 0, 0, 0];
+const temp = ["l", 0, 0, 0, 0, 0, 0, 0];
 
 function scale(current, sX, sY) {
   const c = (temp[0] = current[0]);
-  if (c === 'a' || c === 'A') {
+  if (c === "a" || c === "A") {
     temp[1] = sX * current[1];
     temp[2] = sY * current[2];
     temp[3] = current[3];
@@ -12,29 +12,29 @@ function scale(current, sX, sY) {
     temp[5] = current[5];
     temp[6] = sX * current[6];
     temp[7] = sY * current[7];
-  } else if (c === 'h' || c === 'H') {
+  } else if (c === "h" || c === "H") {
     temp[1] = sX * current[1];
-  } else if (c === 'v' || c === 'V') {
+  } else if (c === "v" || c === "V") {
     temp[1] = sY * current[1];
   } else {
-    for (var i=1, n=current.length; i<n; ++i) {
+    for (var i = 1, n = current.length; i < n; ++i) {
       temp[i] = (i % 2 == 1 ? sX : sY) * current[i];
     }
   }
   return temp;
 }
 
-export default function(context, path, l, t, sX, sY) {
+export default function (context, path, l, t, sX, sY) {
   var current, // current instruction
-      previous = null,
-      x = 0, // current x
-      y = 0, // current y
-      controlX = 0, // current control point x
-      controlY = 0, // current control point y
-      tempX,
-      tempY,
-      tempControlX,
-      tempControlY;
+    previous = null,
+    x = 0, // current x
+    y = 0, // current y
+    controlX = 0, // current control point x
+    controlY = 0, // current control point y
+    tempX,
+    tempY,
+    tempControlX,
+    tempControlY;
 
   if (l == null) l = 0;
   if (t == null) t = 0;
@@ -43,59 +43,60 @@ export default function(context, path, l, t, sX, sY) {
 
   if (context.beginPath) context.beginPath();
 
-  for (var i=0, len=path.length; i<len; ++i) {
+  for (var i = 0, len = path.length; i < len; ++i) {
     current = path[i];
     if (sX !== 1 || sY !== 1) {
       current = scale(current, sX, sY);
     }
 
-    switch (current[0]) { // first letter
-
-      case 'l': // lineto, relative
+    switch (
+      current[0] // first letter
+    ) {
+      case "l": // lineto, relative
         x += current[1];
         y += current[2];
         context.lineTo(x + l, y + t);
         break;
 
-      case 'L': // lineto, absolute
+      case "L": // lineto, absolute
         x = current[1];
         y = current[2];
         context.lineTo(x + l, y + t);
         break;
 
-      case 'h': // horizontal lineto, relative
+      case "h": // horizontal lineto, relative
         x += current[1];
         context.lineTo(x + l, y + t);
         break;
 
-      case 'H': // horizontal lineto, absolute
+      case "H": // horizontal lineto, absolute
         x = current[1];
         context.lineTo(x + l, y + t);
         break;
 
-      case 'v': // vertical lineto, relative
+      case "v": // vertical lineto, relative
         y += current[1];
         context.lineTo(x + l, y + t);
         break;
 
-      case 'V': // verical lineto, absolute
+      case "V": // verical lineto, absolute
         y = current[1];
         context.lineTo(x + l, y + t);
         break;
 
-      case 'm': // moveTo, relative
+      case "m": // moveTo, relative
         x += current[1];
         y += current[2];
         context.moveTo(x + l, y + t);
         break;
 
-      case 'M': // moveTo, absolute
+      case "M": // moveTo, absolute
         x = current[1];
         y = current[2];
         context.moveTo(x + l, y + t);
         break;
 
-      case 'c': // bezierCurveTo, relative
+      case "c": // bezierCurveTo, relative
         tempX = x + current[5];
         tempY = y + current[6];
         controlX = x + current[3];
@@ -112,7 +113,7 @@ export default function(context, path, l, t, sX, sY) {
         y = tempY;
         break;
 
-      case 'C': // bezierCurveTo, absolute
+      case "C": // bezierCurveTo, absolute
         x = current[5];
         y = current[6];
         controlX = current[3];
@@ -127,7 +128,7 @@ export default function(context, path, l, t, sX, sY) {
         );
         break;
 
-      case 's': // shorthand cubic bezierCurveTo, relative
+      case "s": // shorthand cubic bezierCurveTo, relative
         // transform to absolute x,y
         tempX = x + current[3];
         tempY = y + current[4];
@@ -154,12 +155,12 @@ export default function(context, path, l, t, sX, sY) {
         y = tempY;
         break;
 
-      case 'S': // shorthand cubic bezierCurveTo, absolute
+      case "S": // shorthand cubic bezierCurveTo, absolute
         tempX = current[3];
         tempY = current[4];
         // calculate reflection of previous control points
-        controlX = 2*x - controlX;
-        controlY = 2*y - controlY;
+        controlX = 2 * x - controlX;
+        controlY = 2 * y - controlY;
         context.bezierCurveTo(
           controlX + l,
           controlY + t,
@@ -179,7 +180,7 @@ export default function(context, path, l, t, sX, sY) {
 
         break;
 
-      case 'q': // quadraticCurveTo, relative
+      case "q": // quadraticCurveTo, relative
         // transform to absolute x,y
         tempX = x + current[3];
         tempY = y + current[4];
@@ -197,7 +198,7 @@ export default function(context, path, l, t, sX, sY) {
         y = tempY;
         break;
 
-      case 'Q': // quadraticCurveTo, absolute
+      case "Q": // quadraticCurveTo, absolute
         tempX = current[3];
         tempY = current[4];
 
@@ -213,8 +214,7 @@ export default function(context, path, l, t, sX, sY) {
         controlY = current[2];
         break;
 
-      case 't': // shorthand quadraticCurveTo, relative
-
+      case "t": // shorthand quadraticCurveTo, relative
         // transform to absolute x,y
         tempX = x + current[1];
         tempY = y + current[2];
@@ -224,13 +224,11 @@ export default function(context, path, l, t, sX, sY) {
           // assume the control point is coincident with the current point
           controlX = x;
           controlY = y;
-        }
-        else if (previous[0] === 't') {
+        } else if (previous[0] === "t") {
           // calculate reflection of previous control points for t
           controlX = 2 * x - tempControlX;
           controlY = 2 * y - tempControlY;
-        }
-        else if (previous[0] === 'q') {
+        } else if (previous[0] === "q") {
           // calculate reflection of previous control points for q
           controlX = 2 * x - controlX;
           controlY = 2 * y - controlY;
@@ -251,7 +249,7 @@ export default function(context, path, l, t, sX, sY) {
         controlY = y + current[2];
         break;
 
-      case 'T':
+      case "T":
         tempX = current[1];
         tempY = current[2];
 
@@ -268,7 +266,7 @@ export default function(context, path, l, t, sX, sY) {
         y = tempY;
         break;
 
-      case 'a':
+      case "a":
         drawArc(context, x + l, y + t, [
           current[1],
           current[2],
@@ -276,13 +274,13 @@ export default function(context, path, l, t, sX, sY) {
           current[4],
           current[5],
           current[6] + x + l,
-          current[7] + y + t
+          current[7] + y + t,
         ]);
         x += current[6];
         y += current[7];
         break;
 
-      case 'A':
+      case "A":
         drawArc(context, x + l, y + t, [
           current[1],
           current[2],
@@ -290,14 +288,14 @@ export default function(context, path, l, t, sX, sY) {
           current[4],
           current[5],
           current[6] + l,
-          current[7] + t
+          current[7] + t,
         ]);
         x = current[6];
         y = current[7];
         break;
 
-      case 'z':
-      case 'Z':
+      case "z":
+      case "Z":
         context.closePath();
         break;
     }
@@ -314,9 +312,10 @@ function drawArc(context, x, y, coords) {
     coords[3], // large flag
     coords[4], // sweep flag
     coords[2], // rotation
-    x, y
+    x,
+    y
   );
-  for (let i=0; i<seg.length; ++i) {
+  for (let i = 0; i < seg.length; ++i) {
     const bez = bezier(seg[i]);
     context.bezierCurveTo(bez[0], bez[1], bez[2], bez[3], bez[4], bez[5]);
   }

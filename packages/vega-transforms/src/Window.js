@@ -1,11 +1,11 @@
-import {groupkey} from './util/AggregateKeys';
-import {ValidAggregateOps} from './util/AggregateOps';
-import SortedList from './util/SortedList';
-import {ValidWindowOps} from './util/WindowOps';
-import WindowState from './util/WindowState';
-import {Transform, stableCompare, tupleid} from 'vega-dataflow';
-import {constant, inherits} from 'vega-util';
-import {bisector} from 'd3-array';
+import { groupkey } from "./util/AggregateKeys";
+import { ValidAggregateOps } from "./util/AggregateOps";
+import SortedList from "./util/SortedList";
+import { ValidWindowOps } from "./util/WindowOps";
+import WindowState from "./util/WindowState";
+import { Transform, stableCompare, tupleid } from "vega-dataflow";
+import { constant, inherits } from "vega-util";
+import { bisector } from "d3-array";
 
 /**
  * Perform window calculations and write results to the input stream.
@@ -30,18 +30,30 @@ export default function Window(params) {
 }
 
 Window.Definition = {
-  'type': 'Window',
-  'metadata': {'modifies': true},
-  'params': [
-    { 'name': 'sort', 'type': 'compare' },
-    { 'name': 'groupby', 'type': 'field', 'array': true },
-    { 'name': 'ops', 'type': 'enum', 'array': true, 'values': ValidWindowOps.concat(ValidAggregateOps) },
-    { 'name': 'params', 'type': 'number', 'null': true, 'array': true },
-    { 'name': 'fields', 'type': 'field', 'null': true, 'array': true },
-    { 'name': 'as', 'type': 'string', 'null': true, 'array': true },
-    { 'name': 'frame', 'type': 'number', 'null': true, 'array': true, 'length': 2, 'default': [null, 0] },
-    { 'name': 'ignorePeers', 'type': 'boolean', 'default': false }
-  ]
+  type: "Window",
+  metadata: { modifies: true },
+  params: [
+    { name: "sort", type: "compare" },
+    { name: "groupby", type: "field", array: true },
+    {
+      name: "ops",
+      type: "enum",
+      array: true,
+      values: ValidWindowOps.concat(ValidAggregateOps),
+    },
+    { name: "params", type: "number", null: true, array: true },
+    { name: "fields", type: "field", null: true, array: true },
+    { name: "as", type: "string", null: true, array: true },
+    {
+      name: "frame",
+      type: "number",
+      null: true,
+      array: true,
+      length: 2,
+      default: [null, 0],
+    },
+    { name: "ignorePeers", type: "boolean", default: false },
+  ],
 };
 
 inherits(Window, Transform, {
@@ -49,9 +61,9 @@ inherits(Window, Transform, {
     this.stamp = pulse.stamp;
 
     const mod = _.modified(),
-          cmp = stableCompare(_.sort),
-          key = groupkey(_.groupby),
-          group = t => this.group(key(t));
+      cmp = stableCompare(_.sort),
+      key = groupkey(_.groupby),
+      group = (t) => this.group(key(t));
 
     // initialize window state
     let state = this.state;
@@ -62,14 +74,14 @@ inherits(Window, Transform, {
     // partition input tuples
     if (mod || pulse.modified(state.inputs)) {
       this.value = {};
-      pulse.visit(pulse.SOURCE, t => group(t).add(t));
+      pulse.visit(pulse.SOURCE, (t) => group(t).add(t));
     } else {
-      pulse.visit(pulse.REM, t => group(t).remove(t));
-      pulse.visit(pulse.ADD, t => group(t).add(t));
+      pulse.visit(pulse.REM, (t) => group(t).remove(t));
+      pulse.visit(pulse.ADD, (t) => group(t).add(t));
     }
 
     // perform window calculations for each modified partition
-    for (let i=0, n=this._mlen; i<n; ++i) {
+    for (let i = 0, n = this._mlen; i < n; ++i) {
       processPartition(this._mods[i], state, cmp, _);
     }
     this._mlen = 0;
@@ -93,23 +105,28 @@ inherits(Window, Transform, {
     }
 
     return group;
-  }
+  },
 });
 
 function processPartition(list, state, cmp, _) {
   const sort = _.sort,
-        range = sort && !_.ignorePeers,
-        frame = _.frame || [null, 0],
-        data = list.data(cmp), // use cmp for stable sort
-        n = data.length,
-        b = range ? bisector(sort) : null,
-        w = {
-          i0: 0, i1: 0, p0: 0, p1: 0, index: 0,
-          data: data, compare: sort || constant(-1)
-        };
+    range = sort && !_.ignorePeers,
+    frame = _.frame || [null, 0],
+    data = list.data(cmp), // use cmp for stable sort
+    n = data.length,
+    b = range ? bisector(sort) : null,
+    w = {
+      i0: 0,
+      i1: 0,
+      p0: 0,
+      p1: 0,
+      index: 0,
+      data: data,
+      compare: sort || constant(-1),
+    };
 
   state.init();
-  for (let i=0; i<n; ++i) {
+  for (let i = 0; i < n; ++i) {
     setWindow(w, frame, i, n);
     if (range) adjustRange(w, b);
     state.update(w, data[i]);
@@ -127,11 +144,11 @@ function setWindow(w, f, i, n) {
 // if frame type is 'range', adjust window for peer values
 function adjustRange(w, bisect) {
   const r0 = w.i0,
-        r1 = w.i1 - 1,
-        c = w.compare,
-        d = w.data,
-        n = d.length - 1;
+    r1 = w.i1 - 1,
+    c = w.compare,
+    d = w.data,
+    n = d.length - 1;
 
-  if (r0 > 0 && !c(d[r0], d[r0-1])) w.i0 = bisect.left(d, d[r0]);
-  if (r1 < n && !c(d[r1], d[r1+1])) w.i1 = bisect.right(d, d[r1]);
+  if (r0 > 0 && !c(d[r0], d[r0 - 1])) w.i0 = bisect.left(d, d[r0]);
+  if (r1 < n && !c(d[r1], d[r1 + 1])) w.i1 = bisect.right(d, d[r1]);
 }
