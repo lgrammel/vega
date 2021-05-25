@@ -34,7 +34,7 @@ inherits(Lookup, Transform, {
     const keys = _.fields,
           index = _.index,
           values = _.values,
-          defaultValue = _.default==null ? null : _.default,
+          defaultValue = _.default ?? null,
           reset = _.modified(),
           n = keys.length;
 
@@ -69,7 +69,7 @@ inherits(Lookup, Transform, {
       set = function(t) {
         for (var i=0, v; i<n; ++i) {
           v = index.get(keys[i](t));
-          t[as[i]] = v==null ? defaultValue : v;
+          t[as[i]] = v ?? defaultValue;
         }
       };
     }

@@ -7,7 +7,7 @@ export default function(context, item, opacity) {
 
   if (lw <= 0) return false;
 
-  opacity *= (item.strokeOpacity==null ? 1 : item.strokeOpacity);
+  opacity *= (item.strokeOpacity ?? 1);
   if (opacity > 0) {
     context.globalAlpha = opacity;
     context.strokeStyle = color(context, item, item.stroke);

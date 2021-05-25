@@ -40,7 +40,7 @@ inherits(LegendEntries, Transform, {
         type  = _.type || SymbolLegend,
         scale = _.scale,
         limit = +_.limit,
-        count = tickCount(scale, _.count == null ? 5 : _.count, _.minstep),
+        count = tickCount(scale, _.count ?? 5, _.minstep),
         lskip = !!_.values || type === SymbolLegend,
         format = _.format || labelFormat(locale, scale, count, type, _.formatSpecifier, _.formatType, lskip),
         values = _.values || labelValues(scale, count),

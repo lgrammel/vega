@@ -17,8 +17,8 @@ function bound(bounds, item) {
   return boundStroke(bounds.set(
     x1 = item.x || 0,
     y1 = item.y || 0,
-    item.x2 != null ? item.x2 : x1,
-    item.y2 != null ? item.y2 : y1
+    item.x2 ?? x1,
+    item.y2 ?? y1
   ), item);
 }
 
@@ -28,8 +28,8 @@ function path(context, item, opacity) {
   if (item.stroke && stroke(context, item, opacity)) {
     x1 = item.x || 0;
     y1 = item.y || 0;
-    x2 = item.x2 != null ? item.x2 : x1;
-    y2 = item.y2 != null ? item.y2 : y1;
+    x2 = item.x2 ?? x1;
+    y2 = item.y2 ?? y1;
     context.beginPath();
     context.moveTo(x1, y1);
     context.lineTo(x2, y2);
@@ -41,7 +41,7 @@ function path(context, item, opacity) {
 function draw(context, scene, bounds) {
   visit(scene, item => {
     if (bounds && !bounds.intersects(item.bounds)) return; // bounds check
-    var opacity = item.opacity == null ? 1 : item.opacity;
+    var opacity = item.opacity ?? 1;
     if (opacity && path(context, item, opacity)) {
       blend(context, item);
       context.stroke();

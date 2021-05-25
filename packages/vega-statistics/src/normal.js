@@ -5,7 +5,7 @@ let nextSample = NaN;
 
 export function sampleNormal(mean, stdev) {
   mean = mean || 0;
-  stdev = stdev == null ? 1 : stdev;
+  stdev = stdev ?? 1;
 
   let x = 0, y = 0, rds, c;
   if (nextSample === nextSample) {
@@ -25,7 +25,7 @@ export function sampleNormal(mean, stdev) {
 }
 
 export function densityNormal(value, mean, stdev) {
-  stdev = stdev == null ? 1 : stdev;
+  stdev = stdev ?? 1;
   const z = (value - (mean || 0)) / stdev;
   return Math.exp(-0.5 * z * z) / (stdev * SQRT2PI);
 }
@@ -34,7 +34,7 @@ export function densityNormal(value, mean, stdev) {
 // Better Approximations to Cumulative Normal Functions
 export function cumulativeNormal(value, mean, stdev) {
   mean = mean || 0;
-  stdev = stdev == null ? 1 : stdev;
+  stdev = stdev ?? 1;
 
   const z = (value - mean) / stdev,
         Z = Math.abs(z);
@@ -76,7 +76,7 @@ export function cumulativeNormal(value, mean, stdev) {
 // Approximation of Probit function using inverse error function.
 export function quantileNormal(p, mean, stdev) {
   if (p < 0 || p > 1) return NaN;
-  return (mean || 0) + (stdev == null ? 1 : stdev) * SQRT2 * erfinv(2 * p - 1);
+  return (mean || 0) + (stdev ?? 1) * SQRT2 * erfinv(2 * p - 1);
 }
 
 // Approximate inverse error function. Implementation from "Approximating
@@ -175,7 +175,7 @@ export default function(mean, stdev) {
     },
     stdev(_) {
       if (arguments.length) {
-        sigma = _ == null ? 1 : _;
+        sigma = _ ?? 1;
         return dist;
       } else {
         return sigma;

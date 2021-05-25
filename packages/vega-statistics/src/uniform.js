@@ -2,7 +2,7 @@ import {random} from './random';
 
 export function sampleUniform(min, max) {
   if (max == null) {
-    max = (min == null ? 1 : min);
+    max = (min ?? 1);
     min = 0;
   }
   return min + (max - min) * random();
@@ -10,7 +10,7 @@ export function sampleUniform(min, max) {
 
 export function densityUniform(value, min, max) {
   if (max == null) {
-    max = (min == null ? 1 : min);
+    max = (min ?? 1);
     min = 0;
   }
   return (value >= min && value <= max) ? 1 / (max - min) : 0;
@@ -18,7 +18,7 @@ export function densityUniform(value, min, max) {
 
 export function cumulativeUniform(value, min, max) {
   if (max == null) {
-    max = (min == null ? 1 : min);
+    max = (min ?? 1);
     min = 0;
   }
   return value < min ? 0 : value > max ? 1 : (value - min) / (max - min);
@@ -26,7 +26,7 @@ export function cumulativeUniform(value, min, max) {
 
 export function quantileUniform(p, min, max) {
   if (max == null) {
-    max = (min == null ? 1 : min);
+    max = (min ?? 1);
     min = 0;
   }
   return (p >= 0 && p <= 1) ? min + p * (max - min) : NaN;
@@ -46,7 +46,7 @@ export default function(min, max) {
     },
     max(_) {
       if (arguments.length) {
-        b = _ == null ? 1 : _;
+        b = _ ?? 1;
         return dist;
       } else {
         return b;
@@ -59,7 +59,7 @@ export default function(min, max) {
   };
 
   if (max == null) {
-    max = (min == null ? 1 : min);
+    max = (min ?? 1);
     min = 0;
   }
   return dist.min(min).max(max);

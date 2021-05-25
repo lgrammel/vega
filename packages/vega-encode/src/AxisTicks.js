@@ -32,7 +32,7 @@ inherits(AxisTicks, Transform, {
         out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
         ticks = this.value,
         scale = _.scale,
-        tally = _.count == null ? (_.values ? _.values.length : 10) : _.count,
+        tally = _.count ?? _.values ? _.values.length : 10,
         count = tickCount(scale, tally, _.minstep),
         format = _.format || tickFormat(locale, scale, count, _.formatSpecifier, _.formatType, !!_.values),
         values = _.values ? validTicks(scale, _.values, count) : tickValues(scale, count);

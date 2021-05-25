@@ -64,7 +64,7 @@ function bboxFull(item) {
 
 function get(opt, key, d) {
   const v = isObject(opt) ? opt[key] : opt;
-  return v != null ? v : (d !== undefined ? d : 0);
+  return v ?? d !== undefined ? d : 0;
 }
 
 function offsetValue(v) {

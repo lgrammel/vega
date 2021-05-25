@@ -13,9 +13,7 @@ import {translateItem} from '../util/svg/transform';
 
 function offset(item) {
   const sw = value(item.strokeWidth, 1);
-  return item.strokeOffset != null ? item.strokeOffset
-    : item.stroke && sw > 0.5 && sw < 1.5 ? 0.5 - Math.abs(sw - 1)
-    : 0;
+  return item.strokeOffset ?? (item.stroke && sw > 0.5 && sw < 1.5 ? 0.5 - Math.abs(sw - 1) : 0);
 }
 
 function attr(emit, item) {
@@ -80,7 +78,7 @@ function draw(context, scene, bounds) {
     const gx = group.x || 0,
           gy = group.y || 0,
           fore = group.strokeForeground,
-          opacity = group.opacity == null ? 1 : group.opacity;
+          opacity = group.opacity ?? 1;
 
     // draw group background
     if ((group.stroke || group.fill) && opacity) {

@@ -49,7 +49,7 @@ export function fontSize(item) {
 }
 
 export function lineHeight(item) {
-  return item.lineHeight != null ? item.lineHeight : (fontSize(item) + 2);
+  return item.lineHeight ?? fontSize(item) + 2;
 }
 
 function lineArray(_) {

@@ -101,11 +101,7 @@ export default function() {
 
   trail.context = function(_) {
     if (arguments.length) {
-      if (_ == null) {
-        context = null;
-      } else {
-        context = _;
-      }
+      context = _ ?? null;
       return trail;
     } else {
       return context;

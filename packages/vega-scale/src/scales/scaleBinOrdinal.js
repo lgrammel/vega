@@ -33,7 +33,7 @@ export function scaleBinOrdinal() {
   };
 
   scale.tickFormat = function(count, specifier) {
-    return tickFormat(domain[0], peek(domain), count == null ? 10 : count, specifier);
+    return tickFormat(domain[0], peek(domain), count ?? 10, specifier);
   };
 
   scale.copy = function() {

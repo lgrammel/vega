@@ -87,7 +87,7 @@ export function hasSignal(_) {
 }
 
 export function value(specValue, defaultValue) {
-  return specValue != null ? specValue : defaultValue;
+  return specValue ?? defaultValue;
 }
 
 export function deref(v) {

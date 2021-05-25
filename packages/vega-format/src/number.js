@@ -58,7 +58,7 @@ function numberLocale(locale) {
       }
     },
     formatSpan(start, stop, count, specifier) {
-      specifier = formatSpecifier(specifier == null ? ',f' : specifier);
+      specifier = formatSpecifier(specifier ?? ',f');
       const step = tickStep(start, stop, count),
             value = Math.max(Math.abs(start), Math.abs(stop));
       let precision;

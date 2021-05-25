@@ -8,9 +8,7 @@ import {boundStroke, multiLineOffset} from 'vega-scenegraph';
 // utility for looking up legend layout configuration
 function lookup(config, orient) {
   const opt = config[orient] || {};
-  return (key, d) => opt[key] != null ? opt[key]
-    : config[key] != null ? config[key]
-    : d;
+  return (key, d) => opt[key] ?? (config[key] ?? d);
 }
 
 // if legends specify offset directly, use the maximum specified value

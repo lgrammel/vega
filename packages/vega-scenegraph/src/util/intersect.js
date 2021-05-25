@@ -45,8 +45,8 @@ export function intersectRect(item, box) {
 export function intersectRule(item, box) {
   const x = item.x || 0,
         y = item.y || 0,
-        x2 = item.x2 != null ? item.x2 : x,
-        y2 = item.y2 != null ? item.y2 : y;
+        x2 = item.x2 ?? x,
+        y2 = item.y2 ?? y;
   return intersectBoxLine(box, x, y, x2, y2);
 }
 

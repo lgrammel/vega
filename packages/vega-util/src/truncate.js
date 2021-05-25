@@ -1,5 +1,5 @@
 export default function(str, length, align, ellipsis) {
-  const e = ellipsis != null ? ellipsis : '\u2026',
+  const e = ellipsis ?? '\u2026',
         s = str + '',
         n = s.length,
         l = Math.max(0, length - e.length);

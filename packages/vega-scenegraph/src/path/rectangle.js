@@ -40,8 +40,8 @@ export default function() {
 
   function rectangle(_, x0, y0) {
     var buffer,
-        x1 = x0 != null ? x0 : +x.call(this, _),
-        y1 = y0 != null ? y0 : +y.call(this, _),
+        x1 = x0 ?? +x.call(this, _),
+        y1 = y0 ?? +y.call(this, _),
         w  = +width.call(this, _),
         h  = +height.call(this, _),
         s  = Math.min(w, h) / 2,
@@ -125,7 +125,7 @@ export default function() {
 
   rectangle.context = function(_) {
     if (arguments.length) {
-      context = _ == null ? null : _;
+      context = _ ?? null;
       return rectangle;
     } else {
       return context;

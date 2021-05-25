@@ -34,7 +34,7 @@ inherits(Pie, Transform, {
         endAngle = as[1],
         field = _.field || one,
         start = _.startAngle || 0,
-        stop = _.endAngle != null ? _.endAngle : 2 * Math.PI,
+        stop = _.endAngle ?? 2 * Math.PI,
         data = pulse.source,
         values = data.map(field),
         n = values.length,

@@ -18,17 +18,13 @@ function getImage(item, renderer) {
 }
 
 function imageWidth(item, image) {
-  return item.width != null ? item.width
-    : !image || !image.width ? 0
-    : item.aspect !== false && item.height ? item.height * image.width / image.height
-    : image.width;
+  return item.width ?? (!image || !image.width ? 0 : item.aspect !== false && item.height ? item.height * image.width / image.height
+    : image.width);
 }
 
 function imageHeight(item, image) {
-  return item.height != null ? item.height
-    : !image || !image.height ? 0
-    : item.aspect !== false && item.width ? item.width * image.height / image.width
-    : image.height;
+  return item.height ?? (!image || !image.height ? 0 : item.aspect !== false && item.width ? item.width * image.height / image.width
+    : image.height);
 }
 
 function imageXOffset(align, w) {

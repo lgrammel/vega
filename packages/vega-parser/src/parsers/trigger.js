@@ -12,7 +12,7 @@ export default function(spec, scope, name) {
   const update = 'if(' + spec.trigger + ',modify("'
     + name + '",'
     + [insert, remove, toggle, modify, values]
-        .map(_ => _ == null ? 'null' : _)
+        .map(_ => _ ?? 'null')
         .join(',')
     + '),0)';
 

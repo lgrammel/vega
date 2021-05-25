@@ -95,7 +95,7 @@ function bound(bounds, item, mode) {
 
 function draw(context, scene, bounds) {
   visit(scene, item => {
-    var opacity = item.opacity == null ? 1 : item.opacity,
+    var opacity = item.opacity ?? 1,
         p, x, y, i, lh, tl, str;
 
     if (bounds && !bounds.intersects(item.bounds) || // bounds check

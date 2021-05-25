@@ -49,12 +49,10 @@ export default function(spec, scope, target) {
   // resolve update value
   entry.update = isString(update) ? parseExpression(update, scope)
     : update.expr != null ? parseExpression(update.expr, scope)
-    : update.value != null ? update.value
-    : update.signal != null ? {
+    : update.value ?? (update.signal != null ? {
         $expr:   OP_VALUE_EXPR,
         $params: {$value: scope.signalRef(update.signal)}
-      }
-    : error('Invalid signal update specification.');
+      } : error('Invalid signal update specification.'));
 
   if (spec.force) {
     entry.options = {force: true};

@@ -21,14 +21,14 @@ export function pick(test) {
 export function hitPath(path, filled) {
   return function(context, o, x, y) {
     var item = Array.isArray(o) ? o[0] : o,
-        fill = (filled == null) ? item.fill : filled,
+        fill = filled ?? item.fill,
         stroke = item.stroke && context.isPointInStroke, lw, lc;
 
     if (stroke) {
       lw = item.strokeWidth;
       lc = item.strokeCap;
-      context.lineWidth = lw != null ? lw : 1;
-      context.lineCap   = lc != null ? lc : 'butt';
+      context.lineWidth = lw ?? 1;
+      context.lineCap   = lc ?? 'butt';
     }
 
     return path(context, o) ? false :

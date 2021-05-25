@@ -6,7 +6,7 @@ const apply = (m, args, cast) => {
 };
 
 const datetime = (y, m, d, H, M, S, ms) =>
-  new Date(y, m || 0, d != null ? d : 1, H || 0, M || 0, S || 0, ms || 0);
+  new Date(y, m || 0, d ?? 1, H || 0, M || 0, S || 0, ms || 0);
 
 export default {
   // math functions

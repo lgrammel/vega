@@ -12,7 +12,7 @@ import {
 } from 'd3-shape';
 
 function value(a, b) {
-  return a != null ? a : b;
+  return a ?? b;
 }
 
 const x =  item => item.x || 0,

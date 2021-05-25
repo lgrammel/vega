@@ -43,7 +43,7 @@ export function gradientRef(g, defs, base) {
 }
 
 function get(val, def) {
-  return val != null ? val : def;
+  return val ?? def;
 }
 
 export default function(p0, p1) {

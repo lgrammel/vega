@@ -224,8 +224,8 @@ function configureBins(scale, _, count) {
           hi = peek(domain),
           step = bins.step;
 
-    let start = bins.start == null ? lo : bins.start,
-        stop = bins.stop == null ? hi : bins.stop;
+    let start = bins.start ?? lo,
+        stop = bins.stop ?? hi;
 
     if (!step) error('Scale bins parameter missing step property.');
     if (start < lo) start = step * Math.ceil(lo / step);
@@ -304,9 +304,9 @@ function configureRangeStep(type, _, count) {
   }
 
   // calculate full range based on requested step size and padding
-  var outer = (_.paddingOuter != null ? _.paddingOuter : _.padding) || 0,
+  var outer = (_.paddingOuter ?? _.padding) || 0,
       inner = type === Point ? 1
-            : ((_.paddingInner != null ? _.paddingInner : _.padding) || 0);
+            : ((_.paddingInner ?? _.padding) || 0);
   return [0, _.rangeStep * bandSpace(count, inner, outer)];
 }
 

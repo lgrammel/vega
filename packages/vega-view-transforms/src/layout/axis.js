@@ -19,7 +19,7 @@ function axisIndices(datum) {
 export function axisLayout(view, axis, width, height) {  
   var item = axis.items[0],
       datum = item.datum,
-      delta = item.translate != null ? item.translate : 0.5,
+      delta = item.translate ?? 0.5,
       orient = item.orient,
       indices = axisIndices(datum),
       range = item.range,

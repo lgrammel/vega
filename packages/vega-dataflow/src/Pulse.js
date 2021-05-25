@@ -43,7 +43,7 @@ const ADD       = (1 << 0),
  */
 export default function Pulse(dataflow, stamp, encode) {
   this.dataflow = dataflow;
-  this.stamp = stamp == null ? -1 : stamp;
+  this.stamp = stamp ?? -1;
   this.add = [];
   this.rem = [];
   this.mod = [];

@@ -3,14 +3,14 @@ import {SQRT2PI} from './constants';
 
 export function sampleLogNormal(mean, stdev) {
   mean = mean || 0;
-  stdev = stdev == null ? 1 : stdev;
+  stdev = stdev ?? 1;
   return Math.exp(mean + sampleNormal() * stdev);
 }
 
 export function densityLogNormal(value, mean, stdev) {
   if (value <= 0) return 0;
   mean = mean || 0;
-  stdev = stdev == null ? 1 : stdev;
+  stdev = stdev ?? 1;
   const z = (Math.log(value) - mean) / stdev;
   return Math.exp(-0.5 * z * z) / (stdev * SQRT2PI * value);
 }
@@ -37,7 +37,7 @@ export default function(mean, stdev) {
     },
     stdev(_) {
       if (arguments.length) {
-        sigma = _ == null ? 1 : _;
+        sigma = _ ?? 1;
         return dist;
       } else {
         return sigma;

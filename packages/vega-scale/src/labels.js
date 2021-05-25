@@ -69,7 +69,7 @@ const formatRange = format =>
   };
 
 const get = (value, dflt) =>
-  value != null ? value : dflt;
+  value ?? dflt;
 
 const formatDiscrete = format =>
   (value, index) => index ? format(value) : null;
