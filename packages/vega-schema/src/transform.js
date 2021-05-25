@@ -11,7 +11,7 @@ const exprStringRef = def('exprString');
 const exprRef = def('expr');
 
 function req(key) {
-  return '_' + key + '_';
+  return `_${key}_`;
 }
 
 function transformSchema(name, def) {
@@ -131,7 +131,7 @@ export default function(definitions) {
   for (let i=0, n=definitions.length; i<n; ++i) {
     const d = definitions[i],
           name = d.type.toLowerCase(),
-          key = name + 'Transform',
+          key = `${name}Transform`,
           ref = def(key),
           md = d.metadata;
 

@@ -42,7 +42,7 @@ export function adjustSpatial(encode, marktype) {
 }
 
 export function canonicalType(type) {
-  return (type + '').toLowerCase();
+  return (`${type}`).toLowerCase();
 }
 
 export function isOperator(type) {

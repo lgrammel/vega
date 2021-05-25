@@ -70,7 +70,7 @@ export function multiLineOffset(item) {
 }
 
 export function textValue(item, line) {
-  const text = line == null ? '' : (line + '').trim();
+  const text = line == null ? '' : (`${line}`).trim();
   return item.limit > 0 && text.length ? truncate(item, text) : text;
 }
 
@@ -125,9 +125,9 @@ export function fontFamily(item, quote) {
 
 export function font(item, quote) {
   return '' +
-    (item.fontStyle ? item.fontStyle + ' ' : '') +
-    (item.fontVariant ? item.fontVariant + ' ' : '') +
-    (item.fontWeight ? item.fontWeight + ' ' : '') +
+    (item.fontStyle ? `${item.fontStyle} ` : '') +
+    (item.fontVariant ? `${item.fontVariant} ` : '') +
+    (item.fontWeight ? `${item.fontWeight} ` : '') +
     fontSize(item) + 'px ' +
     fontFamily(item, quote);
 }

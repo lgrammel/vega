@@ -4,4 +4,4 @@ const fs = require('fs'),
       file = dir + name;
 
 // copy JSON schema to local build folder
-fs.createReadStream(file).pipe(fs.createWriteStream('build' + name));
+fs.createReadStream(file).pipe(fs.createWriteStream(`build${name}`));

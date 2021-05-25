@@ -7,9 +7,9 @@ export default function(clip, scope) {
     if (clip.signal) {
       expr = clip.signal;
     } else if (clip.path) {
-      expr = 'pathShape(' + param(clip.path) + ')';
+      expr = `pathShape(${param(clip.path)})`;
     } else if (clip.sphere) {
-      expr = 'geoShape(' + param(clip.sphere) + ', {type: "Sphere"})';
+      expr = `geoShape(${param(clip.sphere)}, {type: "Sphere"})`;
     }
   }
 

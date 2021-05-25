@@ -66,7 +66,7 @@ function gradient(enc) {
 }
 
 function property(property) {
-  return isObject(property) ? '(' + entry(property) + ')' : property;
+  return isObject(property) ? `(${entry(property)})` : property;
 }
 
 function field(ref) {
@@ -97,7 +97,7 @@ function resolveField(ref) {
     object = 'datum';
     field = ref.datum;
   } else {
-    error('Invalid field reference: ' + stringValue(ref));
+    error(`Invalid field reference: ${stringValue(ref)}`);
   }
 
   if (!ref.signal) {
@@ -106,7 +106,7 @@ function resolveField(ref) {
       : resolveField(field);
   }
 
-  return object + '[' + field + ']';
+  return `${object}[${field}]`;
 }
 
 function scale(enc, value) {
@@ -120,9 +120,9 @@ function scale(enc, value) {
     if (value !== undefined) value = `_scale(${scale}, ${value})`;
 
     if (enc.band) {
-      value = (value ? value + '+' : '')
+      value = (value ? `${value}+` : '')
         + `_bandwidth(${scale})`
-        + (+enc.band === 1 ? '' : '*' + property(enc.band));
+        + (+enc.band === 1 ? '' : `*${property(enc.band)}`);
 
       if (enc.extra) {
         // include logic to handle extraneous elements

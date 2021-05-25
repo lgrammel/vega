@@ -86,7 +86,7 @@ export default function(spec, scope) {
     }
   } else {
     xy = (orient === Top || orient === Bottom) ? config.axisX : config.axisY;
-    or = config['axis' + orient[0].toUpperCase() + orient.slice(1)];
+    or = config[`axis${orient[0].toUpperCase()}${orient.slice(1)}`];
   }
 
   const result = (xy || or || band)

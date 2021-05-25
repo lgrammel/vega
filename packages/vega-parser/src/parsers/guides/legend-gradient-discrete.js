@@ -22,9 +22,9 @@ export default function(spec, scale, config, userEncode, dataRef) {
     opacity: zero,
     fill: {scale: scale, field: Value}
   };
-  enter[u]  = {signal: adjust + 'datum.' + Perc, mult: length};
+  enter[u]  = {signal: `${adjust}datum.${Perc}`, mult: length};
   enter[v]  = zero;
-  enter[uu] = {signal: adjust + 'datum.' + Perc2, mult: length};
+  enter[uu] = {signal: `${adjust}datum.${Perc2}`, mult: length};
   enter[vv] = encoder(thickness);
 
   const encode = {

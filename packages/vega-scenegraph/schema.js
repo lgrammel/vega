@@ -28,34 +28,34 @@ function buildMark(type, defs, strict) {
   extend(item.properties, MARKS[type].properties || {});
   if (strict) item.additionalProperties = false;
 
-  defs.mark.oneOf.push({$ref: '#/definitions/mark-' + type});
-  defs['mark-'+type] = mark;
-  defs['item-'+type] = item;
+  defs.mark.oneOf.push({$ref: `#/definitions/mark-${type}`});
+  defs[`mark-${type}`] = mark;
+  defs[`item-${type}`] = item;
 }
 
 function svg_path() {
   // Based on http://www.w3.org/TR/SVG/paths.html#PathDataBNF
   const wsp  = '[ \t\r\f]*',
         csp  = '([ \t\r\f]+,?[ \t\r\f]*|,[ \t\r\f]*)?',
-        sep  = csp + '?',
+        sep  = `${csp}?`,
         pos  = '[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?',
-        num  = '[-+]?' + pos,
-        nseq = num + '(' + sep + num + ')*',
+        num  = `[-+]?${pos}`,
+        nseq = `${num}(${sep}${num})*`,
         p    = num + sep + num,
         p2   = p + sep + p,
-        p3   = p + '(' + sep + p + '){2}',
-        pseq = p + '(' + sep + p + ')*',
-        arc  = pos + sep + pos + sep + num + csp + '[01]' + sep + '[01]' + sep + p,
-        m  = '[Mm]'   + wsp + pseq,
-        lt = '[LlTt]' + wsp + pseq,
-        hv = '[HhVv]' + wsp + nseq,
-        c  = '[Cc]'   + wsp + p3 + '(' + sep + p3 + ')*',
-        qs = '[QqSs]' + wsp + p2 + '(' + sep + p2 + ')*',
-        a  = '[Aa]'   + wsp + arc + '(' + sep + arc + ')*',
+        p3   = `${p}(${sep}${p}){2}`,
+        pseq = `${p}(${sep}${p})*`,
+        arc  = `${pos + sep + pos + sep + num + csp}[01]${sep}[01]${sep}${p}`,
+        m  = `[Mm]${wsp}${pseq}`,
+        lt = `[LlTt]${wsp}${pseq}`,
+        hv = `[HhVv]${wsp}${nseq}`,
+        c  = `[Cc]${wsp}${p3}(${sep}${p3})*`,
+        qs = `[QqSs]${wsp}${p2}(${sep}${p2})*`,
+        a  = `[Aa]${wsp}${arc}(${sep}${arc})*`,
         z  = '[Zz]',
-        draw = '(' + [z, lt, hv, c, qs, a].join('|') + ')',
-        move = m + wsp + '(' + draw + '(' + sep + draw + ')*' + ')?',
-        path = wsp + '(' + move + '(' + sep + move + ')*' + ')?' + wsp;
+        draw = `(${[z, lt, hv, c, qs, a].join('|')})`,
+        move = `${m + wsp}(${draw}(${sep}${draw})*)?`,
+        path = `${wsp}(${move}(${sep}${move})*)?${wsp}`;
   return path;
 }
 
@@ -78,7 +78,7 @@ const BASE = {
     'mark': { 'oneOf': [] },
     'path': {
       'type': 'string',
-      'pattern': '^' + svg_path() + '$'
+      'pattern': `^${svg_path()}$`
     },
     'paint': {
       'oneOf': [
@@ -107,7 +107,7 @@ const BASE = {
         },
         {
           'type': 'string',
-          'pattern': '^(' + css_color_names() + ')$'
+          'pattern': `^(${css_color_names()})$`
         }
       ]
     },

@@ -7,7 +7,7 @@ export default function(data, schema, timeParser, utcParser) {
   schema = schema || {};
 
   const reader = formats(schema.type || 'json');
-  if (!reader) error('Unknown data format type: ' + schema.type);
+  if (!reader) error(`Unknown data format type: ${schema.type}`);
 
   data = reader(data, schema);
   if (schema.parse) parse(data, schema.parse, timeParser, utcParser);
@@ -47,7 +47,7 @@ function parse(data, types, timeParser, utcParser) {
     }
 
     if (!typeParsers[type]) {
-      throw Error('Illegal format pattern: ' + field + ':' + type);
+      throw Error(`Illegal format pattern: ${field}:${type}`);
     }
 
     return typeParsers[type];

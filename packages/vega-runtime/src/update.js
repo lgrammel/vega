@@ -11,7 +11,7 @@ export default function(spec) {
       update = spec.update,
       params = undefined;
 
-  if (!source) error('Source not defined: ' + spec.source);
+  if (!source) error(`Source not defined: ${spec.source}`);
 
   target = spec.target && spec.target.$expr
     ? ctx.eventExpression(spec.target.$expr)

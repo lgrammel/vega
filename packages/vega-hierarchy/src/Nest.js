@@ -96,7 +96,7 @@ function nest() {
     let i = -1, keyValue, value, values;
 
     while (++i < n) {
-      keyValue = key(value = array[i]) + '';
+      keyValue = `${key(value = array[i])}`;
       if (values = valuesByKey[keyValue]) {
         values.push(value);
       } else {

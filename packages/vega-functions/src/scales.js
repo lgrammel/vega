@@ -23,7 +23,7 @@ export function internalScaleFunctions(codegen, fnctx, visitors) {
   const ref = arg => '_[' + (
     arg.type === Literal
       ? stringValue(ScalePrefix + arg.value)
-      : stringValue(ScalePrefix) + '+' + codegen(arg)
+      : `${stringValue(ScalePrefix)}+${codegen(arg)}`
   ) + ']';
 
   // define and return internal scale function code generators

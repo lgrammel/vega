@@ -19,8 +19,8 @@ export default function(canvas, width, height, origin, scaleFactor, opt) {
   }
 
   if (inDOM && ratio !== 1) {
-    canvas.style.width = width + 'px';
-    canvas.style.height = height + 'px';
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
   }
 
   context.pixelRatio = ratio;

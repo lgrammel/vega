@@ -11,7 +11,7 @@ export default async function(view, type, scaleFactor, opt) {
   const module = renderModule(type),
         ctr = module && module.headless;
 
-  if (!ctr) error('Unrecognized renderer type: ' + type);
+  if (!ctr) error(`Unrecognized renderer type: ${type}`);
 
   await view.runAsync();
   return initializeRenderer(view, null, null, ctr, scaleFactor, opt)

@@ -117,7 +117,7 @@ inherits(Aggregate, Transform, {
           v = vals[index++];
 
       for (const k in v) {
-        const key = base ? base + '|' + k : k;
+        const key = base ? `${base}|${k}` : k;
         tuple[name] = v[k];
         if (index < n) generate(key, tuple, index);
         else if (!curr[key]) aggr.cell(key, tuple);

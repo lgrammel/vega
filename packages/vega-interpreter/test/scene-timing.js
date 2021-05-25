@@ -1,4 +1,4 @@
-const specdir = process.cwd() + '/../vega/test/specs-valid/',
+const specdir = `${process.cwd()}/../vega/test/specs-valid/`,
       fs = require('fs'),
       vega = require('vega'),
       interp = require('../'),
@@ -19,7 +19,7 @@ specs.forEach(name => { data[name] = [0, 0]; });
 
 async function testStandard() {
   for (const name of specs) {
-    const spec = JSON.parse(fs.readFileSync(specdir + name + '.vg.json')),
+    const spec = JSON.parse(fs.readFileSync(`${specdir + name}.vg.json`)),
           t0 = Date.now(),
           runtime = vega.parse(spec);
 
@@ -34,7 +34,7 @@ async function testStandard() {
 
 async function testInterpret() {
   for (const name of specs) {
-    const spec = JSON.parse(fs.readFileSync(specdir + name + '.vg.json')),
+    const spec = JSON.parse(fs.readFileSync(`${specdir + name}.vg.json`)),
           t0 = Date.now(),
           runtime = vega.parse(spec, null, {ast: true});
 

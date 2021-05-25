@@ -2,7 +2,7 @@ import repeat from './repeat';
 
 export default function(str, length, padchar, align) {
   const c = padchar || ' ',
-        s = str + '',
+        s = `${str}`,
         n = length - s.length;
 
   return n <= 0 ? s

@@ -9,10 +9,10 @@ export default function(expr, scope) {
   // parse the expression to an abstract syntax tree (ast)
   let ast;
   try {
-    expr = isString(expr) ? expr : (stringValue(expr) + '');
+    expr = isString(expr) ? expr : (`${stringValue(expr)}`);
     ast = parse(expr);
   } catch (err) {
-    error('Expression parse error: ' + expr);
+    error(`Expression parse error: ${expr}`);
   }
 
   // analyze ast function calls for dependencies

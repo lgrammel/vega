@@ -56,7 +56,7 @@ inherits(SVGStringRenderer, Renderer, {
 
     // root content group
     m.open('g', rootAttributes, {
-      transform: 'translate(' + this._origin + ')'
+      transform: `translate(${this._origin})`
     });
     this.mark(m, scene);
     m.close(); // </g>
@@ -65,7 +65,7 @@ inherits(SVGStringRenderer, Renderer, {
     this.defs(m);
 
     // get SVG text string
-    this._text = m.close() + '';
+    this._text = `${m.close()}`;
 
     return this;
   },
@@ -254,7 +254,7 @@ inherits(SVGStringRenderer, Renderer, {
         m.open('rect', {
           width:  '1',
           height: '1',
-          fill:   'url(#' + id + ')'
+          fill:   `url(#${id})`
         }).close();
 
         m.close(); // </pattern>
@@ -333,7 +333,7 @@ function style(s, item, scene, tag, defs) {
 
   if (tag === 'text') {
     s['font-family'] = fontFamily(item);
-    s['font-size'] = fontSize(item) + 'px';
+    s['font-size'] = `${fontSize(item)}px`;
     s['font-style'] = item.fontStyle;
     s['font-variant'] = item.fontVariant;
     s['font-weight'] = item.fontWeight;

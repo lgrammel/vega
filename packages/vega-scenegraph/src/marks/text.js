@@ -45,8 +45,8 @@ function attr(emit, item) {
   emit('text-anchor', textAlign[item.align] || 'start');
 
   if (a) {
-    t = translate(x, y) + ' ' + rotate(a);
-    if (dx || dy) t += ' ' + translate(dx, dy);
+    t = `${translate(x, y)} ${rotate(a)}`;
+    if (dx || dy) t += ` ${translate(dx, dy)}`;
   } else {
     t = translate(x + dx, y + dy);
   }

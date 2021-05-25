@@ -30,7 +30,7 @@ Parameters.prototype = {
     if (index != null && index >= 0) {
       if (v[index] !== value || force) {
         v[index] = value;
-        mod[index + ':' + name] = -1;
+        mod[`${index}:${name}`] = -1;
         mod[name] = -1;
       }
     } else if (v !== value || force) {
@@ -63,7 +63,7 @@ Parameters.prototype = {
       return false;
     }
     return (index != null && index >= 0)
-      ? (index + 1 < mod[name] || !!mod[index + ':' + name])
+      ? (index + 1 < mod[name] || !!mod[`${index}:${name}`])
       : !!mod[name];
   },
 

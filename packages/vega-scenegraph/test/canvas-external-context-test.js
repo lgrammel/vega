@@ -35,6 +35,6 @@ tape('CanvasRenderer should support supplied external canvas context', t => {
   const image = externalCanvas.toBuffer();
   generate('png/external-context-rect.png', image);
   const file = load('png/external-context-rect.png');
-  t.ok(image+'' == file);
+  t.ok(`${image}` == file);
   t.end();
 });

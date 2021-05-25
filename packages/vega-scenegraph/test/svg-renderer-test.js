@@ -294,7 +294,7 @@ tape('SVGRenderer should handle empty item sets', t => {
 
   for (let i=0; i<types.length; ++i) {
     scene = {marktype:types[i], items:[]};
-    file = 'svg/marks-empty-' + types[i] + '.svg';
+    file = `svg/marks-empty-${types[i]}.svg`;
     svg = render(scene, 500, 500);
     t.equal(svg, load(file));
   }

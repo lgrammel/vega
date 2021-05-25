@@ -61,7 +61,7 @@ function aggregateParams(_, pulse) {
     groupby:  _.groupby,
     ops:      keys.map(() => op),
     fields:   keys.map(k => get(k, key, value, fields)),
-    as:       keys.map(k => k + ''),
+    as:       keys.map(k => `${k}`),
     modified: _.modified.bind(_)
   };
 }
@@ -72,7 +72,7 @@ function get(k, key, value, fields) {
   return accessor(
     d => key(d) === k ? value(d) : NaN,
     fields,
-    k + ''
+    `${k}`
   );
 }
 

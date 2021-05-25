@@ -40,7 +40,7 @@ inherits(Tree, HierarchyLayout, {
   layout(method) {
     const m = method || 'tidy';
     if (hasOwnProperty(Layouts, m)) return Layouts[m]();
-    else error('Unrecognized Tree layout method: ' + m);
+    else error(`Unrecognized Tree layout method: ${m}`);
   },
   params: ['size', 'nodeSize'],
   fields: Output

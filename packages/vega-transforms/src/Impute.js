@@ -53,7 +53,7 @@ function getValue(_) {
   var m = _.method || Methods.value, v;
 
   if (Methods[m] == null) {
-    error('Unrecognized imputation method: ' + m);
+    error(`Unrecognized imputation method: ${m}`);
   } else if (m === Methods.value) {
     v = _.value !== undefined ? _.value : 0;
     return () => v;
@@ -124,7 +124,7 @@ function partition(data, groupby, key, keyvals) {
     k = key(t);
     j = kMap[k] || (kMap[k] = domain.push(k));
 
-    gKey = (gVals = groupby ? groupby.map(get) : Empty) + '';
+    gKey = `${gVals = groupby ? groupby.map(get) : Empty}`;
     if (!(group = gMap[gKey])) {
       group = (gMap[gKey] = []);
       groups.push(group);

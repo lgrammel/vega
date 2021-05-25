@@ -1,4 +1,4 @@
-const innerText = val => (val + '')
+const innerText = val => (`${val}`)
   .replace(/&/g, '&amp;')
   .replace(/</g, '&lt;')
   .replace(/>/g, '&gt;');
@@ -28,7 +28,7 @@ export function markup() {
         m = {
           open(tag, ...attrs) {
             push(tag);
-            outer = '<' + tag;
+            outer = `<${tag}`;
             for (const set of attrs) {
               for (const key in set) attr(key, set[key]);
             }
@@ -55,7 +55,7 @@ export function markup() {
 }
 
 export const serializeXML = node =>
-  _serialize(markup(), node) + '';
+  `${_serialize(markup(), node)}`;
 
 function _serialize(m, node) {
   m.open(node.tagName);

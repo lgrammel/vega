@@ -88,7 +88,7 @@ inherits(Scale, Transform, {
       // invoke scale property setter, raise warning if not found
       isFunction(scale[key])
         ? scale[key](_[key])
-        : df.warn('Unsupported scale property: ' + key);
+        : df.warn(`Unsupported scale property: ${key}`);
     }
 
     configureRange(scale, _,
@@ -103,14 +103,14 @@ function scaleKey(_) {
   var t = _.type, d = '', n;
 
   // backwards compatibility pre Vega 5.
-  if (t === Sequential) return Sequential + '-' + Linear;
+  if (t === Sequential) return `${Sequential}-${Linear}`;
 
   if (isContinuousColor(_)) {
     n = _.rawDomain ? _.rawDomain.length
       : _.domain ? _.domain.length + +(_.domainMid != null)
       : 0;
-    d = n === 2 ? Sequential + '-'
-      : n === 3 ? Diverging + '-'
+    d = n === 2 ? `${Sequential}-`
+      : n === 3 ? `${Diverging}-`
       : '';
   }
 
@@ -208,7 +208,7 @@ function domainCheck(type, domain, df) {
     var s = Math.abs(domain.reduce((s, v) => s + (v < 0 ? -1 : v > 0 ? 1 : 0), 0));
 
     if (s !== domain.length) {
-      df.warn('Log scale domain includes zero: ' + stringValue(domain));
+      df.warn(`Log scale domain includes zero: ${stringValue(domain)}`);
     }
   }
   return domain;

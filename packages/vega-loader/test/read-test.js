@@ -38,9 +38,9 @@ function toDelimitedText(data, delimiter) {
   const head = fields.join(delimiter);
   const body = data.map(row => fields.map(f => {
     const v = row[f];
-    return typeof v === 'string' ? ('"'+v+'"') : v;
+    return typeof v === 'string' ? (`"${v}"`) : v;
   }).join(delimiter));
-  return head + '\n' + body.join('\n');
+  return `${head}\n${body.join('\n')}`;
 }
 
 // JSON

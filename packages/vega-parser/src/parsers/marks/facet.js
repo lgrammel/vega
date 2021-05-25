@@ -11,10 +11,10 @@ export default function(spec, scope, group) {
   let op;
 
   if (!facet.name) {
-    error('Facet must have a name: ' + stringValue(facet));
+    error(`Facet must have a name: ${stringValue(facet)}`);
   }
   if (!facet.data) {
-    error('Facet must reference a data set: ' + stringValue(facet));
+    error(`Facet must reference a data set: ${stringValue(facet)}`);
   }
 
   if (facet.field) {
@@ -29,7 +29,7 @@ export default function(spec, scope, group) {
       pulse: data
     }));
   } else {
-    error('Facet must specify groupby or field: ' + stringValue(facet));
+    error(`Facet must specify groupby or field: ${stringValue(facet)}`);
   }
 
   // initialize facet subscope

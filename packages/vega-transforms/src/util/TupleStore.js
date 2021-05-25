@@ -64,7 +64,7 @@ prototype.distinct = function(get) {
       count = 0, s;
 
   while (--n >= 0) {
-    s = get(v[n]) + '';
+    s = `${get(v[n])}`;
     if (!hasOwnProperty(map, s)) {
       map[s] = 1;
       ++count;

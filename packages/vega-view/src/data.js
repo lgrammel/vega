@@ -4,7 +4,7 @@ import {error, hasOwnProperty, truthy} from 'vega-util';
 export function dataref(view, name) {
   var data = view._runtime.data;
   if (!hasOwnProperty(data, name)) {
-    error('Unrecognized data set: ' + name);
+    error(`Unrecognized data set: ${name}`);
   }
   return data[name];
 }

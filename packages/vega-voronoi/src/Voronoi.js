@@ -56,5 +56,5 @@ function toPathString(p) {
   let n = p.length - 1;
   for (; p[n][0] === x && p[n][1] === y; --n);
 
-  return 'M' + p.slice(0, n + 1).join('L') + 'Z';
+  return `M${p.slice(0, n + 1).join('L')}Z`;
 }

@@ -23,7 +23,7 @@ export function parseOperatorParameters(spec) {
   const ctx = this;
   if (spec.params) {
     const op = ctx.get(spec.id);
-    if (!op) error('Invalid operator id: ' + spec.id);
+    if (!op) error(`Invalid operator id: ${spec.id}`);
     ctx.dataflow.connect(op, op.parameters(
       ctx.parseParameters(spec.params),
       spec.react,

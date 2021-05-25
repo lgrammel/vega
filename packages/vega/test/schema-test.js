@@ -22,11 +22,11 @@ tape('JSON schema is valid', t => {
 });
 
 tape('JSON schema recognizes valid specifications', t => {
-  const dir = process.cwd() + '/test/specs-valid/';
+  const dir = `${process.cwd()}/test/specs-valid/`;
   validSpecs.forEach(file => {
-    var spec = JSON.parse(fs.readFileSync(dir + file + '.vg.json')),
+    var spec = JSON.parse(fs.readFileSync(`${dir + file}.vg.json`)),
         valid = validate(spec);
-    t.ok(valid, 'valid schema: ' + file);
+    t.ok(valid, `valid schema: ${file}`);
     if (!valid) console.log(validate.errors); // eslint-disable-line no-console
   });
 
@@ -34,12 +34,12 @@ tape('JSON schema recognizes valid specifications', t => {
 });
 
 tape('JSON schema recognizes invalid specifications', t => {
-  const dir = process.cwd() + '/test/specs-invalid/';
+  const dir = `${process.cwd()}/test/specs-invalid/`;
   invalidSpecs.forEach(file => {
-    const specs = JSON.parse(fs.readFileSync(dir + file + '.json'));
+    const specs = JSON.parse(fs.readFileSync(`${dir + file}.json`));
     specs.forEach((spec, index) => {
       t.notOk(validate(spec),
-        'invalid schema (' + index + '): ' + file);
+        `invalid schema (${index}): ${file}`);
     });
   });
 

@@ -33,7 +33,7 @@ export function selectionResolve(name, op, isMulti, vl5) {
       res = resolved[field.field] || (resolved[field.field] = {});
       resUnit = res[unit] || (res[unit] = []);
       types[field.field] = type = field.type.charAt(0);
-      union = ops[type + '_union'];
+      union = ops[`${type}_union`];
       res[unit] = union(resUnit, array(values[j]));
     }
 
@@ -54,7 +54,7 @@ export function selectionResolve(name, op, isMulti, vl5) {
   Object.keys(resolved).forEach(field => {
     resolved[field] = Object.keys(resolved[field])
       .map(unit => resolved[field][unit])
-      .reduce((acc, curr) => acc === undefined ? curr : ops[types[field] + '_' + op](acc, curr));
+      .reduce((acc, curr) => acc === undefined ? curr : ops[`${types[field]}_${op}`](acc, curr));
   });
 
   entries = Object.keys(multiRes);

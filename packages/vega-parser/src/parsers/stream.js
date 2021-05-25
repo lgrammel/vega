@@ -8,7 +8,7 @@ export default function parseStream(stream, scope) {
   const method = stream.merge ? mergeStream
     : stream.stream ? nestedStream
     : stream.type ? eventStream
-    : error('Invalid stream specification: ' + stringValue(stream));
+    : error(`Invalid stream specification: ${stringValue(stream)}`);
 
   return method(stream, scope);
 }
@@ -49,7 +49,7 @@ function streamParameters(entry, stream, scope) {
 
   if (param) {
     if (param.length !== 2) {
-      error('Stream "between" parameter must have 2 entries: ' + stringValue(stream));
+      error(`Stream "between" parameter must have 2 entries: ${stringValue(stream)}`);
     }
     entry.between = [
       parseStream(param[0], scope),
@@ -67,7 +67,7 @@ function streamParameters(entry, stream, scope) {
     param.push('inScope(event.item)');
   }
   if (param.length) {
-    entry.filter = parseExpression('(' + param.join(')&&(') + ')', scope).$expr;
+    entry.filter = parseExpression(`(${param.join(')&&(')})`, scope).$expr;
   }
 
   if ((param = stream.throttle) != null) {
@@ -88,7 +88,7 @@ function streamParameters(entry, stream, scope) {
 function filterMark(type, name, role) {
   const item = 'event.item';
   return item
-    + (type && type !== '*' ? '&&' + item + '.mark.marktype===\'' + type + '\'' : '')
-    + (role ? '&&' + item + '.mark.role===\'' + role + '\'' : '')
-    + (name ? '&&' + item + '.mark.name===\'' + name + '\'' : '');
+    + (type && type !== '*' ? `&&${item}.mark.marktype==='${type}'` : '')
+    + (role ? `&&${item}.mark.role==='${role}'` : '')
+    + (name ? `&&${item}.mark.name==='${name}'` : '');
 }

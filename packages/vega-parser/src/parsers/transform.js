@@ -9,7 +9,7 @@ import {error, extend, isArray, isString, stringValue} from 'vega-util';
  */
 export default function(spec, scope) {
   const def = definition(spec.type);
-  if (!def) error('Unrecognized transform type: ' + stringValue(spec.type));
+  if (!def) error(`Unrecognized transform type: ${stringValue(spec.type)}`);
 
   const t = entry(def.type.toLowerCase(), null, parseParameters(def, spec, scope));
   if (spec.signal) scope.addSignal(spec.signal, scope.proxy(t));
@@ -43,7 +43,7 @@ function parseParameter(def, spec, scope) {
     return parseIndexParameter(def, spec, scope);
   } else if (value === undefined) {
     if (def.required) {
-      error('Missing required ' + stringValue(spec.type)
+      error(`Missing required ${stringValue(spec.type)}`
           + ' parameter: ' + stringValue(def.name));
     }
     return;
@@ -99,7 +99,7 @@ function parseSubParameters(def, spec, scope) {
 
   if (def.array) {
     if (!isArray(value)) { // signals not allowed!
-      error('Expected an array of sub-parameters. Instead: ' + stringValue(value));
+      error(`Expected an array of sub-parameters. Instead: ${stringValue(value)}`);
     }
     return value.map(v => parseSubParameter(def, v, scope));
   } else {
@@ -123,7 +123,7 @@ function parseSubParameter(def, value, scope) {
     if (pdef) break;
   }
   // raise error if matching key not found
-  if (!pdef) error('Unsupported parameter: ' + stringValue(value));
+  if (!pdef) error(`Unsupported parameter: ${stringValue(value)}`);
 
   // parse params, create Params transform, return ref
   const params = extend(parseParameters(pdef, value, scope), pdef.key);

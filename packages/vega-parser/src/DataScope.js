@@ -72,7 +72,7 @@ function cache(scope, ds, name, optype, field, counts, index) {
 
   if (k != null) {
     scope = ds.scope;
-    k = k + (sort ? '|' + sort : '');
+    k = k + (sort ? `|${sort}` : '');
     v = cache[k];
   }
 

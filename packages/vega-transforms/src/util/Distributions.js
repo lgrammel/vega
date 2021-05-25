@@ -34,7 +34,7 @@ const DISTRIBUTIONS = 'distributions',
 export default function parse(def, data) {
   const func = def[FUNCTION];
   if (!hasOwnProperty(Distributions, func)) {
-    error('Unknown distribution function: ' + func);
+    error(`Unknown distribution function: ${func}`);
   }
 
   const d = Distributions[func]();

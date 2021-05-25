@@ -275,8 +275,8 @@ function cloudSprite(contextAndRatio, d, data, di) {
   while (++di < n) {
     d = data[di];
     c.save();
-    c.font = d.style + ' ' + d.weight + ' ' + ~~((d.size + 1) / ratio) + 'px ' + d.font;
-    w = c.measureText(d.text + 'm').width * ratio;
+    c.font = `${d.style} ${d.weight} ${~~((d.size + 1) / ratio)}px ${d.font}`;
+    w = c.measureText(`${d.text}m`).width * ratio;
     h = d.size << 1;
     if (d.rotate) {
       var sr = Math.sin(d.rotate * cloudRadians),

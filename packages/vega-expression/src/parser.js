@@ -102,7 +102,7 @@ var RegexNonAsciiIdentifierStart = new RegExp('[\\xAA\\xB5\\xBA\\xC0-\\xD6\\xD8-
 function assert(condition, message) {
   /* istanbul ignore next */
   if (!condition) {
-    throw new Error('ASSERT: ' + message);
+    throw new Error(`ASSERT: ${message}`);
   }
 }
 
@@ -477,14 +477,14 @@ function scanHexLiteral(start) {
 
   return {
     type: TokenNumericLiteral,
-    value: parseInt('0x' + number, 16),
+    value: parseInt(`0x${number}`, 16),
     start: start,
     end: index
   };
 }
 
 function scanOctalLiteral(start) {
-  let number = '0' + source[index++];
+  let number = `0${source[index++]}`;
   while (index < length) {
     if (!isOctalDigit(source[index])) {
       break;
@@ -1120,7 +1120,7 @@ function parseObjectInitialiser() {
       name = toString(property.key.value);
     }
 
-    key = '$' + name;
+    key = `$${name}`;
     if (Object.prototype.hasOwnProperty.call(map, key)) {
       throwError({}, MessageStrictDuplicateProperty);
     } else {

@@ -163,7 +163,7 @@ tape('pathRender should render paths', t => {
   for (let i=0; i<paths.length; ++i) {
     p = pathParse(paths[i]);
     pathRender(ctx = context(), p, 0, 0);
-    t.ok(vega.pathEqual(ctx+'', output[i]), 'path: ' + paths[i]);
+    t.ok(vega.pathEqual(`${ctx}`, output[i]), `path: ${paths[i]}`);
   }
   t.end();
 });
@@ -171,13 +171,13 @@ tape('pathRender should render paths', t => {
 tape('pathRender should translate paths', t => {
   const ctx = context();
   pathRender(ctx, pathParse(paths[1]), 10, 50);
-  t.equal(ctx+'', 'M20,60L30,80');
+  t.equal(`${ctx}`, 'M20,60L30,80');
   t.end();
 });
 
 tape('pathRender should scale paths', t => {
   const ctx = context();
   pathRender(ctx, pathParse(paths[1]), 0, 0, 2, 0.5);
-  t.equal(ctx+'', 'M20,5L40,15');
+  t.equal(`${ctx}`, 'M20,5L40,15');
   t.end();
 });

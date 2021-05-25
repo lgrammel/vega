@@ -43,7 +43,7 @@ function fit(proj, _) {
 
 function create(type) {
   const constructor = projection((type || 'mercator').toLowerCase());
-  if (!constructor) error('Unrecognized projection type: ' + type);
+  if (!constructor) error(`Unrecognized projection type: ${type}`);
   return constructor();
 }
 

@@ -1,7 +1,7 @@
 const GENERATE_SCENES = false, // flag to generate test scenes
       OUTPUT_FAILURES = false, // flag to write scenes upon test failure
-      specdir = process.cwd() + '/test/specs-valid/',
-      testdir = process.cwd() + '/test/scenegraphs/',
+      specdir = `${process.cwd()}/test/specs-valid/`,
+      testdir = `${process.cwd()}/test/scenegraphs/`,
       fs = require('fs'),
       tape = require('tape'),
       vega = require('../'),
@@ -20,8 +20,8 @@ tape('Vega generates scenegraphs for specifications', t => {
 
   specs.forEach(async function(name, index) {
     try {
-      const path = testdir + name + '.json',
-            spec = JSON.parse(fs.readFileSync(specdir + name + '.vg.json')),
+      const path = `${testdir + name}.json`,
+            spec = JSON.parse(fs.readFileSync(`${specdir + name}.vg.json`)),
             runtime = vega.parse(spec),
             view = new vega.View(runtime, {
               loader: loader,
@@ -36,7 +36,7 @@ tape('Vega generates scenegraphs for specifications', t => {
         console.log('WRITING TEST SCENE', name, path);
         fs.writeFileSync(path, actual);
       } else {
-        const expect = fs.readFileSync(path) + '',
+        const expect = `${fs.readFileSync(path)}`,
               pair = [JSON.parse(actual), JSON.parse(expect)],
               isEqual = vega.sceneEqual(...pair);
 
@@ -50,7 +50,7 @@ tape('Vega generates scenegraphs for specifications', t => {
           });
         }
 
-        t.ok(isEqual, 'scene: ' + name);
+        t.ok(isEqual, `scene: ${name}`);
       }
     } catch (err) {
       // eslint-disable-next-line no-console

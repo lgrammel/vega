@@ -33,7 +33,7 @@ export function baseValueSchema(type, nullable) {
       valueType = nullable ? oneOf(type, nullType) : type;
 
   const valueRef = allOf(
-    def(modType + 'Modifiers'),
+    def(`${modType}Modifiers`),
     anyOf(
       oneOf(
         signalRef,

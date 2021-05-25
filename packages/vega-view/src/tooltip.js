@@ -9,18 +9,18 @@ function formatTooltip(value) {
   return value == null ? ''
     : isArray(value) ? formatArray(value)
     : isObject(value) && !isDate(value) ? formatObject(value)
-    : value + '';
+    : `${value}`;
 }
 
 function formatObject(obj) {
   return Object.keys(obj).map(key => {
     const v = obj[key];
-    return key + ': ' + (isArray(v) ? formatArray(v) : formatValue(v));
+    return `${key}: ${isArray(v) ? formatArray(v) : formatValue(v)}`;
   }).join('\n');
 }
 
 function formatArray(value) {
-  return '[' + value.map(formatValue).join(', ') + ']';
+  return `[${value.map(formatValue).join(', ')}]`;
 }
 
 function formatValue(value) {

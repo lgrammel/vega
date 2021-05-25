@@ -68,7 +68,7 @@ inherits(Treemap, HierarchyLayout, {
 
     x.method = _ => {
       if (hasOwnProperty(Tiles, _)) x.tile(Tiles[_]);
-      else error('Unrecognized Treemap layout method: ' + _);
+      else error(`Unrecognized Treemap layout method: ${_}`);
     };
 
     return x;

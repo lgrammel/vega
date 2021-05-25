@@ -24,5 +24,5 @@ function parseParameter(_, name, scope) {
     : !isObject(_) ? _
     : _.signal ? scope.signalRef(_.signal)
     : name === 'fit' ? _
-    : error('Unsupported parameter object: ' + stringValue(_));
+    : error(`Unsupported parameter object: ${stringValue(_)}`);
 }

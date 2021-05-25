@@ -35,7 +35,7 @@ export default function(spec) {
   }
 
   if (stream == null) {
-    error('Invalid stream definition: ' + JSON.stringify(spec));
+    error(`Invalid stream definition: ${JSON.stringify(spec)}`);
   }
 
   if (spec.consume) stream.consume(true);

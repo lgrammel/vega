@@ -66,7 +66,7 @@ inherits(Regression, Transform, {
       let domain = _.extent;
 
       if (!hasOwnProperty(Methods, method)) {
-        error('Invalid regression method: ' + method);
+        error(`Invalid regression method: ${method}`);
       }
 
       if (domain != null) {

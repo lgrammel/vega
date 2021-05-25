@@ -66,7 +66,7 @@ inherits(CountPattern, Transform, {
     let init = false;
 
     if (_.modified('stopwords') || !this._stop) {
-      this._stop = new RegExp('^' + (_.stopwords || '') + '$', 'i');
+      this._stop = new RegExp(`^${_.stopwords || ''}$`, 'i');
       init = true;
     }
 

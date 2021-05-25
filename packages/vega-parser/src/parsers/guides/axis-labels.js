@@ -9,7 +9,7 @@ import {deref} from '../../util';
 
 function flushExpr(scale, threshold, a, b, c) {
   return {
-    signal: 'flush(range("' + scale + '"), '
+    signal: `flush(range("${scale}"), `
       + 'scale("' + scale + '", datum.value), '
       + threshold + ',' + a + ',' + b + ',' + c + ')'
   };

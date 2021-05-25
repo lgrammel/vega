@@ -103,7 +103,7 @@ export function events(source, type, filter) {
     }
 
     if (!sources) {
-      view.warn('Can not resolve event source: ' + source);
+      view.warn(`Can not resolve event source: ${source}`);
     } else {
       for (var i=0, n=sources.length; i<n; ++i) {
         sources[i].addEventListener(type, send);

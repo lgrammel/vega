@@ -39,7 +39,7 @@ export function domClear(el, index) {
 
 // generate css class name for mark
 export function cssClass(mark) {
-  return 'mark-' + mark.marktype
-    + (mark.role ? ' role-' + mark.role : '')
-    + (mark.name ? ' ' + mark.name : '');
+  return `mark-${mark.marktype}`
+    + (mark.role ? ` role-${mark.role}` : '')
+    + (mark.name ? ` ${mark.name}` : '');
 }

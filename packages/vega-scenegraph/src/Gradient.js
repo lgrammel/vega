@@ -18,7 +18,7 @@ export function gradientRef(g, defs, base) {
 
   // check id, assign default values as needed
   if (!id) {
-    id = g.id = 'gradient_' + (gradient_id++);
+    id = g.id = `gradient_${gradient_id++}`;
     if (type === 'radial') {
       g.x1 = get(g.x1, 0.5);
       g.y1 = get(g.y1, 0.5);
@@ -39,7 +39,7 @@ export function gradientRef(g, defs, base) {
   defs[id] = g;
 
   // return url reference
-  return 'url(' + (base || '') + '#' + prefix + id + ')';
+  return `url(${base || ''}#${prefix}${id})`;
 }
 
 function get(val, def) {

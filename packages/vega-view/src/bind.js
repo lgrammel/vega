@@ -163,7 +163,7 @@ function select(bind, el, param, value) {
   param.options.forEach((option, i) => {
     const attr = {value: option};
     if (valuesEqual(option, value)) attr.selected = true;
-    node.appendChild(element('option', attr, (labels[i] || option)+''));
+    node.appendChild(element('option', attr, `${labels[i] || option}`));
   });
 
   el.appendChild(node);
@@ -202,7 +202,7 @@ function radio(bind, el, param, value) {
     const input = element('input', attr);
     input.addEventListener('change', () => bind.update(option));
 
-    const label = element('label', {}, (labels[i] || option)+'');
+    const label = element('label', {}, `${labels[i] || option}`);
     label.prepend(input);
     group.appendChild(label);
 
@@ -259,5 +259,5 @@ function range(bind, el, param, value) {
 }
 
 function valuesEqual(a, b) {
-  return a === b || (a+'' === b+'');
+  return a === b || (`${a}` === `${b}`);
 }

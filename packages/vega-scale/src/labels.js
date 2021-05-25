@@ -65,7 +65,7 @@ const formatRange = format =>
     const limit = get(array[index + 1], get(array.max, +Infinity)),
           lo = formatValue(value, format),
           hi = formatValue(limit, format);
-    return lo && hi ? lo + ' \u2013 ' + hi : hi ? '< ' + hi : '\u2265 ' + lo;
+    return lo && hi ? `${lo} \u2013 ${hi}` : hi ? `< ${hi}` : `\u2265 ${lo}`;
   };
 
 const get = (value, dflt) =>

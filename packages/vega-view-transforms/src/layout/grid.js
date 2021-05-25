@@ -318,7 +318,7 @@ function layoutHeaders(view, headers, groups, ncols, limit, offset, agg, isX, bo
 
   // check if number of headers exceeds number of rows or columns
   if (headers.length > limit) {
-    view.warn('Grid headers exceed limit: ' + limit);
+    view.warn(`Grid headers exceed limit: ${limit}`);
     headers = headers.slice(0, limit);
   }
 

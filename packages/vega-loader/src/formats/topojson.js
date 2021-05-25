@@ -24,7 +24,7 @@ export default function topojson(data, format) {
 
   object = (object = data.objects[property])
     ? method(data, object, filter)
-    : error('Invalid TopoJSON object: ' + property);
+    : error(`Invalid TopoJSON object: ${property}`);
 
   return object && object.features || [object];
 }

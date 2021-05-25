@@ -74,7 +74,7 @@ async function sanitize(uri, options) {
   const isAllowed = allowed_re.test(uri.replace(whitespace_re, ''));
 
   if (uri == null || typeof uri !== 'string' || !isAllowed) {
-    error('Sanitize failure, invalid URI: ' + stringValue(uri));
+    error(`Sanitize failure, invalid URI: ${stringValue(uri)}`);
   }
 
   const hasProtocol = protocol_re.test(uri);
@@ -83,7 +83,7 @@ async function sanitize(uri, options) {
   if ((base = options.baseURL) && !hasProtocol) {
     // Ensure that there is a slash between the baseURL (e.g. hostname) and url
     if (!uri.startsWith('/') && base[base.length-1] !== '/') {
-      uri = '/' + uri;
+      uri = `/${uri}`;
     }
     uri = base + uri;
   }
@@ -103,7 +103,7 @@ async function sanitize(uri, options) {
       loadFile = true;
     } else {
       // if relative protocol (starts with '//'), prepend default protocol
-      uri = (options.defaultProtocol || 'http') + ':' + uri;
+      uri = `${options.defaultProtocol || 'http'}:${uri}`;
     }
   }
 
@@ -115,18 +115,18 @@ async function sanitize(uri, options) {
 
   // set default result target, if specified
   if (options.target) {
-    result.target = options.target + '';
+    result.target = `${options.target}`;
   }
 
   // set default result rel, if specified (#1542)
   if (options.rel) {
-    result.rel = options.rel + '';
+    result.rel = `${options.rel}`;
   }
 
   // provide control over cross-origin image handling (#2238)
   // https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image
   if (options.context === 'image' && options.crossOrigin) {
-    result.crossOrigin = options.crossOrigin + '';
+    result.crossOrigin = `${options.crossOrigin}`;
   }
 
   // return
@@ -175,7 +175,7 @@ function httpLoader(fetch) {
               response = await fetch(url, opt);
 
         return !response.ok
-          ? error(response.status + '' + response.statusText)
+          ? error(`${response.status}${response.statusText}`)
           : isFunction(response[type]) ? response[type]()
           : response.text();
       }

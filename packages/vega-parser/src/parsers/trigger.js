@@ -9,7 +9,7 @@ export default function(spec, scope, name) {
         values = spec.values,
         op = scope.add(operator());
 
-  const update = 'if(' + spec.trigger + ',modify("'
+  const update = `if(${spec.trigger},modify("`
     + name + '",'
     + [insert, remove, toggle, modify, values]
         .map(_ => _ == null ? 'null' : _)

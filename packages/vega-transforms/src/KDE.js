@@ -75,7 +75,7 @@ inherits(KDE, Transform, {
           maxsteps = _.steps || _.maxsteps || 200;
 
       if (method !== 'pdf' && method !== 'cdf') {
-        error('Invalid density method: ' + method);
+        error(`Invalid density method: ${method}`);
       }
 
       if (_.resolve === 'shared') {

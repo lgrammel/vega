@@ -66,7 +66,7 @@ function parseMerge(s) {
   }
 
   if (output.length === 0) {
-    throw 'Empty event selector: ' + s;
+    throw `Empty event selector: ${s}`;
   }
   return output;
 }
@@ -83,17 +83,17 @@ function parseBetween(s) {
 
   i = find(s, i, RBRACK, LBRACK, RBRACK);
   if (i === n) {
-    throw 'Empty between selector: ' + s;
+    throw `Empty between selector: ${s}`;
   }
 
   b = parseMerge(s.substring(1, i));
   if (b.length !== 2) {
-    throw 'Between selector must have two elements: ' + s;
+    throw `Between selector must have two elements: ${s}`;
   }
 
   s = s.slice(i + 1).trim();
   if (s[0] !== GT) {
-    throw 'Expected \'>\' after between selector: ' + s;
+    throw `Expected '>' after between selector: ${s}`;
   }
 
   b = b.map(parseSelector);
@@ -129,11 +129,11 @@ function parseStream(s) {
       try {
         throttle = parseThrottle(s.substring(i+1, n-1));
       } catch (e) {
-        throw 'Invalid throttle specification: ' + s;
+        throw `Invalid throttle specification: ${s}`;
       }
       s = s.slice(0, i).trim();
       n = s.length;
-    } else throw 'Unmatched right brace: ' + s;
+    } else throw `Unmatched right brace: ${s}`;
     i = 0;
   }
 
@@ -157,21 +157,21 @@ function parseStream(s) {
     source.push(s.substring(start, i).trim());
     filter = [];
     start = ++i;
-    if (start === n) throw 'Unmatched left bracket: ' + s;
+    if (start === n) throw `Unmatched left bracket: ${s}`;
   }
 
   // extract filters
   while (i < n) {
     i = find(s, i, RBRACK);
-    if (i === n) throw 'Unmatched left bracket: ' + s;
+    if (i === n) throw `Unmatched left bracket: ${s}`;
     filter.push(s.substring(start, i).trim());
-    if (i < n-1 && s[++i] !== LBRACK) throw 'Expected left bracket: ' + s;
+    if (i < n-1 && s[++i] !== LBRACK) throw `Expected left bracket: ${s}`;
     start = ++i;
   }
 
   // marshall event stream specification
   if (!(n = source.length) || ILLEGAL.test(source[n-1])) {
-    throw 'Invalid event selector: ' + s;
+    throw `Invalid event selector: ${s}`;
   }
 
   if (n > 1) {

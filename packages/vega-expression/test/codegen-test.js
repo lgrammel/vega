@@ -14,7 +14,7 @@ tape('Evaluate expressions without white or black list', t => {
 
   function evaluate(str) {
     const value = codegen(vega.parse(str));
-    const fn = Function('"use strict"; return (' + value.code + ')');
+    const fn = Function(`"use strict"; return (${value.code})`);
     return fn();
   }
 
@@ -27,7 +27,7 @@ tape('Evaluate expressions without white or black list', t => {
   global._val_ = 5;
   global[unicode] = 3.14;
   t.equal(evaluate('global._val_+1'), 6);
-  t.equal(evaluate('global["'+unicode+'"]'),3.14);
+  t.equal(evaluate(`global["${unicode}"]`),3.14);
   delete global._val_;
   delete global[unicode];
 
@@ -52,7 +52,7 @@ tape('Evaluate expressions with black list', t => {
   function evaluate(str) {
     const d = {a: 2, föö: 5};
     const value = codegen(vega.parse(str));
-    const fn = Function('d', '"use strict";return(' + value.code + ')');
+    const fn = Function('d', `"use strict";return(${value.code})`);
     return fn(d);
   }
 
@@ -85,7 +85,7 @@ tape('Evaluate expressions with white list', t => {
     if (value.globals.length > 0) {
       throw Error('Found non-allowed global identifier.');
     }
-    const fn = Function('datum', 'event', 'signals', 'return (' + value.code + ')');
+    const fn = Function('datum', 'event', 'signals', `return (${value.code})`);
     return fn(datum, evt);
   }
 
@@ -244,8 +244,8 @@ tape('Evaluate expressions with white list', t => {
 
   for (let date=1; date<=7; ++date) {
     d = new Date(2001, 1, date);
-    t.equal(evaluate('date(datetime(2001,1,'+date+'))'), d.getDate());
-    t.equal(evaluate('utcdate(datetime(2001,1,'+date+'))'), d.getUTCDate());
+    t.equal(evaluate(`date(datetime(2001,1,${date}))`), d.getDate());
+    t.equal(evaluate(`utcdate(datetime(2001,1,${date}))`), d.getUTCDate());
   }
 
   t.equal(evaluate('utc(2009,9,1,10)'), u);

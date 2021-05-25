@@ -108,7 +108,7 @@ inherits(Bin, Transform, {
     return this.value = accessor(
       f,
       accessorFields(field),
-      _.name || 'bin_' + accessorName(field)
+      _.name || `bin_${accessorName(field)}`
     );
   }
 });

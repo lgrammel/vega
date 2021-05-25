@@ -1,7 +1,7 @@
 import {extend, identity} from 'vega-util';
 
 export function measureName(op, field, as) {
-  return as || (op + (!field ? '' : '_' + field));
+  return as || (op + (!field ? '' : `_${field}`));
 }
 
 const noop = () => {};

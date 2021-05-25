@@ -30,7 +30,7 @@ export default function(opt) {
   function visit(ast) {
     if (isString(ast)) return ast;
     const generator = Generators[ast.type];
-    if (generator == null) error('Unsupported type: ' + ast.type);
+    if (generator == null) error(`Unsupported type: ${ast.type}`);
     return generator(ast);
   }
 
@@ -42,7 +42,7 @@ export default function(opt) {
       if (memberDepth > 0) {
         return id;
       } else if (hasOwnProperty(forbidden, id)) {
-        return error('Illegal identifier: ' + id);
+        return error(`Illegal identifier: ${id}`);
       } else if (hasOwnProperty(constants, id)) {
         return constants[id];
       } else if (hasOwnProperty(allowed, id)) {
@@ -63,48 +63,48 @@ export default function(opt) {
           fields[stripQuotes(p)] = 1;
         }
         if (d) memberDepth -= 1;
-        return o + (d ? '.'+p : '['+p+']');
+        return o + (d ? `.${p}` : `[${p}]`);
       },
 
     CallExpression: n => {
         if (n.callee.type !== 'Identifier') {
-          error('Illegal callee type: ' + n.callee.type);
+          error(`Illegal callee type: ${n.callee.type}`);
         }
         const callee = n.callee.name,
               args = n.arguments,
               fn = hasOwnProperty(functions, callee) && functions[callee];
-        if (!fn) error('Unrecognized function: ' + callee);
+        if (!fn) error(`Unrecognized function: ${callee}`);
         return isFunction(fn)
           ? fn(args)
-          : fn + '(' + args.map(visit).join(',') + ')';
+          : `${fn}(${args.map(visit).join(',')})`;
       },
 
     ArrayExpression: n =>
-        '[' + n.elements.map(visit).join(',') + ']',
+        `[${n.elements.map(visit).join(',')}]`,
 
     BinaryExpression: n =>
-        '(' + visit(n.left) + ' ' + n.operator + ' ' + visit(n.right) + ')',
+        `(${visit(n.left)} ${n.operator} ${visit(n.right)})`,
 
     UnaryExpression: n =>
-        '(' + n.operator + visit(n.argument) + ')',
+        `(${n.operator}${visit(n.argument)})`,
 
     ConditionalExpression: n =>
-        '(' + visit(n.test) +
+        `(${visit(n.test)}` +
           '?' + visit(n.consequent) +
           ':' + visit(n.alternate) +
           ')',
 
     LogicalExpression: n =>
-        '(' + visit(n.left) + n.operator + visit(n.right) + ')',
+        `(${visit(n.left)}${n.operator}${visit(n.right)})`,
 
     ObjectExpression: n =>
-        '{' + n.properties.map(visit).join(',') + '}',
+        `{${n.properties.map(visit).join(',')}}`,
 
     Property: n => {
         memberDepth += 1;
         const k = visit(n.key);
         memberDepth -= 1;
-        return k + ':' + visit(n.value);
+        return `${k}:${visit(n.value)}`;
       }
   };
 

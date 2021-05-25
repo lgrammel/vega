@@ -6,7 +6,7 @@ export function data(name) {
 }
 
 export function indata(name, field, value) {
-  const index = this.context.data[name]['index:' + field],
+  const index = this.context.data[name][`index:${field}`],
         entry = index ? index.value.get(value) : undefined;
   return entry ? entry.count : entry;
 }

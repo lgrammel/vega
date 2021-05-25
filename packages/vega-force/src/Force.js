@@ -224,7 +224,7 @@ function getForce(_) {
   var f, p;
 
   if (!hasOwnProperty(ForceMap, _.force)) {
-    error('Unrecognized force: ' + _.force);
+    error(`Unrecognized force: ${_.force}`);
   }
   f = ForceMap[_.force]();
 

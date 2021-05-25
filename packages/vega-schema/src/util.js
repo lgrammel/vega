@@ -31,7 +31,7 @@ export function not(schema) {
 }
 
 export function def(name) {
-  return {$ref: '#/definitions/' + name};
+  return {$ref: `#/definitions/${name}`};
 }
 
 export function type(name, props) {

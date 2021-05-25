@@ -4,11 +4,11 @@ var tape = require('tape'),
 
 const host = 'vega.github.io';
 const dir = '/datalib/';
-const base = 'http://' + host + dir;
+const base = `http://${host}${dir}`;
 const uri = 'data/flare.json';
 const url = base + uri;
-const rel = '//' + host + dir + uri;
-const file = './test/' + uri;
+const rel = `//${host}${dir}${uri}`;
+const file = `./test/${uri}`;
 const fake = 'https://vega.github.io/vega/dne.html';
 const text = require('fs').readFileSync(file, 'utf8');
 
@@ -54,7 +54,7 @@ tape('loader should resolve error for empty url string', t => {
 tape('loader should load from file path', t => {
   loader.load(file, {file: true})
     .then(data => {
-      t.equal(data+'', text);
+      t.equal(`${data}`, text);
       t.end();
     })
     .catch(e => { t.fail(e); t.end(); });
@@ -63,16 +63,16 @@ tape('loader should load from file path', t => {
 tape('loader should infer file load in node', t => {
   loader.load(file)
     .then(data => {
-      t.equal(data+'', text);
+      t.equal(`${data}`, text);
       t.end();
     })
     .catch(e => { t.fail(e); t.end(); });
 });
 
 tape('loader should load from file url', t => {
-  loader.load('file://' + file)
+  loader.load(`file://${file}`)
     .then(data => {
-      t.equal(data+'', text);
+      t.equal(`${data}`, text);
       t.end();
     })
     .catch(e => { t.fail(e); t.end(); });
@@ -97,7 +97,7 @@ tape('loader should load from http with headers', t => {
 });
 
 tape('loader should resolve error with invalid url', t => {
-  loader.load(url + '.invalid')
+  loader.load(`${url}.invalid`)
     .then(() => { t.fail(); t.end(); })
     .catch(() => { t.pass('fails appropriately'); t.end(); });
 });
@@ -105,7 +105,7 @@ tape('loader should resolve error with invalid url', t => {
 tape('loader should load from http base url + uri', t => {
   loader.load(uri, {mode: 'http', baseURL: base})
     .then(data => {
-      t.equal(data+'', text);
+      t.equal(`${data}`, text);
       t.end();
     })
     .catch(e => { t.fail(e); t.end(); });
@@ -114,16 +114,16 @@ tape('loader should load from http base url + uri', t => {
 tape('loader should load from relative protocol http url', t => {
   loader.load(rel)
     .then(data => {
-      t.equal(data+'', text);
+      t.equal(`${data}`, text);
       t.end();
     })
     .catch(e => { t.fail(e); t.end(); });
 });
 
 tape('loader should load from relative protocol file url', t => {
-  loader.load('//'+file, {defaultProtocol: 'file'})
+  loader.load(`//${file}`, {defaultProtocol: 'file'})
     .then(data => {
-      t.equal(data+'', text);
+      t.equal(`${data}`, text);
       t.end();
     })
     .catch(e => { t.fail(e); t.end(); });

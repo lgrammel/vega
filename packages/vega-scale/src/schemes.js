@@ -6,7 +6,7 @@ function colors(palette) {
         c = new Array(n);
 
   for (let i = 0; i < n;) {
-    c[i] = '#' + palette.slice(i * 6, ++i * 6);
+    c[i] = `#${palette.slice(i * 6, ++i * 6)}`;
   }
   return c;
 }

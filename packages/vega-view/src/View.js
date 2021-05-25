@@ -118,7 +118,7 @@ export default function View(spec, options) {
 function lookupSignal(view, name) {
   return hasOwnProperty(view._signals, name)
     ? view._signals[name]
-    : error('Unrecognized signal name: ' + stringValue(name));
+    : error(`Unrecognized signal name: ${stringValue(name)}`);
 }
 
 function findOperatorHandler(op, handler) {
@@ -181,7 +181,7 @@ inherits(View, Dataflow, {
 
   description(text) {
     if (arguments.length) {
-      const desc = text != null ? (text + '') : null;
+      const desc = text != null ? (`${text}`) : null;
       if (desc !== this._desc) ariaLabel(this._el, this._desc = desc);
       return this;
     }
@@ -231,7 +231,7 @@ inherits(View, Dataflow, {
 
   renderer(type) {
     if (!arguments.length) return this._renderType;
-    if (!renderModule(type)) error('Unrecognized renderer type: ' + type);
+    if (!renderModule(type)) error(`Unrecognized renderer type: ${type}`);
     if (type !== this._renderType) {
       this._renderType = type;
       this._resetRenderer();

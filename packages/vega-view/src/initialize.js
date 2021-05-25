@@ -18,7 +18,7 @@ export default function(el, elBind) {
   initializeAria(view);
 
   // select appropriate renderer & handler
-  if (!module) view.error('Unrecognized renderer type: ' + type);
+  if (!module) view.error(`Unrecognized renderer type: ${type}`);
   const Handler = module.handler || CanvasHandler,
         Renderer = (el ? module.renderer : module.headless);
 
@@ -52,7 +52,7 @@ function lookup(view, el, clear) {
     if (typeof document !== 'undefined') {
       el = document.querySelector(el);
       if (!el) {
-        view.error('Signal bind element not found: ' + el);
+        view.error(`Signal bind element not found: ${el}`);
         return null;
       }
     } else {

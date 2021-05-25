@@ -9,7 +9,7 @@ export default function(p) {
       s = '',
       i, j, c;
 
-  p = p + '';
+  p = `${p}`;
 
   function push() {
     path.push(s + p.substring(i, j));
@@ -45,15 +45,15 @@ export default function(p) {
       if (j > i) push();
       b = i = j + 1;
     } else if (c === ']') {
-      if (!b) error('Access path missing open bracket: ' + p);
+      if (!b) error(`Access path missing open bracket: ${p}`);
       if (b > 0) push();
       b = 0;
       i = j + 1;
     }
   }
 
-  if (b) error('Access path missing closing bracket: ' + p);
-  if (q) error('Access path missing closing quote: ' + p);
+  if (b) error(`Access path missing closing bracket: ${p}`);
+  if (q) error(`Access path missing closing quote: ${p}`);
 
   if (j > i) {
     j++;

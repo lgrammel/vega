@@ -4,7 +4,7 @@ import {stringValue} from 'vega-util';
 function expression(ctx, args, code) {
   // wrap code in return statement if expression does not terminate
   if (code[code.length-1] !== ';') {
-    code = 'return(' + code + ');';
+    code = `return(${code});`;
   }
   const fn = Function(...args.concat(code));
   return ctx && ctx.functions ? fn.bind(ctx.functions) : fn;
@@ -50,7 +50,7 @@ export default {
 
     let code = 'var o=item,datum=o.datum,m=0,$;';
     for (const name in channels) {
-      const o ='o[' + stringValue(name) + ']';
+      const o =`o[${stringValue(name)}]`;
       code += `$=${channels[name].code};if(${o}!==$)${o}=$,m=1;`;
     }
     code += adjustSpatial(channels, marktype);
@@ -78,7 +78,7 @@ export default {
           u = `a${f.path}`;
           v = `b${f.path}`;
         } else {
-          (t = t || {})['f'+i] = f;
+          (t = t || {})[`f${i}`] = f;
           u = `this.f${i}(a)`;
           v = `this.f${i}(b)`;
         }

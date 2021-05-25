@@ -98,7 +98,7 @@ Scope.prototype = Subscope.prototype = {
   },
 
   id() {
-    return (this._subid ? this._subid + ':' : 0) + this._id++;
+    return (this._subid ? `${this._subid}:` : 0) + this._id++;
   },
 
   add(op) {
@@ -160,7 +160,7 @@ Scope.prototype = Subscope.prototype = {
       annotate(ds.output, name, 'output');
       annotate(ds.values, name, 'values');
       for (const field in ds.index) {
-        annotate(ds.index[field], name, 'index:' + field);
+        annotate(ds.index[field], name, `index:${field}`);
       }
     }
 
@@ -205,7 +205,7 @@ Scope.prototype = Subscope.prototype = {
   fieldRef(field, name) {
     if (isString(field)) return fieldRef(field, name);
     if (!field.signal) {
-      error('Unsupported field reference: ' + stringValue(field));
+      error(`Unsupported field reference: ${stringValue(field)}`);
     }
 
     const s = field.signal;
@@ -268,7 +268,7 @@ Scope.prototype = Subscope.prototype = {
   // ----
 
   event(source, type) {
-    const key = source + ':' + type;
+    const key = `${source}:${type}`;
     if (!this.events[key]) {
       const id = this.id();
       this.streams.push({
@@ -289,7 +289,7 @@ Scope.prototype = Subscope.prototype = {
 
   addSignal(name, value) {
     if (this.hasOwnSignal(name)) {
-      error('Duplicate signal name: ' + stringValue(name));
+      error(`Duplicate signal name: ${stringValue(name)}`);
     }
     const op = value instanceof Entry ? value : this.add(operator(value));
     return this.signals[name] = op;
@@ -297,7 +297,7 @@ Scope.prototype = Subscope.prototype = {
 
   getSignal(name) {
     if (!this.signals[name]) {
-      error('Unrecognized signal name: ' + stringValue(name));
+      error(`Unrecognized signal name: ${stringValue(name)}`);
     }
     return this.signals[name];
   },
@@ -339,7 +339,7 @@ Scope.prototype = Subscope.prototype = {
 
   addBinding(name, bind) {
     if (!this.bindings) {
-      error('Nested signals do not support binding: ' + stringValue(name));
+      error(`Nested signals do not support binding: ${stringValue(name)}`);
     }
     this.bindings.push(extend({signal: name}, bind));
   },
@@ -348,7 +348,7 @@ Scope.prototype = Subscope.prototype = {
 
   addScaleProj(name, transform) {
     if (hasOwnProperty(this.scales, name)) {
-      error('Duplicate scale or projection name: ' + stringValue(name));
+      error(`Duplicate scale or projection name: ${stringValue(name)}`);
     }
     this.scales[name] = this.add(transform);
   },
@@ -363,7 +363,7 @@ Scope.prototype = Subscope.prototype = {
 
   getScale(name) {
     if (!this.scales[name]) {
-      error('Unrecognized scale name: ' + stringValue(name));
+      error(`Unrecognized scale name: ${stringValue(name)}`);
     }
     return this.scales[name];
   },
@@ -388,21 +388,21 @@ Scope.prototype = Subscope.prototype = {
 
   addData(name, dataScope) {
     if (hasOwnProperty(this.data, name)) {
-      error('Duplicate data set name: ' + stringValue(name));
+      error(`Duplicate data set name: ${stringValue(name)}`);
     }
     return (this.data[name] = dataScope);
   },
 
   getData(name) {
     if (!this.data[name]) {
-      error('Undefined data set name: ' + stringValue(name));
+      error(`Undefined data set name: ${stringValue(name)}`);
     }
     return this.data[name];
   },
 
   addDataPipeline(name, entries) {
     if (hasOwnProperty(this.data, name)) {
-      error('Duplicate data set name: ' + stringValue(name));
+      error(`Duplicate data set name: ${stringValue(name)}`);
     }
     return this.addData(name, DataScope.fromEntries(this, entries));
   }
@@ -423,7 +423,7 @@ function arrayLambda(array) {
         ? (value.signal || propertyLambda(value))
         : stringValue(value));
   }
-  return code + ']';
+  return `${code}]`;
 }
 
 function objectLambda(obj) {
@@ -439,5 +439,5 @@ function objectLambda(obj) {
         ? (value.signal || propertyLambda(value))
         : stringValue(value));
   }
-  return code + '}';
+  return `${code}}`;
 }

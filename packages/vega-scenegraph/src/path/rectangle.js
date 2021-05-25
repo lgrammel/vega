@@ -71,7 +71,7 @@ export default function() {
 
     if (buffer) {
       context = null;
-      return buffer + '' || null;
+      return `${buffer}` || null;
     }
   }
 

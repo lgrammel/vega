@@ -159,7 +159,7 @@ function extractTitle(item) {
 function channelCaption(props) {
   props = props.map(p => p + (p === 'fill' || p === 'stroke' ? ' color' : ''));
   return props.length < 2 ? props[0]
-    : props.slice(0, -1).join(', ') + ' and ' + peek(props);
+    : `${props.slice(0, -1).join(', ')} and ${peek(props)}`;
 }
 
 function capitalize(s) {

@@ -100,7 +100,7 @@ inherits(Density, Transform, {
       let method = _.method || 'pdf';
 
       if (method !== 'pdf' && method !== 'cdf') {
-        error('Invalid density method: ' + method);
+        error(`Invalid density method: ${method}`);
       }
       if (!_.extent && !dist.data) {
         error('Missing density extent parameter.');

@@ -52,16 +52,16 @@ function getContext(bounds, angle) {
 tape('boundContext should bound arc segments', t => {
   angles.forEach(_ => {
     getContext(b).arc(x, y, r, 0, _.angle, false);
-    t.ok(boundEqual(b, _.bounds), 'bound-cw: ' + _.angle);
+    t.ok(boundEqual(b, _.bounds), `bound-cw: ${_.angle}`);
 
     getContext(b).arc(x, y, r, _.angle, 0, true);
-    t.ok(boundEqual(b, _.bounds), 'bound-ccw: ' + _.angle);
+    t.ok(boundEqual(b, _.bounds), `bound-ccw: ${_.angle}`);
 
     getContext(b).arc(x, y, r, rotate, rotate + _.angle, false);
-    t.ok(boundEqual(b, _.rotate), 'rotate-cw: ' + _.angle);
+    t.ok(boundEqual(b, _.rotate), `rotate-cw: ${_.angle}`);
 
     getContext(b).arc(x, y, r, rotate + _.angle, rotate, true);
-    t.ok(boundEqual(b, _.rotate), 'rotate-ccw: ' + _.angle);
+    t.ok(boundEqual(b, _.rotate), `rotate-ccw: ${_.angle}`);
   });
 
   t.end();
@@ -73,16 +73,16 @@ tape('boundContext should bound rotated arc segments', t => {
 
   angles.forEach(_ => {
     getContext(b, -deg).arc(x, y, r, rad, rad + _.angle, false);
-    t.ok(boundEqual(b, _.bounds), 'bound-cw: ' + _.angle);
+    t.ok(boundEqual(b, _.bounds), `bound-cw: ${_.angle}`);
 
     getContext(b, -deg).arc(x, y, r, rad + _.angle, rad, true);
-    t.ok(boundEqual(b, _.bounds), 'bound-ccw: ' + _.angle);
+    t.ok(boundEqual(b, _.bounds), `bound-ccw: ${_.angle}`);
 
     getContext(b, -deg).arc(x, y, r, rad + rotate, rad + rotate + _.angle, false);
-    t.ok(boundEqual(b, _.rotate), 'rotate-cw: ' + _.angle);
+    t.ok(boundEqual(b, _.rotate), `rotate-cw: ${_.angle}`);
 
     getContext(b, -deg).arc(x, y, r, rad + rotate + _.angle, rad + rotate, true);
-    t.ok(boundEqual(b, _.rotate), 'rotate-ccw: ' + _.angle);
+    t.ok(boundEqual(b, _.rotate), `rotate-ccw: ${_.angle}`);
   });
 
   t.end();

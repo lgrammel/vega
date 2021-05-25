@@ -5,7 +5,7 @@ export function multikey(f) {
         k = String(f[0](x));
 
     for (; i<n; ++i) {
-      k += '|' + f[i](x);
+      k += `|${f[i](x)}`;
     }
 
     return k;

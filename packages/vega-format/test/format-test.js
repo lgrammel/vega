@@ -37,7 +37,7 @@ tape('numberFormatLocale creates a new locale', t => {
   t.equal(locale.format('.1f')(0.16), '0,2');
   t.equal(locale.format('.0s')(1e6), '1M');
   t.equal(locale.format(',')(1234), '1.234');
-  t.equal(locale.format('$')(1.09), '1,09' + deDE.number.currency[1]);
+  t.equal(locale.format('$')(1.09), `1,09${deDE.number.currency[1]}`);
 
   t.equal(locale.formatPrefix('.1s', 1e6)(1e5), '0,1M');
   t.equal(locale.formatPrefix('.0s', 1e4)(1e5), '100k');

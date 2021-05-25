@@ -54,7 +54,7 @@ export default function(spec, config, userEncode, dataRef) {
     u = 'x'; v = 'y';
   }
 
-  enter[u] = update[u] = {signal: adjust + 'datum.' + Perc, mult: length};
+  enter[u] = update[u] = {signal: `${adjust}datum.${Perc}`, mult: length};
 
   enter[v] = update[v] = thickness;
   thickness.offset = value(spec.labelOffset, config.gradientLabelOffset) || 0;
@@ -62,7 +62,7 @@ export default function(spec, config, userEncode, dataRef) {
   overlap = overlap ? {
     separation: _('labelSeparation'),
     method: overlap,
-    order: 'datum.' + Index
+    order: `datum.${Index}`
   } : undefined;
 
   // type, role, style, key, dataRef, encode, extras

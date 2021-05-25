@@ -43,7 +43,7 @@ export default function(spec, scope, target) {
 
   if (encode != null) {
     if (update) error('Signal encode and update are mutually exclusive.');
-    update = 'encode(item(),' + stringValue(encode) + ')';
+    update = `encode(item(),${stringValue(encode)})`;
   }
 
   // resolve update value
@@ -76,7 +76,7 @@ function streamSource(stream, scope) {
 function mergeSources(sources) {
   return {
     signal: '['
-      + sources.map(s => s.scale ? 'scale("' + s.scale + '")' : s.signal)
+      + sources.map(s => s.scale ? `scale("${s.scale}")` : s.signal)
       + ']'
   };
 }

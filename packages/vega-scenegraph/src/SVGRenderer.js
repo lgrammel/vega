@@ -340,7 +340,7 @@ inherits(SVGRenderer, Renderer, {
         if (isGradient(value)) {
           value = gradientRef(value, this._defs.gradient, href());
         }
-        el.setAttribute(name, value + '');
+        el.setAttribute(name, `${value}`);
       }
 
       values[prop] = value;
@@ -624,7 +624,7 @@ const mark_extras = {
     }
 
     setAttribute(el, 'font-family', fontFamily(item));
-    setAttribute(el, 'font-size', fontSize(item) + 'px');
+    setAttribute(el, 'font-size', `${fontSize(item)}px`);
     setAttribute(el, 'font-style', item.fontStyle);
     setAttribute(el, 'font-variant', item.fontVariant);
     setAttribute(el, 'font-weight', item.fontWeight);
@@ -651,7 +651,7 @@ function setStyle(el, name, value) {
     if (value == null) {
       el.style.removeProperty(name);
     } else {
-      el.style.setProperty(name, value + '');
+      el.style.setProperty(name, `${value}`);
     }
     values[name] = value;
   }

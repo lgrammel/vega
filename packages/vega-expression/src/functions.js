@@ -5,12 +5,12 @@ export default function(codegen) {
   function fncall(name, args, cast, type) {
     let obj = codegen(args[0]);
     if (cast) {
-      obj = cast + '(' + obj + ')';
-      if (cast.lastIndexOf('new ', 0) === 0) obj = '(' + obj + ')';
+      obj = `${cast}(${obj})`;
+      if (cast.lastIndexOf('new ', 0) === 0) obj = `(${obj})`;
     }
-    return obj + '.' + name + (type < 0 ? '' : type === 0 ?
+    return `${obj}.${name}` + (type < 0 ? '' : type === 0 ?
       '()' :
-      '(' + args.slice(1).map(codegen).join(',') + ')');
+      `(${args.slice(1).map(codegen).join(',')})`);
   }
 
   function fn(name, cast, type) {
@@ -48,7 +48,7 @@ export default function(codegen) {
       if (args.length < 3) error('Missing arguments to clamp function.');
       if (args.length > 3) error('Too many arguments to clamp function.');
       const a = args.map(codegen);
-      return 'Math.max('+a[1]+', Math.min('+a[2]+','+a[0]+'))';
+      return `Math.max(${a[1]}, Math.min(${a[2]},${a[0]}))`;
     },
 
     // DATE functions
@@ -95,7 +95,7 @@ export default function(codegen) {
         if (args.length < 3) error('Missing arguments to if function.');
         if (args.length > 3) error('Too many arguments to if function.');
         const a = args.map(codegen);
-        return '('+a[0]+'?'+a[1]+':'+a[2]+')';
+        return `(${a[0]}?${a[1]}:${a[2]})`;
       }
   };
 }

@@ -22,7 +22,7 @@ tape('schema should be valid', t => {
 });
 
 tape('schema should validate correct marks', t => {
-  const marks = JSON.parse(fs.readFileSync(res + 'marks.json'));
+  const marks = JSON.parse(fs.readFileSync(`${res}marks.json`));
   for (const name in marks) {
     t.ok(validate(marks[name]), name);
   }
@@ -30,7 +30,7 @@ tape('schema should validate correct marks', t => {
 });
 
 tape('schema should invalidate incorrect marks', t => {
-  const marks = JSON.parse(fs.readFileSync(res + 'marks.json'));
+  const marks = JSON.parse(fs.readFileSync(`${res}marks.json`));
   for (const name in marks) {
     const scene = marks[name];
     switch (scene.marktype) {

@@ -16,7 +16,7 @@ export function initScale(spec, scope) {
   const type = spec.type || 'linear';
 
   if (!isValidScaleType(type)) {
-    error('Unrecognized scale type: ' + stringValue(type));
+    error(`Unrecognized scale type: ${stringValue(type)}`);
   }
 
   scope.addScale(spec.name, {
@@ -56,7 +56,7 @@ export function parseScale(spec, scope) {
 function parseLiteral(v, scope) {
   return !isObject(v) ? v
     : v.signal ? scope.signalRef(v.signal)
-    : error('Unsupported object: ' + stringValue(v));
+    : error(`Unsupported object: ${stringValue(v)}`);
 }
 
 function parseArray(v, scope) {
@@ -66,7 +66,7 @@ function parseArray(v, scope) {
 }
 
 function dataLookupError(name) {
-  error('Can not find data set: ' + stringValue(name));
+  error(`Can not find data set: ${stringValue(name)}`);
 }
 
 // -- SCALE DOMAIN ----
@@ -115,13 +115,13 @@ function multipleDomain(domain, spec, scope) {
 }
 
 function fieldRef(data, scope) {
-  const name = '_:vega:_' + (FIELD_REF_ID++),
+  const name = `_:vega:_${FIELD_REF_ID++}`,
         coll = Collect({});
 
   if (isArray(data)) {
     coll.value = {$ingest: data};
   } else if (data.signal) {
-    const code = 'setdata(' + stringValue(name) + ',' + data.signal + ')';
+    const code = `setdata(${stringValue(name)},${data.signal})`;
     coll.params.input = scope.signalRef(code);
   }
   scope.addDataPipeline(name, [coll, Sieve({})]);
@@ -169,10 +169,10 @@ function parseSort(sort, multidomain) {
       if (isObject(sort)) sort.field = 'key';
       else sort = {field: 'key'};
     } else if (!sort.field && sort.op !== 'count') {
-      error('No field provided for sort aggregate op: ' + sort.op);
+      error(`No field provided for sort aggregate op: ${sort.op}`);
     } else if (multidomain && sort.field) {
       if (sort.op && !MULTIDOMAIN_SORT_OPS[sort.op]) {
-        error('Multiple domain scales can not be sorted using ' + sort.op);
+        error(`Multiple domain scales can not be sorted using ${sort.op}`);
       }
     }
   }
@@ -250,7 +250,7 @@ function parseScaleRange(spec, scope, params) {
         ? [0, {signal: 'height'}]
         : [{signal: 'height'}, 0];
     } else {
-      error('Unrecognized scale range value: ' + stringValue(range));
+      error(`Unrecognized scale range value: ${stringValue(range)}`);
     }
   } else if (range.scheme) {
     params.scheme = isArray(range.scheme)
@@ -265,7 +265,7 @@ function parseScaleRange(spec, scope, params) {
   } else if (isDiscrete(spec.type) && !isArray(range)) {
     return parseScaleDomain(range, spec, scope);
   } else if (!isArray(range)) {
-    error('Unsupported range type: ' + stringValue(range));
+    error(`Unsupported range type: ${stringValue(range)}`);
   }
 
   return range.map(v => (isArray(v) ? parseArray : parseLiteral)(v, scope));

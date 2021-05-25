@@ -13,7 +13,7 @@ import {error} from 'vega-util';
  */
 export default async function(type, scaleFactor) {
   if (type !== Type.Canvas && type !== Type.SVG && type !== Type.PNG) {
-    error('Unrecognized image type: ' + type);
+    error(`Unrecognized image type: ${type}`);
   }
 
   const r = await renderHeadless(this, type, scaleFactor);

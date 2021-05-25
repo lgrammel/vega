@@ -14,7 +14,7 @@ const Visitors = {
       : id === 'datum' ? $.datum
       : id === 'event' ? $.event
       : id === 'item' ? $.item
-      : Constants[id] || $.params['$' + id];
+      : Constants[id] || $.params[`$${id}`];
   },
 
   MemberExpression: ($, n) => {
