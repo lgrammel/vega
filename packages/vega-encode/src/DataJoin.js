@@ -24,7 +24,7 @@ function newMap(key) {
 
 inherits(DataJoin, Transform, {
   transform(_, pulse) {
-    var df = pulse.dataflow,
+    let df = pulse.dataflow,
         out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
         item = _.item || defaultItemCreate,
         key = _.key || tupleid,

@@ -32,12 +32,12 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // Word cloud layout by Jason Davies, https://www.jasondavies.com/wordcloud/
 // Algorithm due to Jonathan Feinberg, http://static.mrfeinberg.com/bv_ch03.pdf
 
-var cloudRadians = Math.PI / 180,
-    cw = 1 << 11 >> 5,
-    ch = 1 << 11;
+const cloudRadians = Math.PI / 180,
+      cw = 1 << 11 >> 5,
+      ch = 1 << 11;
 
 export default function() {
-  var size = [256, 256],
+  let size = [256, 256],
       text,
       font,
       fontSize,
@@ -51,7 +51,7 @@ export default function() {
       cloud = {};
 
   cloud.layout = function() {
-    var contextAndRatio = getContext(canvas()),
+    let contextAndRatio = getContext(canvas()),
         board = zeroArray((size[0] >> 5) * size[1]),
         bounds = null,
         n = words.length,
@@ -77,7 +77,7 @@ export default function() {
         })).sort((a, b) => b.size - a.size);
 
     while (++i < n) {
-      var d = data[i];
+      const d = data[i];
       d.x = (size[0] * (random() + .5)) >> 1;
       d.y = (size[1] * (random() + .5)) >> 1;
       cloudSprite(contextAndRatio, d, data, i);
@@ -96,11 +96,11 @@ export default function() {
 
   function getContext(canvas) {
     canvas.width = canvas.height = 1;
-    var ratio = Math.sqrt(canvas.getContext('2d').getImageData(0, 0, 1, 1).data.length >> 2);
+    const ratio = Math.sqrt(canvas.getContext('2d').getImageData(0, 0, 1, 1).data.length >> 2);
     canvas.width = (cw << 5) / ratio;
     canvas.height = ch / ratio;
 
-    var context = canvas.getContext('2d');
+    const context = canvas.getContext('2d');
     context.fillStyle = context.strokeStyle = 'red';
     context.textAlign = 'center';
 
@@ -108,7 +108,7 @@ export default function() {
   }
 
   function place(board, tag, bounds) {
-    var startX = tag.x,
+    let startX = tag.x,
         startY = tag.y,
         maxDelta = Math.sqrt(size[0] * size[0] + size[1] * size[1]),
         s = spiral(size),
@@ -141,9 +141,9 @@ export default function() {
               h = tag.y1 - tag.y0,
               x = (tag.y + tag.y0) * sw + (lx >> 5),
               last;
-          for (var j = 0; j < h; j++) {
+          for (let j = 0; j < h; j++) {
             last = 0;
-            for (var i = 0; i <= w; i++) {
+            for (let i = 0; i <= w; i++) {
               board[x + i] |= (last << msx) | (i < w ? (last = sprite[j * w + i]) >>> sx : 0);
             }
             x += sw;
@@ -262,11 +262,11 @@ export default function() {
 // Load in batches for speed.
 function cloudSprite(contextAndRatio, d, data, di) {
   if (d.sprite) return;
-  var c = contextAndRatio.context,
-      ratio = contextAndRatio.ratio;
+  const c = contextAndRatio.context,
+        ratio = contextAndRatio.ratio;
 
   c.clearRect(0, 0, (cw << 5) / ratio, ch / ratio);
-  var x = 0,
+  let x = 0,
       y = 0,
       maxh = 0,
       n = data.length,
@@ -279,12 +279,12 @@ function cloudSprite(contextAndRatio, d, data, di) {
     w = c.measureText(d.text + 'm').width * ratio;
     h = d.size << 1;
     if (d.rotate) {
-      var sr = Math.sin(d.rotate * cloudRadians),
-          cr = Math.cos(d.rotate * cloudRadians),
-          wcr = w * cr,
-          wsr = w * sr,
-          hcr = h * cr,
-          hsr = h * sr;
+      const sr = Math.sin(d.rotate * cloudRadians),
+            cr = Math.cos(d.rotate * cloudRadians),
+            wcr = w * cr,
+            wsr = w * sr,
+            hcr = h * cr,
+            hsr = h * sr;
       w = (Math.max(Math.abs(wcr + hsr), Math.abs(wcr - hsr)) + 0x1f) >> 5 << 5;
       h = ~~Math.max(Math.abs(wsr + hcr), Math.abs(wsr - hcr));
     } else {
@@ -316,8 +316,8 @@ function cloudSprite(contextAndRatio, d, data, di) {
     d.hasText = true;
     x += w;
   }
-  var pixels = c.getImageData(0, 0, (cw << 5) / ratio, ch / ratio).data,
-      sprite = [];
+  const pixels = c.getImageData(0, 0, (cw << 5) / ratio, ch / ratio).data,
+        sprite = [];
   while (--di >= 0) {
     d = data[di];
     if (!d.hasText) continue;
@@ -333,8 +333,8 @@ function cloudSprite(contextAndRatio, d, data, di) {
         seenRow = -1;
     for (j = 0; j < h; j++) {
       for (i = 0; i < w; i++) {
-        var k = w32 * j + (i >> 5),
-            m = pixels[((y + j) * (cw << 5) + (x + i)) << 2] ? 1 << (31 - (i % 32)) : 0;
+        const k = w32 * j + (i >> 5),
+              m = pixels[((y + j) * (cw << 5) + (x + i)) << 2] ? 1 << (31 - (i % 32)) : 0;
         sprite[k] |= m;
         seen |= m;
       }
@@ -354,7 +354,7 @@ function cloudSprite(contextAndRatio, d, data, di) {
 // Use mask-based collision detection.
 function cloudCollide(tag, board, sw) {
   sw >>= 5;
-  var sprite = tag.sprite,
+  let sprite = tag.sprite,
       w = tag.width >> 5,
       lx = tag.x - (w << 4),
       sx = lx & 0x7f,
@@ -362,9 +362,9 @@ function cloudCollide(tag, board, sw) {
       h = tag.y1 - tag.y0,
       x = (tag.y + tag.y0) * sw + (lx >> 5),
       last;
-  for (var j = 0; j < h; j++) {
+  for (let j = 0; j < h; j++) {
     last = 0;
-    for (var i = 0; i <= w; i++) {
+    for (let i = 0; i <= w; i++) {
       if (((last << msx) | (i < w ? (last = sprite[j * w + i]) >>> sx : 0))
           & board[x + i]) return true;
     }
@@ -374,8 +374,8 @@ function cloudCollide(tag, board, sw) {
 }
 
 function cloudBounds(bounds, d) {
-  var b0 = bounds[0],
-      b1 = bounds[1];
+  const b0 = bounds[0],
+        b1 = bounds[1];
   if (d.x + d.x0 < b0.x) b0.x = d.x + d.x0;
   if (d.y + d.y0 < b0.y) b0.y = d.y + d.y0;
   if (d.x + d.x1 > b1.x) b1.x = d.x + d.x1;
@@ -387,19 +387,19 @@ function collideRects(a, b) {
 }
 
 function archimedeanSpiral(size) {
-  var e = size[0] / size[1];
+  const e = size[0] / size[1];
   return function(t) {
     return [e * (t *= .1) * Math.cos(t), t * Math.sin(t)];
   };
 }
 
 function rectangularSpiral(size) {
-  var dy = 4,
+  let dy = 4,
       dx = dy * size[0] / size[1],
       x = 0,
       y = 0;
   return function(t) {
-    var sign = t < 0 ? -1 : 1;
+    const sign = t < 0 ? -1 : 1;
     // See triangular numbers: T_n = n * (n + 1) / 2.
     switch ((Math.sqrt(1 + 4 * sign * t) - sign) & 3) {
       case 0:  x += dx; break;
@@ -413,7 +413,7 @@ function rectangularSpiral(size) {
 
 // TODO reuse arrays?
 function zeroArray(n) {
-  var a = [],
+  let a = [],
       i = -1;
   while (++i < n) a[i] = 0;
   return a;

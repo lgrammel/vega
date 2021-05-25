@@ -1,8 +1,8 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    transforms = util.extend({}, require('vega-transforms'), require('vega-encode')),
-    runtime = require('../');
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      transforms = util.extend({}, require('vega-transforms'), require('vega-encode')),
+      runtime = require('../');
 
 tape('Parser parses dataflow specs', t => {
   const values = [
@@ -24,10 +24,10 @@ tape('Parser parses dataflow specs', t => {
     {id:8, type:'Scale', params:{type:'linear', range:[{$ref:1},0], zero:false, domain:{$ref:7}}}
   ]};
 
-  var df  = new vega.Dataflow(),
-      ctx = runtime.context(df, transforms).parse(spec),
-      ops = ctx.nodes,
-      ids = Object.keys(ops);
+  const df  = new vega.Dataflow(),
+        ctx = runtime.context(df, transforms).parse(spec),
+        ops = ctx.nodes,
+        ids = Object.keys(ops);
 
   t.equal(Object.keys(ctx.fn).length, 2);
   t.equal(ids.length, spec.operators.length);

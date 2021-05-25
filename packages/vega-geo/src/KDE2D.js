@@ -61,7 +61,7 @@ inherits(KDE2D, Transform, {
     if (this.value && !pulse.changed() && !_.modified())
       return pulse.StopPropagation;
 
-    var out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
+    let out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
         source = pulse.materialize(pulse.SOURCE).source,
         groups = partition(source, _.groupby),
         names = (_.groupby || []).map(accessorName),

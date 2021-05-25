@@ -1,5 +1,5 @@
-var tape = require('tape'),
-    vega = require('../');
+const tape = require('tape'),
+      vega = require('../');
 
 tape('Parser parses event selector strings', t => {
   let events;

@@ -1,16 +1,16 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    Expr = require('../').expression;
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      Expr = require('../').expression;
 
 tape('Expression wraps expression functions', t => {
-  var df = new vega.Dataflow(),
-      f = util.accessor(
-            (d, _) => d.value + _.offset,
-            ['value'], 'shift'
-          ),
-      o = df.add(2),
-      e = df.add(Expr, {expr: f, offset: o});
+  const df = new vega.Dataflow(),
+        f = util.accessor(,
+              (d, _) => d.value + _.offset,
+              ['value'], 'shift'
+            )
+        o = df.add(2),
+        e = df.add(Expr, {expr: f, offset: o});
 
   df.run();
   t.equal(typeof e.value, 'function');

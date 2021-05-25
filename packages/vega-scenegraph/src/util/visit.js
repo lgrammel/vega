@@ -5,7 +5,7 @@ function compare(a, b) {
 export function zorder(scene) {
   if (!scene.zdirty) return scene.zitems;
 
-  var items = scene.items,
+  let items = scene.items,
       output = [], item, i, n;
 
   for (i=0, n=items.length; i<n; ++i) {
@@ -19,7 +19,7 @@ export function zorder(scene) {
 }
 
 export function visit(scene, visitor) {
-  var items = scene.items, i, n;
+  let items = scene.items, i, n;
   if (!items || !items.length) return;
 
   const zitems = zorder(scene);
@@ -37,7 +37,7 @@ export function visit(scene, visitor) {
 }
 
 export function pickVisit(scene, visitor) {
-  var items = scene.items, hit, i;
+  let items = scene.items, hit, i;
   if (!items || !items.length) return null;
 
   const zitems = zorder(scene);

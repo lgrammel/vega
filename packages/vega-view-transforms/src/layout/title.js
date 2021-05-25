@@ -2,7 +2,7 @@ import {Bottom, End, Group, Left, Right, Start, Top} from '../constants';
 import {set, tempBounds} from './util';
 
 export function titleLayout(view, mark, width, height, viewBounds) {
-  var group = mark.items[0],
+  let group = mark.items[0],
       frame = group.frame,
       orient = group.orient,
       anchor = group.anchor,

@@ -1,10 +1,10 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    tx = require('../'),
-    changeset = vega.changeset,
-    Collect = tx.collect,
-    Impute = tx.impute;
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      tx = require('../'),
+      changeset = vega.changeset,
+      Collect = tx.collect,
+      Impute = tx.impute;
 
 tape('Impute imputes missing tuples', t => {
   const data = [
@@ -13,20 +13,20 @@ tape('Impute imputes missing tuples', t => {
     {'x': 1, 'y': 43, 'c':0}
   ];
 
-  var x = util.field('x'),
-      y = util.field('y'),
-      c = util.field('c'),
-      df = new vega.Dataflow(),
-      m  = df.add('value'),
-      co = df.add(Collect),
-      im = df.add(Impute, {
-        field: y,
-        method: m,
-        value: -1,
-        groupby: [c],
-        key: x,
-        pulse: co
-      });
+  const x = util.field('x'),
+        y = util.field('y'),
+        c = util.field('c'),
+        df = new vega.Dataflow(),
+        m  = df.add('value'),
+        co = df.add(Collect),
+        im = df.add(Impute, {
+          field: y,
+          method: m,
+          value: -1,
+          groupby: [c],
+          key: x,
+          pulse: co
+        });
 
   df.pulse(co, changeset().insert(data)).run();
 

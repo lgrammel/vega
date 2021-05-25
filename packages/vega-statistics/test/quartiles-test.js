@@ -1,5 +1,5 @@
-var tape = require('tape'),
-    quartiles = require('../').quartiles;
+const tape = require('tape'),
+      quartiles = require('../').quartiles;
 
 tape('quartiles calculates quartile values', t => {
   // unsorted

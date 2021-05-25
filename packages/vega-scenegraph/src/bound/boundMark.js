@@ -2,10 +2,10 @@ import Bounds from '../Bounds';
 import boundItem from './boundItem';
 import marks from '../marks/index';
 
-var DUMMY = {mark: null};
+const DUMMY = {mark: null};
 
 export default function(mark, bounds, opt) {
-  var type  = marks[mark.marktype],
+  let type  = marks[mark.marktype],
       bound = type.bound,
       items = mark.items,
       hasItems = items && items.length,

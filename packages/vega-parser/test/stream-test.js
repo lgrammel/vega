@@ -1,8 +1,8 @@
-var tape = require('tape'),
-    vega = require('../');
+const tape = require('tape'),
+      vega = require('../');
 
 tape('Parser parses stream definitions', t => {
-  var scope = new vega.Scope(),
+  let scope = new vega.Scope(),
       dom, view, between, merge, nested, timer;
 
   scope.addSignal('zero', true); // id zero

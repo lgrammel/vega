@@ -106,7 +106,7 @@ Force.Definition = {
 
 inherits(Force, Transform, {
   transform(_, pulse) {
-    var sim = this.value,
+    let sim = this.value,
         change = pulse.changed(pulse.ADD_REM),
         params = _.modified(ForceParams),
         iters = _.iterations || 300;
@@ -188,7 +188,7 @@ function simulation(nodes, _) {
 }
 
 function setup(sim, _, init, pulse) {
-  var f = array(_.forces), i, n, p, name;
+  let f = array(_.forces), i, n, p, name;
 
   for (i=0, n=ForceParams.length; i<n; ++i) {
     p = ForceParams[i];
@@ -212,7 +212,7 @@ function setup(sim, _, init, pulse) {
 }
 
 function modified(f, pulse) {
-  var k, v;
+  let k, v;
   for (k in f) {
     if (isFunction(v = f[k]) && pulse.modified(accessorFields(v)))
       return 1;
@@ -221,7 +221,7 @@ function modified(f, pulse) {
 }
 
 function getForce(_) {
-  var f, p;
+  let f, p;
 
   if (!hasOwnProperty(ForceMap, _.force)) {
     error('Unrecognized force: ' + _.force);

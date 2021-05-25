@@ -80,7 +80,7 @@ export function legendParams(g, orient, config, xb, yb, w, h) {
 }
 
 export function legendLayout(view, legend) {
-  var item = legend.items[0],
+  let item = legend.items[0],
       datum = item.datum,
       orient = item.orient,
       bounds = item.bounds,
@@ -132,14 +132,14 @@ function legendBounds(item, b) {
 }
 
 function legendGroupLayout(view, item, entry) {
-  var pad = item.padding,
+  let pad = item.padding,
       ex = pad - entry.x,
       ey = pad - entry.y;
 
   if (!item.datum.title) {
     if (ex || ey) translate(view, entry, ex, ey);
   } else {
-    var title = item.items[1].items[0],
+    let title = item.items[1].items[0],
         anchor = title.anchor,
         tpad = item.titlePadding || 0,
         tx = pad - title.x,

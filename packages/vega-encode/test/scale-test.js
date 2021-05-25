@@ -1,11 +1,11 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    vs = require('vega-scale'),
-    encode = require('../');
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      vs = require('vega-scale'),
+      encode = require('../');
 
 function scale(params) {
-  var df = new vega.Dataflow(),
+  let df = new vega.Dataflow(),
       s = df.add(encode.scale, params),
       e = false;
   df.error = (_ => e = _);
@@ -14,10 +14,10 @@ function scale(params) {
 }
 
 tape('Scale respects domain configuration', t => {
-  var s, params = {
-    type: 'linear',
-    domain: [1, 9.5]
-  };
+  let s, params = {
+        type: 'linear',
+        domain: [1, 9.5]
+      };
 
   // test zero inclusion
   s = scale(params);
@@ -101,11 +101,11 @@ tape('Scale respects domain padding', t => {
 });
 
 tape('Ordinal scale respects domainImplicit', t => {
-  var s, params = {
-    type: 'ordinal',
-    domain: [],
-    range: ['a', 'b', 'c']
-  };
+  let s, params = {
+        type: 'ordinal',
+        domain: [],
+        range: ['a', 'b', 'c']
+      };
 
   s = scale(params);
   t.equal(s('foo'), undefined);
@@ -126,11 +126,11 @@ tape('Ordinal scale respects domainImplicit', t => {
 });
 
 tape('Scale respects range configuration', t => {
-  var s, params = {
-    type: 'linear',
-    domain: [0, 10],
-    range: [0, 10]
-  };
+  let s, params = {
+        type: 'linear',
+        domain: [0, 10],
+        range: [0, 10]
+      };
 
   // round
   s = scale(params);
@@ -161,7 +161,7 @@ tape('Scale respects range configuration', t => {
 });
 
 tape('Scale respects range color schemes', t => {
-  var s, u, v;
+  let s, u, v;
 
   // performs scheme lookup
   s = scale({type: 'ordinal', scheme: 'category10'});
@@ -213,7 +213,7 @@ tape('Scale respects range color schemes', t => {
 tape('Scale warns for zero in log domain', t => {
   function logScale(domain) {
     return function() {
-      var df = new vega.Dataflow(), e;
+      let df = new vega.Dataflow(), e;
       df.warn = (_ => e = _);
       df.add(encode.scale, {type: 'log', domain: domain});
       df.run();
@@ -285,7 +285,7 @@ tape('Scale infers scale key from type, domain, and range', t => {
 });
 
 tape('Scale respects bins parameter', t => {
-  var bins = {start: 0, stop: 10, step: 2},
+  let bins = {start: 0, stop: 10, step: 2},
       vals = [0, 2, 4, 6, 8, 10],
       val6 = [0, 2, 4, 6],
       s;

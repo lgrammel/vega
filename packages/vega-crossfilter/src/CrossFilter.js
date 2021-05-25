@@ -32,7 +32,7 @@ inherits(CrossFilter, Transform, {
     if (!this._dims) {
       return this.init(_, pulse);
     } else {
-      var init = _.modified('fields')
+      const init = _.modified('fields')
             || _.fields.some(f => pulse.modified(f.fields));
 
       return init

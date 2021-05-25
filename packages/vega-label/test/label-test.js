@@ -1,9 +1,9 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    Bounds = require('vega-scenegraph').Bounds,
-    Collect = require('vega-transforms').collect,
-    Label = require('../').label;
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      Bounds = require('vega-scenegraph').Bounds,
+      Collect = require('vega-transforms').collect,
+      Label = require('../').label;
 
 function closeTo(t, a, b) {
   t.equal(a && a.toFixed(14), b && b.toFixed(14));
@@ -17,15 +17,15 @@ tape('Label performs label layout over input points', t => {
     ];
   }
 
-  var df = new vega.Dataflow(),
-      an = df.add('left'),
-      c0 = df.add(Collect),
-      lb = df.add(Label, {
-        size: [50, 30],
-        anchor: [an],
-        offset: [2],
-        pulse: c0
-      });
+  const df = new vega.Dataflow(),
+        an = df.add('left'),
+        c0 = df.add(Collect),
+        lb = df.add(Label, {
+          size: [50, 30],
+          anchor: [an],
+          offset: [2],
+          pulse: c0
+        });
 
   df.update(an, 'left')
     .pulse(c0, vega.changeset().insert(data()))
@@ -142,15 +142,15 @@ tape('Label performs label layout with base mark reactive geometry', t => {
     ];
   }
 
-  var df = new vega.Dataflow(),
-      an = df.add('left'),
-      c0 = df.add(Collect),
-      lb = df.add(Label, {
-        size: [50, 30],
-        anchor: [an],
-        offset: [2],
-        pulse: c0
-      });
+  const df = new vega.Dataflow(),
+        an = df.add('left'),
+        c0 = df.add(Collect),
+        lb = df.add(Label, {
+          size: [50, 30],
+          anchor: [an],
+          offset: [2],
+          pulse: c0
+        });
 
   df.update(an, 'left')
     .pulse(c0, vega.changeset().insert(data()))

@@ -13,7 +13,7 @@ const min = (a, b) => Math.floor(Math.min(a, b));
 const max = (a, b) => Math.ceil(Math.max(a, b));
 
 function gridLayoutGroups(group) {
-  var groups = group.items,
+  let groups = group.items,
       n = groups.length,
       i = 0, mark, items;
 
@@ -72,7 +72,7 @@ function offsetValue(v) {
 }
 
 export function gridLayout(view, groups, opt) {
-  var dirty = !opt.nodirty,
+  let dirty = !opt.nodirty,
       bbox = opt.bounds === Flush ? bboxFlush : bboxFull,
       bounds = tempBounds.set(0, 0, 0, 0),
       alignCol = get(opt.align, Column),
@@ -229,7 +229,7 @@ export function gridLayout(view, groups, opt) {
 }
 
 export function trellisLayout(view, group, opt) {
-  var views = gridLayoutGroups(group),
+  let views = gridLayoutGroups(group),
       groups = views.marks,
       bbox = opt.bounds === Flush ? boundFlush : boundFull,
       off = opt.offset,
@@ -300,7 +300,7 @@ function boundFull(item, field) {
 }
 
 function layoutHeaders(view, headers, groups, ncols, limit, offset, agg, isX, bound, bf, start, stride, back, band) {
-  var n = groups.length,
+  let n = groups.length,
       init = 0,
       edge = 0,
       i, j, k, m, b, h, g, x, y;
@@ -365,7 +365,7 @@ function layoutTitle(view, g, offset, isX, bounds, band) {
   view.dirty(g);
 
   // compute title coordinates
-  var x = offset, y = offset;
+  let x = offset, y = offset;
   isX
     ? (x = Math.round(bounds.x1 + band * bounds.width()))
     : (y = Math.round(bounds.y1 + band * bounds.height()));

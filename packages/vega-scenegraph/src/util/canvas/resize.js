@@ -2,7 +2,7 @@ function devicePixelRatio() {
   return typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1;
 }
 
-var pixelRatio = devicePixelRatio();
+const pixelRatio = devicePixelRatio();
 
 export default function(canvas, width, height, origin, scaleFactor, opt) {
   const inDOM = typeof HTMLElement !== 'undefined'

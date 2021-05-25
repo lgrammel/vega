@@ -34,7 +34,7 @@ inherits(Nest, Transform, {
       error('Nest transform requires an upstream data source.');
     }
 
-    var gen = _.generate,
+    let gen = _.generate,
         mod = _.modified(),
         out = pulse.clone(),
         tree = this.value;

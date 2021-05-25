@@ -28,7 +28,7 @@ GeoPoint.Definition = {
 
 inherits(GeoPoint, Transform, {
   transform(_, pulse) {
-    var proj = _.projection,
+    let proj = _.projection,
         lon = _.fields[0],
         lat = _.fields[1],
         as = _.as || ['x', 'y'],

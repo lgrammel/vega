@@ -1,5 +1,5 @@
-var tape = require('tape'),
-    vega = require('../');
+const tape = require('tape'),
+      vega = require('../');
 
 tape('compare compares numbers', t => {
   const c = vega.compare('x');
@@ -88,9 +88,9 @@ tape('compare supports nested comparison', t => {
 });
 
 tape('compare supports accessor functions', t => {
-  var fx = vega.field('x'),
-      fy = vega.field('y'),
-      c = vega.compare([fx, fy], ['descending', 'ascending']);
+  const fx = vega.field('x'),
+        fy = vega.field('y'),
+        c = vega.compare([fx, fy], ['descending', 'ascending']);
   t.equal(c({x:1,y:0}, {x:0,y:1}), -1);
   t.equal(c({x:0,y:1}, {x:1,y:0}), 1);
   t.equal(c({x:0,y:0}, {x:0,y:1}), -1);

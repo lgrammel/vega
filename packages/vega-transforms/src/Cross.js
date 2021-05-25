@@ -47,7 +47,7 @@ inherits(Cross, Transform, {
 });
 
 function cross(input, a, b, filter) {
-  var data = [],
+  let data = [],
       t = {},
       n = input.length,
       i = 0,

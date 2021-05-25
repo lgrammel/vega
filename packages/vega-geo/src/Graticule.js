@@ -30,7 +30,7 @@ Graticule.Definition = {
 
 inherits(Graticule, Transform, {
   transform(_, pulse) {
-    var src = this.value,
+    let src = this.value,
         gen = this.generator, t;
 
     if (!src.length || _.modified()) {

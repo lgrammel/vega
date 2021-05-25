@@ -47,7 +47,7 @@ function get(val, def) {
 }
 
 export default function(p0, p1) {
-  var stops = [], gradient;
+  let stops = [], gradient;
   return gradient = {
     gradient: 'linear',
     x1: p0 ? p0[0] : 0,

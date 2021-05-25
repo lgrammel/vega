@@ -6,7 +6,7 @@ import {translate} from '../util/svg/transform';
 import {truthy} from 'vega-util';
 
 function getImage(item, renderer) {
-  var image = item.image;
+  let image = item.image;
   if (!image || item.url && item.url !== image.url) {
     image = {complete: false, width: 0, height: 0};
     renderer.loadImage(item.url).then(image => {

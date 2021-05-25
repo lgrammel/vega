@@ -1,6 +1,6 @@
-var tape = require('tape'),
-    vega = require('../'),
-    {local, utc} = require('./util');
+const tape = require('tape'),
+      vega = require('../'),
+      {local, utc} = require('./util');
 
 tape('timeInterval provides local intervals for time units', t => {
   let ti;

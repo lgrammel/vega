@@ -7,12 +7,12 @@ import {hitPath} from '../util/canvas/pick';
 export default function(type, shape, tip) {
 
   function attr(emit, item) {
-    var items = item.mark.items;
+    const items = item.mark.items;
     if (items.length) emit('d', shape(null, items));
   }
 
   function bound(bounds, mark) {
-    var items = mark.items;
+    const items = mark.items;
     if (items.length === 0) {
       return bounds;
     } else {
@@ -29,8 +29,8 @@ export default function(type, shape, tip) {
   const hit = hitPath(draw);
 
   function pick(context, scene, x, y, gx, gy) {
-    var items = scene.items,
-        b = scene.bounds;
+    const items = scene.items,
+          b = scene.bounds;
 
     if (!items || !items.length || b && !b.contains(gx, gy)) {
       return null;

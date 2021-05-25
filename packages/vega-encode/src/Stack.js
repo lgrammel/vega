@@ -33,14 +33,14 @@ Stack.Definition = {
 
 inherits(Stack, Transform, {
   transform(_, pulse) {
-    var as = _.as || DefOutput,
+    let as = _.as || DefOutput,
         y0 = as[0],
         y1 = as[1],
         sort = stableCompare(_.sort),
         field = _.field || one,
-        stack = _.offset === Center ? stackCenter
+        stack = _.offset === Center ? stackCenter,
               : _.offset === Normalize ? stackNormalize
-              : stackZero,
+              : stackZero
         groups, i, n, max;
 
     // partition, sum, and sort the stack groups
@@ -56,7 +56,7 @@ inherits(Stack, Transform, {
 });
 
 function stackCenter(group, max, field, y0, y1) {
-  var last = (max - group.sum) / 2,
+  let last = (max - group.sum) / 2,
       m = group.length,
       j = 0, t;
 
@@ -68,7 +68,7 @@ function stackCenter(group, max, field, y0, y1) {
 }
 
 function stackNormalize(group, max, field, y0, y1) {
-  var scale = 1 / group.sum,
+  let scale = 1 / group.sum,
       last = 0,
       m = group.length,
       j = 0, v = 0, t;
@@ -81,7 +81,7 @@ function stackNormalize(group, max, field, y0, y1) {
 }
 
 function stackZero(group, max, field, y0, y1) {
-  var lastPos = 0,
+  let lastPos = 0,
       lastNeg = 0,
       m = group.length,
       j = 0, v, t;

@@ -19,7 +19,7 @@ const textAlign = {
 const tempBounds = new Bounds();
 
 function anchorPoint(item) {
-  var x = item.x || 0,
+  let x = item.x || 0,
       y = item.y || 0,
       r = item.radius || 0, t;
 
@@ -35,7 +35,7 @@ function anchorPoint(item) {
 }
 
 function attr(emit, item) {
-  var dx = item.dx || 0,
+  let dx = item.dx || 0,
       dy = (item.dy || 0) + offset(item),
       p = anchorPoint(item),
       x = p.x1,
@@ -54,7 +54,7 @@ function attr(emit, item) {
 }
 
 function bound(bounds, item, mode) {
-  var h = textMetrics.height(item),
+  let h = textMetrics.height(item),
       a = item.align,
       p = anchorPoint(item),
       x = p.x1,
@@ -95,7 +95,7 @@ function bound(bounds, item, mode) {
 
 function draw(context, scene, bounds) {
   visit(scene, item => {
-    var opacity = item.opacity == null ? 1 : item.opacity,
+    let opacity = item.opacity == null ? 1 : item.opacity,
         p, x, y, i, lh, tl, str;
 
     if (bounds && !bounds.intersects(item.bounds) || // bounds check
@@ -151,15 +151,15 @@ function hit(context, item, x, y, gx, gy) {
   if (!item.angle) return true; // bounds sufficient if no rotation
 
   // project point into space of unrotated bounds
-  var p = anchorPoint(item),
-      ax = p.x1,
-      ay = p.y1,
-      b = bound(tempBounds, item, 1),
-      a = -item.angle * DegToRad,
-      cos = Math.cos(a),
-      sin = Math.sin(a),
-      px = cos * gx - sin * gy + (ax - cos * ax + sin * ay),
-      py = sin * gx + cos * gy + (ay - sin * ax - cos * ay);
+  const p = anchorPoint(item),
+        ax = p.x1,
+        ay = p.y1,
+        b = bound(tempBounds, item, 1),
+        a = -item.angle * DegToRad,
+        cos = Math.cos(a),
+        sin = Math.sin(a),
+        px = cos * gx - sin * gy + (ax - cos * ax + sin * ay),
+        py = sin * gx + cos * gy + (ay - sin * ax - cos * ay);
 
   return b.contains(px, py);
 }

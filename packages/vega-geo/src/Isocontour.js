@@ -59,13 +59,13 @@ inherits(Isocontour, Transform, {
       return pulse.StopPropagation;
     }
 
-    var out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
-        source = pulse.materialize(pulse.SOURCE).source,
-        field = _.field || identity,
-        contour = contours().smooth(_.smooth !== false),
-        tz = _.thresholds || levels(source, field, _),
-        as = _.as === null ? null : _.as || 'contour',
-        values = [];
+    const out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
+          source = pulse.materialize(pulse.SOURCE).source,
+          field = _.field || identity,
+          contour = contours().smooth(_.smooth !== false),
+          tz = _.thresholds || levels(source, field, _),
+          as = _.as === null ? null : _.as || 'contour',
+          values = [];
 
     source.forEach(t => {
       const grid = field(t);

@@ -48,16 +48,16 @@ inherits(Heatmap, Transform, {
       return pulse.StopPropagation;
     }
 
-    var source = pulse.materialize(pulse.SOURCE).source,
-        shared = _.resolve === 'shared',
-        field = _.field || identity,
-        opacity = opacity_(_.opacity, _),
-        color = color_(_.color, _),
-        as = _.as || 'image',
-        obj = {
-          $x: 0, $y: 0, $value: 0,
-          $max: shared ? max(source.map(t => max(field(t).values))) : 0
-        };
+    const source = pulse.materialize(pulse.SOURCE).source,
+          shared = _.resolve === 'shared',
+          field = _.field || identity,
+          opacity = opacity_(_.opacity, _),
+          color = color_(_.color, _),
+          as = _.as || 'image',
+          obj = {
+            $x: 0, $y: 0, $value: 0,
+            $max: shared ? max(source.map(t => max(field(t).values))) : 0
+          };
 
     source.forEach(t => {
       const v = field(t);

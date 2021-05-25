@@ -32,7 +32,7 @@ export function sceneFromJSON(json) {
 }
 
 function initialize(scene) {
-  var type = scene.marktype,
+  let type = scene.marktype,
       items = scene.items,
       parent, i, n;
 

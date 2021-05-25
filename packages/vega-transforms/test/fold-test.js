@@ -1,10 +1,10 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    tx = require('../'),
-    changeset = vega.changeset,
-    Collect = tx.collect,
-    Fold = tx.fold;
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      tx = require('../'),
+      changeset = vega.changeset,
+      Collect = tx.collect,
+      Fold = tx.fold;
 
 tape('Fold folds tuples', t => {
   const data = [
@@ -12,7 +12,7 @@ tape('Fold folds tuples', t => {
     {a:'?', b:2, c:4}
   ];
 
-  var fields = ['b', 'c'].map(k => util.field(k)),
+  let fields = ['b', 'c'].map(k => util.field(k)),
       df = new vega.Dataflow(),
       c0 = df.add(Collect),
       fd = df.add(Fold, {fields: fields, pulse: c0}),

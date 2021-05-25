@@ -1,5 +1,5 @@
-var tape = require('tape'),
-    {markup} = require('../');
+const tape = require('tape'),
+      {markup} = require('../');
 
 tape('markup should generate empty tag', t => {
   t.equal(

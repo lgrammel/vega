@@ -1,6 +1,6 @@
-var tape = require('tape'),
-    format = require('vega-format'),
-    {monthAbbrevFormat} = require('../');
+const tape = require('tape'),
+      format = require('vega-format'),
+      {monthAbbrevFormat} = require('../');
 
 tape('monthAbbrevFormat returns empty string for non-integer values', t => {
   const locale = format.defaultLocale(),

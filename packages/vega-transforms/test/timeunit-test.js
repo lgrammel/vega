@@ -1,11 +1,11 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    field = util.field,
-    vega = require('vega-dataflow'),
-    tx = require('../'),
-    changeset = vega.changeset,
-    Collect = tx.collect,
-    TimeUnit = tx.timeunit;
+const tape = require('tape'),
+      util = require('vega-util'),
+      field = util.field,
+      vega = require('vega-dataflow'),
+      tx = require('../'),
+      changeset = vega.changeset,
+      Collect = tx.collect,
+      TimeUnit = tx.timeunit;
 
 const UNITS = [
   'year',
@@ -89,11 +89,11 @@ tape('TimeUnit truncates dates to time units', t => {
   ];
   data.forEach(o => o.date = new Date(o.y, o.m, o.d));
 
-  var df = new vega.Dataflow(),
-      date = field('date'),
-      units = df.add(['year']),
-      c = df.add(Collect),
-      s = df.add(TimeUnit, {units:units, field:date, pulse:c});
+  const df = new vega.Dataflow(),
+        date = field('date'),
+        units = df.add(['year']),
+        c = df.add(Collect),
+        s = df.add(TimeUnit, {units:units, field:date, pulse:c});
 
   df.pulse(c, changeset().insert(data));
 
@@ -120,11 +120,11 @@ tape('TimeUnit truncates UTC dates to time units', t => {
   ];
   data.forEach(o => o.date = new Date(Date.UTC(o.y, o.m, o.d)));
 
-  var df = new vega.Dataflow(),
-      date = field('date'),
-      units = df.add(['year']),
-      c = df.add(Collect),
-      s = df.add(TimeUnit, {units:units, timezone:'utc', field:date, pulse:c});
+  const df = new vega.Dataflow(),
+        date = field('date'),
+        units = df.add(['year']),
+        c = df.add(Collect),
+        s = df.add(TimeUnit, {units:units, timezone:'utc', field:date, pulse:c});
 
   df.pulse(c, changeset().insert(data));
 
@@ -151,12 +151,12 @@ tape('TimeUnit supports unit steps', t => {
   ];
   data.forEach(o => o.date = new Date(o.y, o.m, o.d));
 
-  var df = new vega.Dataflow(),
-      date = field('date'),
-      units = df.add(['year', 'month']),
-      step = df.add(1),
-      c = df.add(Collect),
-      s = df.add(TimeUnit, {units:units, step:step, field:date, pulse:c});
+  const df = new vega.Dataflow(),
+        date = field('date'),
+        units = df.add(['year', 'month']),
+        step = df.add(1),
+        c = df.add(Collect),
+        s = df.add(TimeUnit, {units:units, step:step, field:date, pulse:c});
 
   df.pulse(c, changeset().insert(data)).run();
   t.equal(s.pulse.add.length, 4);
@@ -184,11 +184,11 @@ tape('TimeUnit supports unit inference', t => {
   ];
   data.forEach(o => o.date = new Date(o.y, o.m, o.d));
 
-  var df = new vega.Dataflow(),
-      date = field('date'),
-      bins = df.add(12),
-      c = df.add(Collect),
-      s = df.add(TimeUnit, {field:date, pulse:c, maxbins:bins});
+  const df = new vega.Dataflow(),
+        date = field('date'),
+        bins = df.add(12),
+        c = df.add(Collect),
+        s = df.add(TimeUnit, {field:date, pulse:c, maxbins:bins});
 
   df.pulse(c, changeset().insert(data)).run();
   t.equal(s.pulse.add.length, 4);
@@ -234,17 +234,17 @@ tape('TimeUnit supports unit inference with extent', t => {
   ];
   data.forEach(o => o.date = new Date(o.y, o.m, o.d));
 
-  var df = new vega.Dataflow(),
-      date = field('date'),
-      bins = df.add(12),
-      ext = df.add(util.extent(data, date)),
-      c = df.add(Collect),
-      s = df.add(TimeUnit, {
-        field: date,
-        pulse: c,
-        maxbins: bins,
-        extent: ext
-      });
+  const df = new vega.Dataflow(),
+        date = field('date'),
+        bins = df.add(12),
+        ext = df.add(util.extent(data, date)),
+        c = df.add(Collect),
+        s = df.add(TimeUnit, {
+          field: date,
+          pulse: c,
+          maxbins: bins,
+          extent: ext
+        });
 
   df.pulse(c, changeset().insert(data)).run();
   t.equal(s.pulse.add.length, 4);

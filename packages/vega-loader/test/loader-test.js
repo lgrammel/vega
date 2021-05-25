@@ -1,6 +1,6 @@
-var tape = require('tape'),
-    vega = require('../'),
-    loader = vega.loader();
+const tape = require('tape'),
+      vega = require('../'),
+      loader = vega.loader();
 
 const host = 'vega.github.io';
 const dir = '/datalib/';

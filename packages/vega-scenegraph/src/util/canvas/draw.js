@@ -22,7 +22,7 @@ export function drawOne(path) {
 }
 
 function drawPath(path, context, item, items) {
-  var opacity = item.opacity == null ? 1 : item.opacity;
+  const opacity = item.opacity == null ? 1 : item.opacity;
   if (opacity === 0) return;
 
   if (path(context, items)) return;

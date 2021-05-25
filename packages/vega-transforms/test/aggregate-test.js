@@ -1,10 +1,10 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    tx = require('../'),
-    changeset = vega.changeset,
-    Collect = tx.collect,
-    Aggregate = tx.aggregate;
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      tx = require('../'),
+      changeset = vega.changeset,
+      Collect = tx.collect,
+      Aggregate = tx.aggregate;
 
 tape('Aggregate aggregates tuples', t => {
   const data = [
@@ -12,17 +12,17 @@ tape('Aggregate aggregates tuples', t => {
     {k:'a', v:2}, {k:'b', v:4}
   ];
 
-  var key = util.field('k'),
-      val = util.field('v'),
-      df = new vega.Dataflow(),
-      col = df.add(Collect),
-      agg = df.add(Aggregate, {
-        groupby: [key],
-        fields: [val, val, val, val, val],
-        ops: ['count', 'sum', 'min', 'max', 'product'],
-        pulse: col
-      }),
-      out = df.add(Collect, {pulse: agg});
+  const key = util.field('k'),
+        val = util.field('v'),
+        df = new vega.Dataflow(),
+        col = df.add(Collect),
+        agg = df.add(Aggregate, {,
+          groupby: [key],
+          fields: [val, val, val, val, val],
+          ops: ['count', 'sum', 'min', 'max', 'product'],
+          pulse: col
+        })
+        out = df.add(Collect, {pulse: agg});
 
   // -- test adds
   df.pulse(col, changeset().insert(data)).run();
@@ -146,17 +146,17 @@ tape('Aggregate properly handles empty aggregation cells', t => {
     {k:'a', v:2}, {k:'b', v:4}
   ];
 
-  var key = util.field('k'),
-      val = util.field('v'),
-      df = new vega.Dataflow(),
-      col = df.add(Collect),
-      agg = df.add(Aggregate, {
-        groupby: [key],
-        fields: [val, val, val, val, val],
-        ops: ['count', 'sum', 'min', 'max', 'product'],
-        pulse: col
-      }),
-      out = df.add(Collect, {pulse: agg});
+  const key = util.field('k'),
+        val = util.field('v'),
+        df = new vega.Dataflow(),
+        col = df.add(Collect),
+        agg = df.add(Aggregate, {,
+          groupby: [key],
+          fields: [val, val, val, val, val],
+          ops: ['count', 'sum', 'min', 'max', 'product'],
+          pulse: col
+        })
+        out = df.add(Collect, {pulse: agg});
 
   // -- add data
   df.pulse(col, changeset().insert(data)).run();
@@ -327,16 +327,16 @@ tape('Aggregate handles empty/invalid data', t => {
   ];
   const res = [4, 3, 0, 0]; // higher indices 'undefined'
 
-  var v = util.field('v'),
-      df = new vega.Dataflow(),
-      col = df.add(Collect),
-      agg = df.add(Aggregate, {
-        fields: ops.map(() => v),
-        ops: ops,
-        as: ops,
-        pulse: col
-      }),
-      out = df.add(Collect, {pulse: agg});
+  const v = util.field('v'),
+        df = new vega.Dataflow(),
+        col = df.add(Collect),
+        agg = df.add(Aggregate, {,
+          fields: ops.map(() => v),
+          ops: ops,
+          as: ops,
+          pulse: col
+        })
+        out = df.add(Collect, {pulse: agg});
 
   df.pulse(
     col,

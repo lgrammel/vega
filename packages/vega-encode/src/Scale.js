@@ -74,7 +74,7 @@ export default function Scale(params) {
 
 inherits(Scale, Transform, {
   transform(_, pulse) {
-    var df = pulse.dataflow,
+    let df = pulse.dataflow,
         scale = this.value,
         key = scaleKey(_);
 
@@ -100,7 +100,7 @@ inherits(Scale, Transform, {
 });
 
 function scaleKey(_) {
-  var t = _.type, d = '', n;
+  let t = _.type, d = '', n;
 
   // backwards compatibility pre Vega 5.
   if (t === Sequential) return Sequential + '-' + Linear;
@@ -129,7 +129,7 @@ function configureDomain(scale, _, df) {
   const raw = rawDomain(scale, _.domainRaw, df);
   if (raw > -1) return raw;
 
-  var domain = _.domain,
+  let domain = _.domain,
       type = scale.type,
       zero = _.zero || (_.zero === undefined && includeZero(scale)),
       n, mid;
@@ -187,13 +187,13 @@ function rawDomain(scale, raw, df) {
 }
 
 function padDomain(type, domain, range, pad, exponent, constant) {
-  var span = Math.abs(peek(range) - range[0]),
-      frac = span / (span - 2 * pad),
-      d = type === Log    ? zoomLog(domain, null, frac)
-        : type === Sqrt   ? zoomPow(domain, null, frac, 0.5)
-        : type === Pow    ? zoomPow(domain, null, frac, exponent || 1)
-        : type === Symlog ? zoomSymlog(domain, null, frac, constant || 1)
-        : zoomLinear(domain, null, frac);
+  const span = Math.abs(peek(range) - range[0]),
+        frac = span / (span - 2 * pad),
+        d = type === Log    ? zoomLog(domain, null, frac)
+          : type === Sqrt   ? zoomPow(domain, null, frac, 0.5)
+          : type === Pow    ? zoomPow(domain, null, frac, exponent || 1)
+          : type === Symlog ? zoomSymlog(domain, null, frac, constant || 1)
+          : zoomLinear(domain, null, frac);
 
   domain = domain.slice();
   domain[0] = d[0];
@@ -205,7 +205,7 @@ function domainCheck(type, domain, df) {
   if (isLogarithmic(type)) {
     // sum signs of domain values
     // if all pos or all neg, abs(sum) === domain.length
-    var s = Math.abs(domain.reduce((s, v) => s + (v < 0 ? -1 : v > 0 ? 1 : 0), 0));
+    const s = Math.abs(domain.reduce((s, v) => s + (v < 0 ? -1 : v > 0 ? 1 : 0), 0));
 
     if (s !== domain.length) {
       df.warn('Log scale domain includes zero: ' + stringValue(domain));
@@ -258,7 +258,7 @@ function configureBins(scale, _, count) {
 }
 
 function configureRange(scale, _, count) {
-  var type = scale.type,
+  let type = scale.type,
       round = _.round || false,
       range = _.range;
 
@@ -304,14 +304,14 @@ function configureRangeStep(type, _, count) {
   }
 
   // calculate full range based on requested step size and padding
-  var outer = (_.paddingOuter != null ? _.paddingOuter : _.padding) || 0,
-      inner = type === Point ? 1
-            : ((_.paddingInner != null ? _.paddingInner : _.padding) || 0);
+  const outer = (_.paddingOuter != null ? _.paddingOuter : _.padding) || 0,
+        inner = type === Point ? 1
+              : ((_.paddingInner != null ? _.paddingInner : _.padding) || 0);
   return [0, _.rangeStep * bandSpace(count, inner, outer)];
 }
 
 function configureScheme(type, _, count) {
-  var extent = _.schemeExtent,
+  let extent = _.schemeExtent,
       name, scheme;
 
   if (isArray(_.scheme)) {

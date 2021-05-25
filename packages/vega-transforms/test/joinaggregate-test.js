@@ -1,10 +1,10 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    tx = require('../'),
-    changeset = vega.changeset,
-    Collect = tx.collect,
-    JoinAggregate = tx.joinaggregate;
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      tx = require('../'),
+      changeset = vega.changeset,
+      Collect = tx.collect,
+      JoinAggregate = tx.joinaggregate;
 
 tape('JoinAggregate extends tuples with aggregate values', t => {
   const data = [
@@ -12,17 +12,17 @@ tape('JoinAggregate extends tuples with aggregate values', t => {
     {k:'a', v:2}, {k:'b', v:4}
   ];
 
-  var key = util.field('k'),
-      val = util.field('v'),
-      df = new vega.Dataflow(),
-      col = df.add(Collect),
-      agg = df.add(JoinAggregate, {
-        groupby: [key],
-        fields: [val, val, val, val],
-        ops: ['count', 'sum', 'min', 'max'],
-        pulse: col
-      }),
-      out = df.add(Collect, {pulse: agg});
+  const key = util.field('k'),
+        val = util.field('v'),
+        df = new vega.Dataflow(),
+        col = df.add(Collect),
+        agg = df.add(JoinAggregate, {,
+          groupby: [key],
+          fields: [val, val, val, val],
+          ops: ['count', 'sum', 'min', 'max'],
+          pulse: col
+        })
+        out = df.add(Collect, {pulse: agg});
 
   // -- test adds
   df.pulse(col, changeset().insert(data)).run();

@@ -34,7 +34,7 @@ inherits(LegendEntries, Transform, {
       return pulse.StopPropagation;
     }
 
-    var locale = pulse.dataflow.locale(),
+    let locale = pulse.dataflow.locale(),
         out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS),
         items = this.value,
         type  = _.type || SymbolLegend,

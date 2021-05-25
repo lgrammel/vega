@@ -67,7 +67,7 @@ inherits(Lookup, Transform, {
       }
 
       set = function(t) {
-        for (var i=0, v; i<n; ++i) {
+        for (let i=0, v; i<n; ++i) {
           v = index.get(keys[i](t));
           t[as[i]] = v==null ? defaultValue : v;
         }

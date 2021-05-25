@@ -1,5 +1,5 @@
-var tape = require('tape'),
-    vega = require('../');
+const tape = require('tape'),
+      vega = require('../');
 
 tape('Parameters handles parameter values', t => {
   const p = new vega.Parameters;

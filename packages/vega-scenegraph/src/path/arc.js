@@ -1,9 +1,9 @@
 import {DegToRad, HalfPi, Tau} from '../util/constants';
 
-export var segmentCache = {};
-export var bezierCache = {};
+export const segmentCache = {};
+export const bezierCache = {};
 
-var join = [].join;
+const join = [].join;
 
 // Copied from Inkscape svgtopdf, thanks!
 export function segments(x, y, rx, ry, large, sweep, rotateX, ox, oy) {
@@ -70,14 +70,14 @@ export function bezier(params) {
     return bezierCache[key];
   }
 
-  var cx = params[0],
-      cy = params[1],
-      th0 = params[2],
-      th1 = params[3],
-      rx = params[4],
-      ry = params[5],
-      sin_th = params[6],
-      cos_th = params[7];
+  const cx = params[0],
+        cy = params[1],
+        th0 = params[2],
+        th1 = params[3],
+        rx = params[4],
+        ry = params[5],
+        sin_th = params[6],
+        cos_th = params[7];
 
   const a00 = cos_th * rx;
   const a01 = -sin_th * ry;

@@ -4,7 +4,7 @@ import {isArray, lruCache} from 'vega-util';
 // memoize text width measurement
 const widthCache = lruCache();
 
-export var textMetrics = {
+export const textMetrics = {
   height: fontSize,
   measureWidth: measureWidth,
   estimateWidth: estimateWidth,
@@ -87,12 +87,12 @@ function widthGetter(item) {
 }
 
 function truncate(item, text) {
-  var limit = +item.limit,
+  let limit = +item.limit,
       width = widthGetter(item);
 
   if (width(text) < limit) return text;
 
-  var ellipsis = item.ellipsis || '\u2026',
+  let ellipsis = item.ellipsis || '\u2026',
       rtl = item.dir === 'rtl',
       lo = 0,
       hi = text.length, mid;
@@ -117,7 +117,7 @@ function truncate(item, text) {
 }
 
 export function fontFamily(item, quote) {
-  var font = item.font;
+  const font = item.font;
   return (quote && font
     ? String(font).replace(/"/g, '\'')
     : font) || 'sans-serif';
@@ -136,8 +136,8 @@ export function offset(item) {
   // perform our own font baseline calculation
   // why? not all browsers support SVG 1.1 'alignment-baseline' :(
   // this also ensures consistent layout across renderers
-  var baseline = item.baseline,
-      h = fontSize(item);
+  const baseline = item.baseline,
+        h = fontSize(item);
 
   return Math.round(
     baseline === 'top'         ?  0.79 * h :

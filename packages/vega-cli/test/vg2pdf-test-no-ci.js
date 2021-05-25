@@ -1,5 +1,5 @@
-var test = require('./util'),
-    tape = require('tape');
+const test = require('./util'),
+      tape = require('tape');
 
 tape('vg2pdf generates PDF output', t => {
   const cmd = './bin/vg2pdf --test test/resources/bar.vg.json';

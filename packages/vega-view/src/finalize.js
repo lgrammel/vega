@@ -5,7 +5,7 @@
  * Remove any currently displayed tooltip.
  */
 export default function() {
-  var tooltip = this._tooltip,
+  let tooltip = this._tooltip,
       timers = this._timers,
       listeners = this._eventListeners,
       n, m, e;

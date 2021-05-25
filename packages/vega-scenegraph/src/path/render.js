@@ -17,7 +17,7 @@ function scale(current, sX, sY) {
   } else if (c === 'v' || c === 'V') {
     temp[1] = sY * current[1];
   } else {
-    for (var i=1, n=current.length; i<n; ++i) {
+    for (let i=1, n=current.length; i<n; ++i) {
       temp[i] = (i % 2 == 1 ? sX : sY) * current[i];
     }
   }
@@ -25,7 +25,7 @@ function scale(current, sX, sY) {
 }
 
 export default function(context, path, l, t, sX, sY) {
-  var current, // current instruction
+  let current, // current instruction
       previous = null,
       x = 0, // current x
       y = 0, // current y
@@ -43,7 +43,7 @@ export default function(context, path, l, t, sX, sY) {
 
   if (context.beginPath) context.beginPath();
 
-  for (var i=0, len=path.length; i<len; ++i) {
+  for (let i=0, len=path.length; i<len; ++i) {
     current = path[i];
     if (sX !== 1 || sY !== 1) {
       current = scale(current, sX, sY);

@@ -1,12 +1,12 @@
-var tape = require('tape'),
-    fs = require('fs'),
-    vega = require('../'),
-    loader = require('vega-loader').loader,
-    Renderer = vega.CanvasRenderer,
-    Handler = vega.CanvasHandler,
-    jsdom = require('jsdom'),
-    win = (new jsdom.JSDOM()).window,
-    doc = win.document;
+const tape = require('tape'),
+      fs = require('fs'),
+      vega = require('../'),
+      loader = require('vega-loader').loader,
+      Renderer = vega.CanvasRenderer,
+      Handler = vega.CanvasHandler,
+      jsdom = require('jsdom'),
+      win = (new jsdom.JSDOM()).window,
+      doc = win.document;
 
 const res = './test/resources/';
 
@@ -49,14 +49,14 @@ function event(name, x, y) {
 }
 
 tape('CanvasHandler should add/remove event callbacks', t => {
-  var array = function(_) { return _ || []; },
-      object = function(_) { return _ || {}; },
-      handler = new Handler(),
-      h = handler._handlers,
-      f = function() {},
-      atype = 'click',
-      btype = 'click.foo',
-      ctype = 'mouseover';
+  const array = function(_) { return _ || []; },
+        object = function(_) { return _ || {}; },
+        handler = new Handler(),
+        h = handler._handlers,
+        f = function() {},
+        atype = 'click',
+        btype = 'click.foo',
+        ctype = 'mouseover';
 
   // add event callbacks
   handler.on(atype, f);
@@ -106,7 +106,7 @@ tape('CanvasHandler should handle input events', t => {
 
   t.equal(handler.scene(), scene);
 
-  var canvas = handler.canvas();
+  const canvas = handler.canvas();
   let count = 0;
   const increment = function() { count++; };
 
@@ -300,7 +300,7 @@ tape('CanvasHandler should not pick empty marks', t => {
     'symbol',
     'text'
   ];
-  var handler, i;
+  let handler, i;
 
   for (i=0; i<types.length; ++i) {
     scene.marktype = types[i];

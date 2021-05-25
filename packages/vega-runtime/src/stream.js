@@ -4,7 +4,7 @@ import {error} from 'vega-util';
  * Parse an event stream specification.
  */
 export default function(spec) {
-  var ctx = this,
+  let ctx = this,
       filter = spec.filter != null ? ctx.eventExpression(spec.filter) : undefined,
       stream = spec.stream != null ? ctx.get(spec.stream) : undefined,
       args;

@@ -1,14 +1,14 @@
-var tape = require('tape'),
-    vega = require('../');
+const tape = require('tape'),
+      vega = require('../');
 
 tape('Dataflow propagates values (run)', t => {
-  var df = new vega.Dataflow(),
-      s1 = df.add(10),
-      s2 = df.add(3),
-      n1 = df.add(_ => _.s1 + 0.25, {s1:s1}),
-      n2 = df.add(_ => _.n1 * _.s2, {n1:n1, s2:s2}),
-      op = [s1, s2, n1, n2],
-      stamp = function(_) { return _.stamp; };
+  const df = new vega.Dataflow(),
+        s1 = df.add(10),
+        s2 = df.add(3),
+        n1 = df.add(_ => _.s1 + 0.25, {s1:s1}),
+        n2 = df.add(_ => _.n1 * _.s2, {n1:n1, s2:s2}),
+        op = [s1, s2, n1, n2],
+        stamp = function(_) { return _.stamp; };
 
   t.equal(df.stamp(), 0); // timestamp 0
 
@@ -35,13 +35,13 @@ tape('Dataflow propagates values (run)', t => {
 });
 
 tape('Dataflow propagates values (runAsync)', t => {
-  var df = new vega.Dataflow(),
-      s1 = df.add(10),
-      s2 = df.add(3),
-      n1 = df.add(_ => _.s1 + 0.25, {s1:s1}),
-      n2 = df.add(_ => _.n1 * _.s2, {n1:n1, s2:s2}),
-      op = [s1, s2, n1, n2],
-      stamp = function(_) { return _.stamp; };
+  const df = new vega.Dataflow(),
+        s1 = df.add(10),
+        s2 = df.add(3),
+        n1 = df.add(_ => _.s1 + 0.25, {s1:s1}),
+        n2 = df.add(_ => _.n1 * _.s2, {n1:n1, s2:s2}),
+        op = [s1, s2, n1, n2],
+        stamp = function(_) { return _.stamp; };
 
   t.equal(df.stamp(), 0); // timestamp 0
 
@@ -67,8 +67,8 @@ tape('Dataflow propagates values (runAsync)', t => {
 });
 
 tape('Dataflow loads external data', t => {
-  var df = new vega.Dataflow(),
-      op = df.add(null);
+  const df = new vega.Dataflow(),
+        op = df.add(null);
 
   df.preload(op, null)
     .then(res => {
@@ -91,7 +91,7 @@ tape('Dataflow loads external data', t => {
 });
 
 tape('Dataflow handles errors', t => {
-  var df = new vega.Dataflow(),
+  let df = new vega.Dataflow(),
       error = 0;
 
   df.error = function() { error = 1; };

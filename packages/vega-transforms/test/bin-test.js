@@ -1,23 +1,23 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    tx = require('../'),
-    changeset = vega.changeset,
-    Bin = tx.bin,
-    Collect = tx.collect;
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      tx = require('../'),
+      changeset = vega.changeset,
+      Bin = tx.bin,
+      Collect = tx.collect;
 
 const TOLERANCE = 2e-14;
 
 tape('Bin discretizes values', t => {
-  var df = new vega.Dataflow(),
-      extent = df.add([0, 10]),
-      step = df.add(10 / 20),
-      bin = df.add(Bin, {
-        field:  util.field('v'),
-        extent: extent,
-        step:   step,
-        nice:   false
-      });
+  const df = new vega.Dataflow(),
+        extent = df.add([0, 10]),
+        step = df.add(10 / 20),
+        bin = df.add(Bin, {
+          field:  util.field('v'),
+          extent: extent,
+          step:   step,
+          nice:   false
+        });
 
   // stress test floating point math
   const extents = [
@@ -51,7 +51,7 @@ function testBin(t, b, extent, step) {
   t.equal(b.stop, extent[1]);
   t.equal(b.step, step);
 
-  var lo = extent[0],
+  let lo = extent[0],
       hi = extent[1],
       f = _ => lo + step * _,
       steps = Math.round((hi - lo) / step),
@@ -75,13 +75,13 @@ function testBin(t, b, extent, step) {
 }
 
 tape('Bin handles tail aggregation for last bin', t => {
-  var df = new vega.Dataflow(),
-      bin = df.add(Bin, {
-        field:   util.field('v'),
-        extent:  [0, 29],
-        maxbins: 10,
-        nice:    false
-      });
+  const df = new vega.Dataflow(),
+        bin = df.add(Bin, {
+          field:   util.field('v'),
+          extent:  [0, 29],
+          maxbins: 10,
+          nice:    false
+        });
 
   df.run();
   testBin(t, bin.value, [0, 29], 5);
@@ -98,16 +98,16 @@ tape('Bin handles tail aggregation for last bin', t => {
 tape('Bin supports point output', t => {
   const data = [{v: 5.5}];
 
-  var df = new vega.Dataflow(),
-      c = df.add(Collect),
-      b = df.add(Bin, {
-        field:    util.field('v'),
-        interval: false,
-        extent:   [0, 10],
-        step:     1,
-        nice:     false,
-        pulse:    c
-      });
+  const df = new vega.Dataflow(),
+        c = df.add(Collect),
+        b = df.add(Bin, {
+          field:    util.field('v'),
+          interval: false,
+          extent:   [0, 10],
+          step:     1,
+          nice:     false,
+          pulse:    c
+        });
 
   df.pulse(c, changeset().insert(data)).run();
   t.equal(b.pulse.rem.length, 0);
@@ -122,15 +122,15 @@ tape('Bin supports point output', t => {
 });
 
 tape('Bin ignores invalid values', t => {
-  var df = new vega.Dataflow(),
-      extent = df.add([0, 10]),
-      step = df.add(10 / 20),
-      bin = df.add(Bin, {
-        field:  util.field('v'),
-        extent: extent,
-        step:   step,
-        nice:   false
-      });
+  const df = new vega.Dataflow(),
+        extent = df.add([0, 10]),
+        step = df.add(10 / 20),
+        bin = df.add(Bin, {
+          field:  util.field('v'),
+          extent: extent,
+          step:   step,
+          nice:   false
+        });
 
   df.run();
 

@@ -1,9 +1,9 @@
-var tape = require('tape'),
-    fs = require('fs'),
-    loader = require('vega-loader').loader,
-    vega = require('../'),
-    Bounds = vega.Bounds,
-    Renderer = vega.SVGStringRenderer;
+const tape = require('tape'),
+      fs = require('fs'),
+      loader = require('vega-loader').loader,
+      vega = require('../'),
+      Bounds = vega.Bounds,
+      Renderer = vega.SVGStringRenderer;
 
 const res = './test/resources/';
 const GENERATE = require('./resources/generate-tests');
@@ -263,7 +263,7 @@ tape('SVGStringRenderer should handle empty item sets', t => {
     'symbol',
     'text'
   ];
-  var scene, file, str;
+  let scene, file, str;
 
   for (let i=0; i<types.length; ++i) {
     scene = {marktype:types[i], items:[]};
