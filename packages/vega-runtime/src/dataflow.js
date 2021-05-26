@@ -2,8 +2,9 @@
  * Parse a serialized dataflow specification.
  */
 export default function(spec) {
-  const ctx = this,
-        operators = spec.operators || [];
+  const ctx = this;
+
+  const operators = spec.operators || [];
 
   // parse background
   if (spec.background) {

@@ -1,7 +1,8 @@
 import {toSet} from 'vega-util';
 
-const Skip = toSet(['rule']),
-      Swap = toSet(['group', 'image', 'rect']);
+const Skip = toSet(['rule']);
+
+const Swap = toSet(['group', 'image', 'rect']);
 
 export function adjustSpatial(encode, marktype) {
   let code = '';

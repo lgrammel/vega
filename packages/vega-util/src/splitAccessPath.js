@@ -1,13 +1,17 @@
 import error from './error';
 
 export default function(p) {
-  const path = [],
-        n = p.length;
+  const path = [];
 
-  let q = null,
-      b = 0,
-      s = '',
-      i, j, c;
+  const n = p.length;
+
+  let q = null;
+
+  let b = 0;
+  let s = '';
+  let i;
+  let j;
+  let c;
 
   p = p + '';
 

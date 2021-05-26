@@ -1,5 +1,6 @@
-var tape = require('tape'),
-    vega = require('../');
+var tape = require('tape');
+
+var vega = require('../');
 
 tape('field creates a field accessor', t => {
   let f = vega.field('x');

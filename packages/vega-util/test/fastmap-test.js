@@ -1,5 +1,6 @@
-var tape = require('tape'),
-    vega = require('../');
+var tape = require('tape');
+
+var vega = require('../');
 
 tape('fastmap maps keys to values', t => {
   const m = vega.fastmap();

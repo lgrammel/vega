@@ -7,10 +7,12 @@ import {RuleMark} from '../marks/marktypes';
 import {AxisDomainRole} from '../marks/roles';
 
 export default function(spec, config, userEncode, dataRef) {
-  const _ = lookup(spec, config),
-        orient = spec.orient;
+  const _ = lookup(spec, config);
 
-  let enter, update;
+  const orient = spec.orient;
+
+  let enter;
+  let update;
   const encode = {
     enter: enter = {opacity: zero},
     update: update = {opacity: one},

@@ -6,7 +6,10 @@ export default function(min, max) {
     min = 0;
   }
 
-  let a, b, d;
+  let a;
+
+  let b;
+  let d;
 
   const dist = {
     min(_) {

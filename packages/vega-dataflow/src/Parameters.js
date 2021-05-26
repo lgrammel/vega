@@ -23,9 +23,10 @@ Parameters.prototype = {
    * @return {Parameters} - This parameter object.
    */
   set(name, index, value, force) {
-    const o = this,
-          v = o[name],
-          mod = o[CACHE];
+    const o = this;
+
+    const v = o[name];
+    const mod = o[CACHE];
 
     if (index != null && index >= 0) {
       if (v[index] !== value || force) {

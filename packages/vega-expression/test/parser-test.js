@@ -1,5 +1,6 @@
-var tape = require('tape'),
-    vega = require('../');
+var tape = require('tape');
+
+var vega = require('../');
 
 function parse(str) {
   return function() {

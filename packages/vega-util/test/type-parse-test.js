@@ -1,5 +1,6 @@
-var tape = require('tape'),
-    vega = require('../');
+var tape = require('tape');
+
+var vega = require('../');
 
 tape('toBoolean parses booleans', t => {
   t.equal(vega.toBoolean(null), null);
@@ -18,8 +19,9 @@ tape('toBoolean parses booleans', t => {
 });
 
 tape('toDate parses dates', t => {
-  var now = Date.now(),
-      d = new Date(now);
+  var now = Date.now();
+
+  var d = new Date(now);
 
   t.equal(vega.toDate(null), null);
   t.equal(vega.toDate(undefined), null);

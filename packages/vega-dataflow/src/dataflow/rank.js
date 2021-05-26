@@ -17,7 +17,10 @@ export function rank(op) {
  */
 export function rerank(op) {
   const queue = [op];
-  let cur, list, i;
+  let cur;
+
+  let list;
+  let i;
 
   while (queue.length) {
     this.rank(cur = queue.pop());

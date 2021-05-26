@@ -24,7 +24,9 @@ export function quantileLogNormal(p, mean, stdev) {
 }
 
 export default function(mean, stdev) {
-  let mu, sigma;
+  let mu;
+
+  let sigma;
 
   const dist = {
     mean(_) {

@@ -32,9 +32,12 @@ export function sceneFromJSON(json) {
 }
 
 function initialize(scene) {
-  var type = scene.marktype,
-      items = scene.items,
-      parent, i, n;
+  var type = scene.marktype;
+
+  var items = scene.items;
+  var parent;
+  var i;
+  var n;
 
   if (items) {
     for (i=0, n=items.length; i<n; ++i) {

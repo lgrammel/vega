@@ -22,10 +22,13 @@ export function labelValues(scale, count) {
 }
 
 export function thresholdFormat(locale, scale, specifier) {
-  const _ = scale[formats[scale.type]](),
-        n = _.length;
+  const _ = scale[formats[scale.type]]();
 
-  let d = n > 1 ? _[1] - _[0] : _[0], i;
+  const n = _.length;
+
+  let d = n > 1 ? _[1] - _[0] : _[0];
+
+  let i;
 
   for (i=1; i<n; ++i) {
     d = Math.min(d, _[i] - _[i-1]);
@@ -62,9 +65,9 @@ export function labelFormat(locale, scale, count, type, specifier, formatType, n
 
 const formatRange = format =>
   (value, index, array) => {
-    const limit = get(array[index + 1], get(array.max, +Infinity)),
-          lo = formatValue(value, format),
-          hi = formatValue(limit, format);
+    const limit = get(array[index + 1], get(array.max, +Infinity));
+    const lo = formatValue(value, format);
+    const hi = formatValue(limit, format);
     return lo && hi ? lo + ' \u2013 ' + hi : hi ? '< ' + hi : '\u2265 ' + lo;
   };
 
@@ -81,12 +84,14 @@ const formatValue = (value, format) =>
   Number.isFinite(value) ? format(value) : null;
 
 export function labelFraction(scale) {
-  const domain = scale.domain(),
-        count = domain.length - 1;
+  const domain = scale.domain();
 
-  let lo = +domain[0],
-      hi = +peek(domain),
-      span = hi - lo;
+  const count = domain.length - 1;
+
+  let lo = +domain[0];
+
+  let hi = +peek(domain);
+  let span = hi - lo;
 
   if (scale.type === Threshold) {
     const adjust = count ? span / count : 0.1;

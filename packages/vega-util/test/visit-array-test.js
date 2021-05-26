@@ -1,5 +1,6 @@
-var tape = require('tape'),
-    vega = require('../');
+var tape = require('tape');
+
+var vega = require('../');
 
 tape('visitArray should visit arrays', t => {
   // check visited item count
