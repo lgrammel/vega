@@ -1,6 +1,6 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    config = require('../').config;
+const tape = require('tape'),
+      util = require('vega-util'),
+      config = require('../').config;
 
 tape('Config generates defaults', t => {
   const c = config();

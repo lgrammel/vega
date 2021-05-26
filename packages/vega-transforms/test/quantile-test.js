@@ -1,14 +1,14 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    tx = require('../'),
-    changeset = vega.changeset,
-    Collect = tx.collect,
-    Quantile = tx.quantile;
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      tx = require('../'),
+      changeset = vega.changeset,
+      Collect = tx.collect,
+      Quantile = tx.quantile;
 
 tape('Quantile transform calculates empirical quantiles', t => {
-  var data = [9, 8, 7, 1, 2, 3, 6, 5, 4].map(_ => ({v: _})),
-      prob = [0.25, 0.50, 0.75];
+  const data = [9, 8, 7, 1, 2, 3, 6, 5, 4].map(_ => ({v: _})),
+        prob = [0.25, 0.50, 0.75];
 
   var v = util.field('v'),
       df = new vega.Dataflow(),

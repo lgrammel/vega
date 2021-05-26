@@ -1,5 +1,5 @@
-var tape = require('tape'),
-    vega = require('../');
+const tape = require('tape'),
+      vega = require('../');
 
 function regexEqual(x, y) {
   return (x instanceof RegExp) && (y instanceof RegExp) &&
@@ -8,7 +8,7 @@ function regexEqual(x, y) {
 }
 
 tape('Evaluate expressions without white or black list', t => {
-  var codegen = vega.codegen({
+  const codegen = vega.codegen({
     globalvar: 'global'
   });
 
@@ -32,7 +32,7 @@ tape('Evaluate expressions without white or black list', t => {
   delete global[unicode];
 
   // should return string input to codegen
-  var value = codegen('d');
+  const value = codegen('d');
   t.equal(value.code, 'd');
 
   // should not allow unknown ast node type
@@ -43,7 +43,7 @@ tape('Evaluate expressions without white or black list', t => {
 });
 
 tape('Evaluate expressions with black list', t => {
-  var codegen = vega.codegen({
+  const codegen = vega.codegen({
     forbidden: ['a', 'b', 'c'],
     globalvar: 'global',
     fieldvar:  'd'
@@ -73,7 +73,7 @@ tape('Evaluate expressions with black list', t => {
 });
 
 tape('Evaluate expressions with white list', t => {
-  var codegen = vega.codegen({
+  const codegen = vega.codegen({
     allowed: ['datum', 'event', 'signals'],
     globalvar: 'global'
   });
@@ -218,7 +218,7 @@ tape('Evaluate expressions with white list', t => {
   t.equal(evaluate('test(/ain/, "france")'), /ain/.test('france'));
 
   // should eval datetime functions
-  var d = new Date(2001,1,1),
+  let d = new Date(2001,1,1),
       u = Date.UTC(2009, 9, 1, 10);
 
   t.equal(Math.abs(Date.now() - evaluate('now()')) <= 5, true);

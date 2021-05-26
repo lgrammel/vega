@@ -19,7 +19,7 @@ export default function Encode(params) {
 
 inherits(Encode, Transform, {
   transform(_, pulse) {
-    var out = pulse.fork(pulse.ADD_REM),
+    let out = pulse.fork(pulse.ADD_REM),
         fmod = _.mod || false,
         encoders = _.encoders,
         encode = pulse.encode;
@@ -37,11 +37,11 @@ inherits(Encode, Transform, {
     }
 
     // marshall encoder functions
-    var reenter = encode === 'enter',
-        update = encoders.update || falsy,
-        enter = encoders.enter || falsy,
-        exit = encoders.exit || falsy,
-        set = (encode && !reenter ? encoders[encode] : update) || falsy;
+    const reenter = encode === 'enter',
+          update = encoders.update || falsy,
+          enter = encoders.enter || falsy,
+          exit = encoders.exit || falsy,
+          set = (encode && !reenter ? encoders[encode] : update) || falsy;
 
     if (pulse.changed(pulse.ADD)) {
       pulse.visit(pulse.ADD, t => { enter(t, _); update(t, _); });

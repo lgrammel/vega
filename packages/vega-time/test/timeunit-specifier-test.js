@@ -1,5 +1,5 @@
-var tape = require('tape'),
-    vega = require('../');
+const tape = require('tape'),
+      vega = require('../');
 
 tape('timeUnitSpecifier produces specifier for single time units', t => {
   t.equal(vega.timeUnitSpecifier('year'), '%Y');

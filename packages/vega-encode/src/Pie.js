@@ -29,7 +29,7 @@ Pie.Definition = {
 
 inherits(Pie, Transform, {
   transform(_, pulse) {
-    var as = _.as || ['startAngle', 'endAngle'],
+    let as = _.as || ['startAngle', 'endAngle'],
         startAngle = as[0],
         endAngle = as[1],
         field = _.field || one,

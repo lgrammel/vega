@@ -1,8 +1,8 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    Collect = require('vega-transforms').collect,
-    Wordcloud = require('../').wordcloud;
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      Collect = require('vega-transforms').collect,
+      Wordcloud = require('../').wordcloud;
 
 tape('Wordcloud generates wordcloud layout', t => {
   const data = [
@@ -33,7 +33,7 @@ tape('Wordcloud generates wordcloud layout', t => {
   t.equal(c0.value.length, data.length);
   t.equal(wc.stamp, df.stamp());
 
-  for (var i=0, n=data.length; i<n; ++i) {
+  for (let i=0, n=data.length; i<n; ++i) {
     t.ok(data[i].x != null && !Number.isNaN(data[i].x));
     t.ok(data[i].y != null && !Number.isNaN(data[i].y));
     t.equal(data[i].font, 'sans-serif');

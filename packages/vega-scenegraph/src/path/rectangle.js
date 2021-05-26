@@ -28,7 +28,7 @@ function clamp(value, min, max) {
 }
 
 export default function() {
-  var x = rectangleX,
+  let x = rectangleX,
       y = rectangleY,
       width = rectangleWidth,
       height = rectangleHeight,
@@ -39,7 +39,7 @@ export default function() {
       context = null;
 
   function rectangle(_, x0, y0) {
-    var buffer,
+    let buffer,
         x1 = x0 != null ? x0 : +x.call(this, _),
         y1 = y0 != null ? y0 : +y.call(this, _),
         w  = +width.call(this, _),
@@ -55,8 +55,8 @@ export default function() {
     if (tl <= 0 && tr <= 0 && bl <= 0 && br <= 0) {
       context.rect(x1, y1, w, h);
     } else {
-      var x2 = x1 + w,
-          y2 = y1 + h;
+      const x2 = x1 + w,
+            y2 = y1 + h;
       context.moveTo(x1 + tl, y1);
       context.lineTo(x2 - tr, y1);
       context.bezierCurveTo(x2 - C * tr, y1, x2, y1 + C * tr, x2, y1 + tr);

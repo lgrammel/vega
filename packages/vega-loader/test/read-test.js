@@ -1,7 +1,7 @@
-var tape = require('tape'),
-    topojson = require('topojson-client'),
-    vega = require('../'),
-    read = vega.read;
+const tape = require('tape'),
+      topojson = require('topojson-client'),
+      vega = require('../'),
+      read = vega.read;
 
 const fields = ['a', 'b', 'c', 'd', 'e'];
 
@@ -80,7 +80,7 @@ tape('JSON reader should copy data when "copy: true" provided', t => {
 });
 
 tape('JSON reader should parse date with format %d.%m.%Y', t => {
-  var expected = function() { return [{foo: new Date(1990, 6, 18)}]; },
+  let expected = function() { return [{foo: new Date(1990, 6, 18)}]; },
       input = function() { return [{foo: '18.07.1990'}]; },
       types;
 
@@ -100,7 +100,7 @@ tape('JSON reader should parse date with format %d.%m.%Y', t => {
 });
 
 tape('JSON reader should parse date with format %m.%d.%Y', t => {
-  var expected = function() { return [{foo: new Date(1990, 6, 18)}]; },
+  let expected = function() { return [{foo: new Date(1990, 6, 18)}]; },
       input = function() { return [{foo: '07.18.1990'}]; },
       types;
 
@@ -120,7 +120,7 @@ tape('JSON reader should parse date with format %m.%d.%Y', t => {
 });
 
 tape('JSON reader should parse time with format %H:%M', t => {
-  var expected = function() { return [{foo: new Date(1900, 0, 1, 13, 15)}]; },
+  let expected = function() { return [{foo: new Date(1900, 0, 1, 13, 15)}]; },
       input = function() { return [{foo: '13:15'}]; },
       types;
 
@@ -140,9 +140,9 @@ tape('JSON reader should parse time with format %H:%M', t => {
 });
 
 tape('JSON reader should parse date with custom parse function', t => {
-  var expected = [{foo: new Date(2000, 1, 1)}],
-      input = [{foo: '18.07.1990'}],
-      types = {foo: 'date:custom'};
+  const expected = [{foo: new Date(2000, 1, 1)}],
+        input = [{foo: '18.07.1990'}],
+        types = {foo: 'date:custom'};
 
   function dateParse() {
     return function() { return new Date(2000, 1, 1); };
@@ -153,7 +153,7 @@ tape('JSON reader should parse date with custom parse function', t => {
 });
 
 tape('JSON reader should parse UTC date with format %d.%m.%Y', t => {
-  var expected = function() { return [{foo: new Date(Date.UTC(1990, 6, 18))}]; },
+  let expected = function() { return [{foo: new Date(Date.UTC(1990, 6, 18))}]; },
       input = function() { return [{foo: '18.07.1990'}]; },
       types;
 
@@ -173,7 +173,7 @@ tape('JSON reader should parse UTC date with format %d.%m.%Y', t => {
 });
 
 tape('JSON reader should parse UTC date with format %m.%d.%Y', t => {
-  var expected = function() { return [{foo: new Date(Date.UTC(1990, 6, 18))}]; },
+  let expected = function() { return [{foo: new Date(Date.UTC(1990, 6, 18))}]; },
       input = function() { return [{foo: '07.18.1990'}]; },
       types;
 
@@ -193,7 +193,7 @@ tape('JSON reader should parse UTC date with format %m.%d.%Y', t => {
 });
 
 tape('JSON reader should parse UTC time with format %H:%M', t => {
-  var expected = function() { return [{foo: new Date(Date.UTC(1900, 0, 1, 13, 15))}]; },
+  let expected = function() { return [{foo: new Date(Date.UTC(1900, 0, 1, 13, 15))}]; },
       input = function() { return [{foo: '13:15'}]; },
       types;
 
@@ -213,8 +213,8 @@ tape('JSON reader should parse UTC time with format %H:%M', t => {
 });
 
 tape('JSON reader should throw error if format is unrecognized', t => {
-  var input = [{foo: '18.07.1990'}],
-      types = {foo: 'notAFormat'};
+  const input = [{foo: '18.07.1990'}],
+        types = {foo: 'notAFormat'};
   t.throws(() => { read(input, {type:'json', parse: types}); });
   t.end();
 });

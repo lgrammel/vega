@@ -1,6 +1,6 @@
-var tape = require('tape'),
-    vega = require('../'),
-    {local, utc} = require('./util');
+const tape = require('tape'),
+      vega = require('../'),
+      {local, utc} = require('./util');
 
 function test(t, sequence, offset, unit, start, steps) {
   const seq1 = range(steps).map(s => +offset(unit, start, s)),

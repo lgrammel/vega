@@ -30,7 +30,7 @@ GeoPath.Definition = {
 
 inherits(GeoPath, Transform, {
   transform(_, pulse) {
-    var out = pulse.fork(pulse.ALL),
+    let out = pulse.fork(pulse.ALL),
         path = this.value,
         field = _.field || identity,
         as = _.as || 'path',

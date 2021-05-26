@@ -33,7 +33,7 @@ export function panLinear(domain, delta) {
 }
 
 export function panLog(domain, delta) {
-  var sign = Math.sign(domain[0]);
+  const sign = Math.sign(domain[0]);
   return pan(domain, delta, log(sign), exp(sign));
 }
 

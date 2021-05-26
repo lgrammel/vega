@@ -1,10 +1,10 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    tx = require('../'),
-    changeset = vega.changeset,
-    Collect = tx.collect,
-    Filter = tx.filter;
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      tx = require('../'),
+      changeset = vega.changeset,
+      Collect = tx.collect,
+      Filter = tx.filter;
 
 tape('Filter filters tuples', t => {
   const lt3 = util.accessor(d => d.id < 3, ['id']);
@@ -16,11 +16,11 @@ tape('Filter filters tuples', t => {
     {'id': 5, 'value': 'baz'}
   ];
 
-  var df = new vega.Dataflow(),
-      e0 = df.add(null),
-      c0 = df.add(Collect),
-      f0 = df.add(Filter, {expr: e0, pulse: c0}),
-      c1 = df.add(Collect, {pulse: f0});
+  const df = new vega.Dataflow(),
+        e0 = df.add(null),
+        c0 = df.add(Collect),
+        f0 = df.add(Filter, {expr: e0, pulse: c0}),
+        c1 = df.add(Collect, {pulse: f0});
 
   df.pulse(c0, changeset().insert(data));
   df.update(e0, util.truthy).run();
@@ -48,10 +48,10 @@ tape('Filter filters tuples', t => {
 });
 
 tape('Filter does not leak memory', t => {
-  var df = new vega.Dataflow(),
-      c0 = df.add(Collect),
-      f0 = df.add(Filter, {expr: util.field('value'), pulse: c0}),
-      n = df.cleanThreshold + 1;
+  const df = new vega.Dataflow(),
+        c0 = df.add(Collect),
+        f0 = df.add(Filter, {expr: util.field('value'), pulse: c0}),
+        n = df.cleanThreshold + 1;
 
   function generate() {
     for (var data = [], i=0; i<n; ++i) {

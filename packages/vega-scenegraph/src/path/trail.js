@@ -2,7 +2,7 @@ import {Tau} from '../util/constants';
 import {path} from 'd3-path';
 
 export default function() {
-  var x,
+  let x,
       y,
       size,
       defined,
@@ -13,15 +13,15 @@ export default function() {
     const r2 = w2 / 2;
 
     if (ready) {
-      var ux = y1 - y2,
+      let ux = y1 - y2,
           uy = x2 - x1;
 
       if (ux || uy) {
         // get normal vector
-        var ud = Math.sqrt(ux * ux + uy * uy),
-            rx = (ux /= ud) * r1,
-            ry = (uy /= ud) * r1,
-            t = Math.atan2(uy, ux);
+        const ud = Math.sqrt(ux * ux + uy * uy),
+              rx = (ux /= ud) * r1,
+              ry = (uy /= ud) * r1,
+              t = Math.atan2(uy, ux);
 
         // draw segment
         context.moveTo(x1 - rx, y1 - ry);
@@ -42,7 +42,7 @@ export default function() {
   }
 
   function trail(data) {
-    var i,
+    let i,
         n = data.length,
         d,
         defined0 = false,

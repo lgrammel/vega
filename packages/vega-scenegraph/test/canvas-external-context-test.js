@@ -1,9 +1,9 @@
-var tape = require('tape'),
-    fs = require('fs'),
-    {canvas} = require('vega-canvas'),
-    vega = require('../'),
-    Renderer = vega.CanvasRenderer,
-    res = './test/resources/';
+const tape = require('tape'),
+      fs = require('fs'),
+      {canvas} = require('vega-canvas'),
+      vega = require('../'),
+      Renderer = vega.CanvasRenderer,
+      res = './test/resources/';
 
 const GENERATE = require('./resources/generate-tests');
 

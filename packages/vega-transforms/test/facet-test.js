@@ -1,10 +1,10 @@
-var tape = require('tape'),
-    {field, truthy} = require('vega-util'),
-    vega = require('vega-dataflow'),
-    tx = require('../'),
-    changeset = vega.changeset,
-    Collect = tx.collect,
-    Facet = tx.facet;
+const tape = require('tape'),
+      {field, truthy} = require('vega-util'),
+      vega = require('vega-dataflow'),
+      tx = require('../'),
+      changeset = vega.changeset,
+      Collect = tx.collect,
+      Facet = tx.facet;
 
 tape('Facet facets tuples', t => {
   const data = [
@@ -28,10 +28,10 @@ tape('Facet facets tuples', t => {
     };
   }
 
-  var key = field('k'),
-      df = new vega.Dataflow(),
-      source = df.add(Collect),
-      facet = df.add(Facet, {subflow:subflow, key:key, pulse:source});
+  const key = field('k'),
+        df = new vega.Dataflow(),
+        source = df.add(Collect),
+        facet = df.add(Facet, {subflow:subflow, key:key, pulse:source});
 
   // -- test adds
   df.pulse(source, changeset()
@@ -133,11 +133,11 @@ tape('Facet handles key parameter change', t => {
     };
   }
 
-  var key1 = field('k1'),
-      key2 = field('k2'),
-      df = new vega.Dataflow(),
-      source = df.add(Collect),
-      facet = df.add(Facet, {subflow:subflow, key:key1, pulse:source});
+  const key1 = field('k1'),
+        key2 = field('k2'),
+        df = new vega.Dataflow(),
+        source = df.add(Collect),
+        facet = df.add(Facet, {subflow:subflow, key:key1, pulse:source});
 
   // -- add data
   df.pulse(source, changeset().insert(data)).run();
@@ -152,10 +152,10 @@ tape('Facet handles key parameter change', t => {
 });
 
 tape('Facet key cache does not leak memory', t => {
-  var df = new vega.Dataflow(),
-      c0 = df.add(Collect),
-      ft = df.add(Facet, {subflow:subflow, key:field('key'), pulse:c0}),
-      N = df.cleanThreshold + 1;
+  const df = new vega.Dataflow(),
+        c0 = df.add(Collect),
+        ft = df.add(Facet, {subflow:subflow, key:field('key'), pulse:c0}),
+        N = df.cleanThreshold + 1;
 
   function subflow(df) {
     return df.add(Collect);

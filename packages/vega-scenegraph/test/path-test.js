@@ -1,9 +1,9 @@
-var tape = require('tape'),
-    context = require('d3-path').path,
-    vega = require('../'),
-    Bounds = vega.Bounds,
-    pathParse = vega.pathParse,
-    pathRender = vega.pathRender;
+const tape = require('tape'),
+      context = require('d3-path').path,
+      vega = require('../'),
+      Bounds = vega.Bounds,
+      pathParse = vega.pathParse,
+      pathRender = vega.pathRender;
 
 function bound(path, bounds) {
   pathRender(vega.boundContext(bounds), path, 0, 0);
@@ -40,7 +40,7 @@ const paths = [
   'M 0,0 A 0.45,0.45,0,0,0,20,20 Z'
 ];
 
-var bounds = [
+const bounds = [
   { x1: 10, y1: 10, x2: 20, y2: 30 },
   { x1: 10, y1: 10, x2: 20, y2: 30 },
   { x1: 10, y1: 10, x2: 10, y2: 20 },
@@ -159,7 +159,7 @@ tape('boundContext should calculate paths bounds', t => {
 });
 
 tape('pathRender should render paths', t => {
-  var ctx, p;
+  let ctx, p;
   for (let i=0; i<paths.length; ++i) {
     p = pathParse(paths[i]);
     pathRender(ctx = context(), p, 0, 0);

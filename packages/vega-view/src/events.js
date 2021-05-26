@@ -66,16 +66,16 @@ function permit(view, key, type) {
  * @return {EventStream}
  */
 export function events(source, type, filter) {
-  var view = this,
+  let view = this,
       s = new EventStream(filter),
-      send = function(e, item) {
+      send = function(e, item) {,
         view.runAsync(null, () => {
           if (source === VIEW && prevent(view, type)) {
             e.preventDefault();
           }
           s.receive(eventExtend(view, e, item));
         });
-      },
+      }
       sources;
 
   if (source === TIMER) {
@@ -105,7 +105,7 @@ export function events(source, type, filter) {
     if (!sources) {
       view.warn('Can not resolve event source: ' + source);
     } else {
-      for (var i=0, n=sources.length; i<n; ++i) {
+      for (let i=0, n=sources.length; i<n; ++i) {
         sources[i].addEventListener(type, send);
       }
       trackEventListener(view, sources, type, send);

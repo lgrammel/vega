@@ -1,7 +1,7 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    parse = require('../').parse;
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      parse = require('../').parse;
 
 util.extend(vega.transforms, require('vega-transforms'));
 

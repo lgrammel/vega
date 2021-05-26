@@ -23,7 +23,7 @@ const cases = [
 
 // Implementation adapted from d3/d3-contour. Thanks!
 export default function() {
-  var dx = 1,
+  let dx = 1,
       dy = 1,
       smooth = smoothLinear;
 
@@ -34,8 +34,8 @@ export default function() {
   // Accumulate, smooth contour rings, assign holes to exterior rings.
   // Based on https://github.com/mbostock/shapefile/blob/v0.6.2/shp/polygon.js
   function contour(values, value) {
-    var polygons = [],
-        holes = [];
+    const polygons = [],
+          holes = [];
 
     isorings(values, value, ring => {
       smooth(ring, values, value);
@@ -62,7 +62,7 @@ export default function() {
   // Marching squares with isolines stitched into rings.
   // Based on https://github.com/topojson/topojson-client/blob/v3.0.0/src/stitch.js
   function isorings(values, value, callback) {
-    var fragmentByStart = new Array,
+    let fragmentByStart = new Array,
         fragmentByEnd = new Array,
         x, y, t0, t1, t2, t3;
 
@@ -101,7 +101,7 @@ export default function() {
     cases[t2 << 3].forEach(stitch);
 
     function stitch(line) {
-      var start = [line[0][0] + x, line[0][1] + y],
+      let start = [line[0][0] + x, line[0][1] + y],
           end = [line[1][0] + x, line[1][1] + y],
           startIndex = index(start),
           endIndex = index(end),
@@ -148,7 +148,7 @@ export default function() {
 
   function smoothLinear(ring, values, value) {
     ring.forEach(point => {
-      var x = point[0],
+      let x = point[0],
           y = point[1],
           xt = x | 0,
           yt = y | 0,
@@ -169,7 +169,7 @@ export default function() {
 
   contours.size = function(_) {
     if (!arguments.length) return [dx, dy];
-    var _0 = Math.floor(_[0]), _1 = Math.floor(_[1]);
+    const _0 = Math.floor(_[0]), _1 = Math.floor(_[1]);
     if (!(_0 >= 0 && _1 >= 0)) error('invalid size');
     return dx = _0, dy = _1, contours;
   };
@@ -190,15 +190,15 @@ function area(ring) {
 }
 
 function contains(ring, hole) {
-  var i = -1, n = hole.length, c;
+  let i = -1, n = hole.length, c;
   while (++i < n) if (c = ringContains(ring, hole[i])) return c;
   return 0;
 }
 
 function ringContains(ring, point) {
-  var x = point[0], y = point[1], contains = -1;
-  for (var i = 0, n = ring.length, j = n - 1; i < n; j = i++) {
-    var pi = ring[i], xi = pi[0], yi = pi[1], pj = ring[j], xj = pj[0], yj = pj[1];
+  let x = point[0], y = point[1], contains = -1;
+  for (let i = 0, n = ring.length, j = n - 1; i < n; j = i++) {
+    const pi = ring[i], xi = pi[0], yi = pi[1], pj = ring[j], xj = pj[0], yj = pj[1];
     if (segmentContains(pi, pj, point)) return 0;
     if (((yi > y) !== (yj > y)) && ((x < (xj - xi) * (y - yi) / (yj - yi) + xi))) contains = -contains;
   }
@@ -206,7 +206,7 @@ function ringContains(ring, point) {
 }
 
 function segmentContains(a, b, c) {
-  var i; return collinear(a, b, c) && within(a[i = +(a[0] === b[0])], c[i], b[i]);
+  let i; return collinear(a, b, c) && within(a[i = +(a[0] === b[0])], c[i], b[i]);
 }
 
 function collinear(a, b, c) {

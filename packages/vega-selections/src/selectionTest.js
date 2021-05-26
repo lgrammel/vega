@@ -12,7 +12,7 @@ const SELECTION_ID = '_vgsid_',
 
 // TODO: revisit date coercion?
 function testPoint(datum, entry) {
-  var fields = entry.fields,
+  let fields = entry.fields,
       values = entry.values,
       n = fields.length,
       i = 0, dval, f;
@@ -64,7 +64,7 @@ function testPoint(datum, entry) {
  * @return {boolean} - True if the datum is in the selection, false otherwise.
  */
 export function selectionTest(name, datum, op) {
-  var data = this.context.data[name],
+  let data = this.context.data[name],
       entries = data ? data.values.value : [],
       unitIdx = data ? data[UNIT_INDEX] && data[UNIT_INDEX].value : undefined,
       intersect = op === Intersect,

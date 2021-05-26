@@ -1,6 +1,6 @@
-var tape = require('tape'),
-    vega = require('../'),
-    {local, utc} = require('./util');
+const tape = require('tape'),
+      vega = require('../'),
+      {local, utc} = require('./util');
 
 tape('timeOffset computes local date offsets', t => {
   t.equal(+vega.timeOffset('year', local(2012)), +local(2013));

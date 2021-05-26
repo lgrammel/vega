@@ -1,6 +1,6 @@
 import color from './color';
 
-var Empty = [];
+const Empty = [];
 
 export default function(context, item, opacity) {
   var lw = (lw = item.strokeWidth) != null ? lw : 1;

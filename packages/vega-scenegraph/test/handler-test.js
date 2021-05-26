@@ -1,6 +1,6 @@
-var tape = require('tape'),
-    vega = require('../'),
-    Handler = vega.Handler;
+const tape = require('tape'),
+      vega = require('../'),
+      Handler = vega.Handler;
 
 tape('Handler should support argument free constructor', t => {
   const h = new Handler();

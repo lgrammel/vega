@@ -29,7 +29,7 @@ import {point} from 'vega-scenegraph';
  * @return {Event} - The extended input event.
  */
 export default function(view, event, item) {
-  var r  = view._renderer,
+  let r  = view._renderer,
       el = r && r.canvas(),
       p, e, translate;
 
@@ -53,7 +53,7 @@ function extension(view, item, point) {
     : null;
 
   function group(name) {
-    var g = itemGroup, i;
+    let g = itemGroup, i;
     if (name) for (i = item; i; i = i.mark.group) {
       if (i.mark.name === name) { g = i; break; }
     }

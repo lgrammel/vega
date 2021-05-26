@@ -13,7 +13,7 @@ function number(_) {
 
 // Implementation adapted from d3/d3-contour. Thanks!
 export default function() {
-  var x = d => d[0],
+  let x = d => d[0],
       y = d => d[1],
       weight = one,
       bandwidth = [-1, -1],
@@ -92,7 +92,7 @@ export default function() {
 
   density.size = function(_) {
     if (!arguments.length) return [dx, dy];
-    var _0 = +_[0], _1 = +_[1];
+    const _0 = +_[0], _1 = +_[1];
     if (!(_0 >= 0 && _1 >= 0)) error('invalid size');
     return dx = _0, dy = _1, density;
   };

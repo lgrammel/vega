@@ -30,7 +30,7 @@ GeoShape.Definition = {
 
 inherits(GeoShape, Transform, {
   transform(_, pulse) {
-    var out = pulse.fork(pulse.ALL),
+    let out = pulse.fork(pulse.ALL),
         shape = this.value,
         as = _.as || 'shape',
         flag = out.ADD;
@@ -56,8 +56,8 @@ function shapeGenerator(path, field, pointRadius) {
   const shape = pointRadius == null
     ? _ => path(field(_))
     : _ => {
-      var prev = path.pointRadius(),
-          value = path.pointRadius(pointRadius)(field(_));
+      const prev = path.pointRadius(),
+            value = path.pointRadius(pointRadius)(field(_));
       path.pointRadius(prev);
       return value;
     };

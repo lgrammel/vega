@@ -1,7 +1,7 @@
-var tape = require('tape'),
-    vega = require('vega-dataflow'),
-    runtime = require('../'),
-    events = require('./events');
+const tape = require('tape'),
+      vega = require('vega-dataflow'),
+      runtime = require('../'),
+      events = require('./events');
 
 tape('Parser parses event streams', t => {
 

@@ -20,7 +20,7 @@ export function pick(test) {
 
 export function hitPath(path, filled) {
   return function(context, o, x, y) {
-    var item = Array.isArray(o) ? o[0] : o,
+    let item = Array.isArray(o) ? o[0] : o,
         fill = (filled == null) ? item.fill : filled,
         stroke = item.stroke && context.isPointInStroke, lw, lc;
 

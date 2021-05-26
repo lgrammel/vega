@@ -1,5 +1,5 @@
-var tape = require('tape'),
-    parse = require('../').parse;
+const tape = require('tape'),
+      parse = require('../').parse;
 
 const geojson = {
   'type': 'FeatureCollection',

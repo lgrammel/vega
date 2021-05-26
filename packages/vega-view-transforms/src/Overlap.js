@@ -60,8 +60,8 @@ const hasBounds = item => {
 };
 
 const boundTest = (scale, orient, tolerance) => {
-  var range = scale.range(),
-      b = new Bounds();
+  const range = scale.range(),
+        b = new Bounds();
 
   if (orient === Top || orient === Bottom) {
     b.set(range[0], -Infinity, range[1], +Infinity);

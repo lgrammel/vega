@@ -50,7 +50,7 @@ Impute.Definition = {
 };
 
 function getValue(_) {
-  var m = _.method || Methods.value, v;
+  let m = _.method || Methods.value, v;
 
   if (Methods[m] == null) {
     error('Unrecognized imputation method: ' + m);
@@ -69,7 +69,7 @@ function getField(_) {
 
 inherits(Impute, Transform, {
   transform(_, pulse) {
-    var out = pulse.fork(pulse.ALL),
+    let out = pulse.fork(pulse.ALL),
         impute = getValue(_),
         field = getField(_),
         fName = accessorName(_.field),

@@ -49,7 +49,7 @@ function keys(objects) {
 }
 
 export default function(spec, scope) {
-  var config = scope.config,
+  let config = scope.config,
       style = config.style,
       axis = config.axis,
       band = scope.scaleType(spec.scale) === 'band' && config.axisBand,

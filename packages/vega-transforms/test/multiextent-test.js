@@ -1,13 +1,13 @@
-var tape = require('tape'),
-    vega = require('vega-dataflow'),
-    MultiExtent = require('../').multiextent;
+const tape = require('tape'),
+      vega = require('vega-dataflow'),
+      MultiExtent = require('../').multiextent;
 
 tape('MultiExtent combines extents', t => {
-  var df = new vega.Dataflow(),
-      e = df.add([10, 50]),
-      m = df.add(MultiExtent, {extents: [
-        [-5, 0], [0, 20], e
-      ]});
+  const df = new vega.Dataflow(),
+        e = df.add([10, 50]),
+        m = df.add(MultiExtent, {extents: [
+          [-5, 0], [0, 20], e
+        ]});
 
   t.equal(m.value, null);
 

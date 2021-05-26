@@ -1,5 +1,5 @@
-var test = require('./util'),
-    tape = require('tape');
+const test = require('./util'),
+      tape = require('tape');
 
 tape('vg2png generates PNG output', t => {
   const cmd = './bin/vg2png test/resources/bar.vg.json';

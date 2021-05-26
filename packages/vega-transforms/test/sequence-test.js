@@ -1,17 +1,17 @@
-var tape = require('tape'),
-    field = require('vega-util').field,
-    range = require('d3-array').range,
-    vega = require('vega-dataflow'),
-    tx = require('../'),
-    Sequence = tx.sequence;
+const tape = require('tape'),
+      field = require('vega-util').field,
+      range = require('d3-array').range,
+      vega = require('vega-dataflow'),
+      tx = require('../'),
+      Sequence = tx.sequence;
 
 tape('Sequence generates sequences', t => {
-  var df = new vega.Dataflow(),
-      start = df.add(0),
-      stop = df.add(11),
-      step = df.add(null),
-      as = df.add(null),
-      s = df.add(Sequence, {start:start, stop:stop, step:step, as:as});
+  const df = new vega.Dataflow(),
+        start = df.add(0),
+        stop = df.add(11),
+        step = df.add(null),
+        as = df.add(null),
+        s = df.add(Sequence, {start:start, stop:stop, step:step, as:as});
 
   // -- initial run
   df.run();

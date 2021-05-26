@@ -102,11 +102,11 @@ Bounds.prototype = {
   },
 
   rotatedPoints(angle, x, y) {
-    var {x1, y1, x2, y2} = this,
-        cos = Math.cos(angle),
-        sin = Math.sin(angle),
-        cx = x - x * cos + y * sin,
-        cy = y - x * sin - y * cos;
+    const {x1, y1, x2, y2} = this,
+          cos = Math.cos(angle),
+          sin = Math.sin(angle),
+          cx = x - x * cos + y * sin,
+          cy = y - x * sin - y * cos;
 
     return [
       cos * x1 - sin * y1 + cx, sin * x1 + cos * y1 + cy,

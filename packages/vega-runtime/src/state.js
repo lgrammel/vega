@@ -3,11 +3,11 @@ import {truthy} from 'vega-util';
 const SKIP = {skip: true};
 
 export function getState(options) {
-  var ctx = this,
-      state = {};
+  const ctx = this,
+        state = {};
 
   if (options.signals) {
-    var signals = (state.signals = {});
+    const signals = (state.signals = {});
     Object.keys(ctx.signals).forEach(key => {
       const op = ctx.signals[key];
       if (options.signals(key, op)) {
@@ -17,7 +17,7 @@ export function getState(options) {
   }
 
   if (options.data) {
-    var data = (state.data = {});
+    const data = (state.data = {});
     Object.keys(ctx.data).forEach(key => {
       const dataset = ctx.data[key];
       if (options.data(key, dataset)) {
@@ -34,10 +34,10 @@ export function getState(options) {
 }
 
 export function setState(state) {
-  var ctx = this,
-      df = ctx.dataflow,
-      data = state.data,
-      signals = state.signals;
+  const ctx = this,
+        df = ctx.dataflow,
+        data = state.data,
+        signals = state.signals;
 
   Object.keys(signals || {}).forEach(key => {
     df.update(ctx.signals[key], signals[key], SKIP);

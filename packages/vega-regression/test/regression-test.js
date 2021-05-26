@@ -1,9 +1,9 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    Collect = require('vega-transforms').collect,
-    Regression = require('../').regression,
-    changeset = vega.changeset;
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      Collect = require('vega-transforms').collect,
+      Regression = require('../').regression,
+      changeset = vega.changeset;
 
 tape('Regression fits linear regression model', t => {
   const data = [

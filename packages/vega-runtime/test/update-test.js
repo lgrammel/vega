@@ -1,7 +1,7 @@
-var tape = require('tape'),
-    vega = require('vega-dataflow'),
-    runtime = require('../'),
-    events = require('./events');
+const tape = require('tape'),
+      vega = require('vega-dataflow'),
+      runtime = require('../'),
+      events = require('./events');
 
 tape('Parser parses event-driven operator updates', t => {
 
@@ -31,8 +31,8 @@ tape('Parser parses event-driven operator updates', t => {
   df.events = events.events;
   df.fire = events.fire;
 
-  var ctx = runtime.context(df, {}).parse(spec),
-      ops = ctx.nodes;
+  const ctx = runtime.context(df, {}).parse(spec),
+        ops = ctx.nodes;
 
   df.update(ops[0], 2).run();
   t.equal(ops[0].value, 2);

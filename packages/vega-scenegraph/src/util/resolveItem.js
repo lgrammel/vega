@@ -2,7 +2,7 @@ import marks from '../marks/index';
 import point from './point';
 
 export default function(item, event, el, origin) {
-  var mark = item && item.mark,
+  let mark = item && item.mark,
       mdef, p;
 
   if (mark && (mdef = marks[mark.marktype]).tip) {

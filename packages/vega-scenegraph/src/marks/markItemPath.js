@@ -19,7 +19,7 @@ export default function(type, shape, isect) {
   }
 
   function draw(context, item) {
-    var x = item.x || 0,
+    let x = item.x || 0,
         y = item.y || 0,
         a = item.angle || 0;
 

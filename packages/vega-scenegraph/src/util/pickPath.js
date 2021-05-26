@@ -1,5 +1,5 @@
 export function pickArea(a, p) {
-  var v = a[0].orient === 'horizontal' ? p[1] : p[0],
+  let v = a[0].orient === 'horizontal' ? p[1] : p[0],
       z = a[0].orient === 'horizontal' ? 'y' : 'x',
       i = a.length,
       min = +Infinity, hit, d;
@@ -17,7 +17,7 @@ export function pickArea(a, p) {
 }
 
 export function pickLine(a, p) {
-  var t = Math.pow(a[0].strokeWidth || 1, 2),
+  let t = Math.pow(a[0].strokeWidth || 1, 2),
       i = a.length, dx, dy, dd;
 
   while (--i >= 0) {
@@ -32,7 +32,7 @@ export function pickLine(a, p) {
 }
 
 export function pickTrail(a, p) {
-  var i = a.length, dx, dy, dd;
+  let i = a.length, dx, dy, dd;
 
   while (--i >= 0) {
     if (a[i].defined === false) continue;

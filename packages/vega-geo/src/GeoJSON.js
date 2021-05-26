@@ -29,7 +29,7 @@ GeoJSON.Definition = {
 
 inherits(GeoJSON, Transform, {
   transform(_, pulse) {
-    var features = this._features,
+    let features = this._features,
         points = this._points,
         fields = _.fields,
         lon = fields && fields[0],
@@ -56,7 +56,7 @@ inherits(GeoJSON, Transform, {
 
     if (lon && lat) {
       pulse.visit(flag, t => {
-        var x = lon(t),
+        let x = lon(t),
             y = lat(t);
         if (x != null && y != null && (x = +x) === x && (y = +y) === y) {
           points.push([x, y]);

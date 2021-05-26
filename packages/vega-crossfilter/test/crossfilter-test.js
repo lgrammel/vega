@@ -1,11 +1,11 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    xf = require('../'),
-    changeset = vega.changeset,
-    Collect = require('vega-transforms').collect,
-    CrossFilter = xf.crossfilter,
-    ResolveFilter = xf.resolvefilter;
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      xf = require('../'),
+      changeset = vega.changeset,
+      Collect = require('vega-transforms').collect,
+      CrossFilter = xf.crossfilter,
+      ResolveFilter = xf.resolvefilter;
 
 tape('Crossfilter filters tuples', t => {
   const data = [
@@ -112,8 +112,8 @@ tape('Crossfilter consolidates after remove', t => {
   });
 
   // was the filter state appropriately updated?
-  var d = cf.value.data(),
-      curr = cf.value.curr();
+  const d = cf.value.data(),
+        curr = cf.value.curr();
   t.equal(cf.value.size(), 2);
   t.equal(d[0], data[2]);
   t.equal(d[1], data[3]);

@@ -37,8 +37,8 @@ function tokenize(text, tcase, match) {
 inherits(CountPattern, Transform, {
   transform(_, pulse) {
     const process = update => tuple => {
-      var tokens = tokenize(get(tuple), _.case, match) || [], t;
-      for (var i=0, n=tokens.length; i<n; ++i) {
+      let tokens = tokenize(get(tuple), _.case, match) || [], t;
+      for (let i=0, n=tokens.length; i<n; ++i) {
         if (!stop.test(t = tokens[i])) update(t);
       }
     };

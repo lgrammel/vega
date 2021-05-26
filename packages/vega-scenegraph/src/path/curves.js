@@ -91,7 +91,7 @@ const lookup = {
 };
 
 export default function curves(type, orientation, tension) {
-  var entry = hasOwnProperty(lookup, type) && lookup[type],
+  let entry = hasOwnProperty(lookup, type) && lookup[type],
       curve = null;
 
   if (entry) {

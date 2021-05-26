@@ -2,7 +2,7 @@ import {hasCornerRadius, rectangle} from '../../path/shapes';
 import {isFunction} from 'vega-util';
 
 export default function(context, scene) {
-  var clip = scene.clip;
+  const clip = scene.clip;
 
   context.save();
 

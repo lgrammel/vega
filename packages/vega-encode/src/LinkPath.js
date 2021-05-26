@@ -34,14 +34,14 @@ LinkPath.Definition = {
 
 inherits(LinkPath, Transform, {
   transform(_, pulse) {
-    var sx = _.sourceX || sourceX,
-        sy = _.sourceY || sourceY,
-        tx = _.targetX || targetX,
-        ty = _.targetY || targetY,
-        as = _.as || 'path',
-        orient = _.orient || 'vertical',
-        shape = _.shape || 'line',
-        path = Paths.get(shape + '-' + orient) || Paths.get(shape);
+    const sx = _.sourceX || sourceX,
+          sy = _.sourceY || sourceY,
+          tx = _.targetX || targetX,
+          ty = _.targetY || targetY,
+          as = _.as || 'path',
+          orient = _.orient || 'vertical',
+          shape = _.shape || 'line',
+          path = Paths.get(shape + '-' + orient) || Paths.get(shape);
 
     if (!path) {
       error('LinkPath unsupported type: ' + _.shape
@@ -66,10 +66,10 @@ const lineR= (sa, sr, ta, tr) => line(
 );
 
 const arc = (sx, sy, tx, ty) => {
-  var dx = tx - sx,
-      dy = ty - sy,
-      rr = Math.sqrt(dx * dx + dy * dy) / 2,
-      ra = 180 * Math.atan2(dy, dx) / Math.PI;
+  const dx = tx - sx,
+        dy = ty - sy,
+        rr = Math.sqrt(dx * dx + dy * dy) / 2,
+        ra = 180 * Math.atan2(dy, dx) / Math.PI;
   return 'M' + sx + ',' + sy +
          'A' + rr + ',' + rr +
          ' ' + ra + ' 0 1' +

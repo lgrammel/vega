@@ -1,9 +1,9 @@
-var tape = require('tape'),
-    util = require('vega-util'),
-    vega = require('vega-dataflow'),
-    Collect = require('vega-transforms').collect,
-    Loess = require('../').loess,
-    changeset = vega.changeset;
+const tape = require('tape'),
+      util = require('vega-util'),
+      vega = require('vega-dataflow'),
+      Collect = require('vega-transforms').collect,
+      Loess = require('../').loess,
+      changeset = vega.changeset;
 
   tape('Loess handles repeated x-values', t => {
     const data = [

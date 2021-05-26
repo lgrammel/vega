@@ -1,5 +1,5 @@
-var tape = require('tape'),
-    { pluck } = require('../');
+const tape = require('tape'),
+      { pluck } = require('../');
 
 tape('pluck plucks values from an array', t => {
   const data = [

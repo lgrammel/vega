@@ -46,7 +46,7 @@ function shouldReflow(group) {
 }
 
 function layoutGroup(view, group, _) {
-  var items = group.items,
+  let items = group.items,
       width = Math.max(0, group.width || 0),
       height = Math.max(0, group.height || 0),
       viewBounds = new Bounds().set(0, 0, width, height),
