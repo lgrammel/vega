@@ -1,4 +1,4 @@
-module.exports = type => {
+module.exports = function(type) {
   const helpText = `Render a Vega specification to ${type.toUpperCase()}.
 Usage: vg2${type} [vega_json_spec_file] [output_${type}_file]
   If no arguments are provided, reads from stdin.
