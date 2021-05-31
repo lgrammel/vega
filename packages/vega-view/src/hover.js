@@ -8,11 +8,9 @@ function markTarget(event) {
 }
 
 function invoke(name) {
-  return function(_, event) {
-    return event.vega.view()
-      .changeset()
-      .encode(event.item, name);
-  };
+  return (_, event) => event.vega.view()
+    .changeset()
+    .encode(event.item, name);
 }
 
 export default function(hoverSet, leaveSet) {

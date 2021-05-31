@@ -97,7 +97,7 @@ Renderer.prototype = {
 
     // bind arguments into a render call, and cache it
     // this function may be subsequently called for async redraw
-    r._call = function() { r._render(scene); };
+    r._call = () => { r._render(scene); };
 
     // invoke the renderer
     r._call();

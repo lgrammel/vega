@@ -5,7 +5,7 @@ export default function($, bitmaps, avoidBaseMark, markIndex) {
       height = $.height;
   
   // try to place a label within an input area mark
-  return function(d) {
+  return d => {
     const items = d.datum.datum.items[markIndex].items, // area points
           n = items.length, // number of points
           textHeight = d.datum.fontSize, // label width

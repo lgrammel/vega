@@ -15,7 +15,7 @@ import {array} from 'vega-util';
 export default function(source, type, filter, apply) {
   const df = this,
         s = stream(filter, apply),
-        send = function(e) {
+        send = e => {
           e.dataflow = df;
           try {
             s.receive(e);

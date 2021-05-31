@@ -127,7 +127,7 @@ function getContext(_, ctx) {
  */
 function getSubflow(_, ctx) {
   const spec = _.$subflow;
-  return function(dataflow, key, parent) {
+  return (dataflow, key, parent) => {
     const subctx = ctx.fork().parse(spec),
           op = subctx.get(spec.operators[0].id),
           p = subctx.signals.parent;

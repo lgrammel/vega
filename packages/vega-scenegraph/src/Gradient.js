@@ -55,7 +55,7 @@ export default function(p0, p1) {
     x2: p1 ? p1[0] : 1,
     y2: p1 ? p1[1] : 0,
     stops: stops,
-    stop: function(offset, color) {
+    stop: (offset, color) => {
       stops.push({offset: offset, color: color});
       return gradient;
     }

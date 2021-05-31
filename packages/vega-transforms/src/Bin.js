@@ -90,7 +90,7 @@ inherits(Bin, Transform, {
       stop += d;
     }
 
-    const f = function(t) {
+    const f = t => {
       let v = toNumber(field(t));
       return v == null ? null
         : v < start ? -Infinity

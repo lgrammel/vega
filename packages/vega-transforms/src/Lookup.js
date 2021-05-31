@@ -54,7 +54,7 @@ inherits(Lookup, Transform, {
       }
       as = as || values.map(accessorName);
 
-      set = function(t) {
+      set = t => {
         for (var i=0, k=0, j, v; i<n; ++i) {
           v = index.get(keys[i](t));
           if (v == null) for (j=0; j<m; ++j, ++k) t[as[k]] = defaultValue;
@@ -66,7 +66,7 @@ inherits(Lookup, Transform, {
         error('Missing output field names.');
       }
 
-      set = function(t) {
+      set = t => {
         for (var i=0, v; i<n; ++i) {
           v = index.get(keys[i](t));
           t[as[i]] = v==null ? defaultValue : v;

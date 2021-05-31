@@ -16,13 +16,13 @@ export default function(fields, flat, opt) {
   let fn;
 
   if (!len) {
-    fn = function() { return ''; };
+    fn = () => '';
   } else if (len === 1) {
     const get = map(fields[0]);
-    fn = function(_) { return '' + get(_); };
+    fn = _ => '' + get(_);
   } else {
     const get = fields.map(map);
-    fn = function(_) {
+    fn = _ => {
       let s = '' + get[0](_), i = 0;
       while (++i < len) s += '|' + get[i](_);
       return s;

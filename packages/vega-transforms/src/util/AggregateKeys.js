@@ -13,7 +13,7 @@ export function multikey(f) {
 }
 
 export function groupkey(fields) {
-  return !fields || !fields.length ? function() { return ''; }
+  return !fields || !fields.length ? () => ''
     : fields.length === 1 ? fields[0]
     : multikey(fields);
 }

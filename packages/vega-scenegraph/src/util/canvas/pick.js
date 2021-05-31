@@ -4,7 +4,7 @@ import {truthy} from 'vega-util';
 export function pick(test) {
   test = test || truthy;
 
-  return function(context, scene, x, y, gx, gy) {
+  return (context, scene, x, y, gx, gy) => {
     x *= context.pixelRatio;
     y *= context.pixelRatio;
 
@@ -19,7 +19,7 @@ export function pick(test) {
 }
 
 export function hitPath(path, filled) {
-  return function(context, o, x, y) {
+  return (context, o, x, y) => {
     var item = Array.isArray(o) ? o[0] : o,
         fill = (filled == null) ? item.fill : filled,
         stroke = item.stroke && context.isPointInStroke, lw, lc;
