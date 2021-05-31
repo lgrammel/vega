@@ -1,5 +1,5 @@
 export default function(scale) {
-  return function(_) {
+  return _ => {
     let lo = _[0],
         hi = _[1],
         t;

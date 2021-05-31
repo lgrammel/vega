@@ -68,7 +68,7 @@ function permit(view, key, type) {
 export function events(source, type, filter) {
   var view = this,
       s = new EventStream(filter),
-      send = function(e, item) {
+      send = (e, item) => {
         view.runAsync(null, () => {
           if (source === VIEW && prevent(view, type)) {
             e.preventDefault();

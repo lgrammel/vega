@@ -49,11 +49,11 @@ function event(name, x, y) {
 }
 
 tape('CanvasHandler should add/remove event callbacks', t => {
-  var array = function(_) { return _ || []; },
-      object = function(_) { return _ || {}; },
+  var array = _ => _ || [],
+      object = _ => _ || {},
       handler = new Handler(),
       h = handler._handlers,
-      f = function() {},
+      f = () => {},
       atype = 'click',
       btype = 'click.foo',
       ctype = 'mouseover';
@@ -108,7 +108,7 @@ tape('CanvasHandler should handle input events', t => {
 
   var canvas = handler.canvas();
   let count = 0;
-  const increment = function() { count++; };
+  const increment = () => { count++; };
 
   handler.events.forEach(name => {
     handler.on(name, increment);
@@ -218,7 +218,7 @@ tape('CanvasHandler should pick line mark', t => {
   // fake isPointInStroke until node canvas supports it
   let g = handler.context();
   g.pixelRatio = 1.1;
-  g.isPointInStroke = function() { return true; };
+  g.isPointInStroke = () => true;
   t.ok(handler.pick(mark, 0, 144, 0, 144));
 
   mark = marks['line-1'];
@@ -228,7 +228,7 @@ tape('CanvasHandler should pick line mark', t => {
 
   // fake isPointInStroke until node canvas supports it
   g = handler.context();
-  g.isPointInStroke = function() { return true; };
+  g.isPointInStroke = () => true;
   t.ok(handler.pick(mark, 0, 144, 0, 144));
 
   t.end();
@@ -260,7 +260,7 @@ tape('CanvasHandler should pick rule mark', t => {
   // fake isPointInStroke until node canvas supports it
   const g = handler.context();
   g.pixelRatio = 1.1;
-  g.isPointInStroke = function() { return true; };
+  g.isPointInStroke = () => true;
   t.ok(handler.pick(mark, 5, 0, 5, 0));
 
   t.end();

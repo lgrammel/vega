@@ -60,14 +60,14 @@ function create(type, constructor) {
 
     p.path = geoPath().projection(p);
 
-    p.copy = p.copy || function() {
+    p.copy = p.copy || (() => {
       const c = projection();
       projectionProperties.forEach(prop => {
         if (p[prop]) c[prop](p[prop]());
       });
       c.path.pointRadius(p.path.pointRadius());
       return c;
-    };
+    });
 
     return p;
   };

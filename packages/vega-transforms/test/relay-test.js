@@ -47,7 +47,7 @@ tape('Relay relays derived tuples', t => {
   // test simultaneous remove and add
   // fake changeset to test invalid configuration
   df.pulse(c, {
-    pulse: function(p) {
+    pulse: p => {
       p.add.push(data[0]);
       p.rem.push(data[0]);
       return p;

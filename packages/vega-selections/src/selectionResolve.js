@@ -69,7 +69,7 @@ export function selectionResolve(name, op, isMulti, vl5) {
 }
 
 var ops = {
-  E_union: function(base, value) {
+  E_union: (base, value) => {
     if (!base.length) return value;
 
     var i = 0, n = value.length;
@@ -77,12 +77,10 @@ var ops = {
     return base;
   },
 
-  E_intersect: function(base, value) {
-    return !base.length ? value :
-      base.filter(v => value.indexOf(v) >= 0);
-  },
+  E_intersect: (base, value) => !base.length ? value :
+    base.filter(v => value.indexOf(v) >= 0),
 
-  R_union: function(base, value) {
+  R_union: (base, value) => {
     var lo = toNumber(value[0]), hi = toNumber(value[1]);
     if (lo > hi) {
       lo = value[1];
@@ -95,7 +93,7 @@ var ops = {
     return base;
   },
 
-  R_intersect: function(base, value) {
+  R_intersect: (base, value) => {
     var lo = toNumber(value[0]), hi = toNumber(value[1]);
     if (lo > hi) {
       lo = value[1];

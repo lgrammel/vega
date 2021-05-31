@@ -44,7 +44,7 @@ export default function(codegen) {
     sqrt:     'Math.sqrt',
     tan:      'Math.tan',
 
-    clamp: function(args) {
+    clamp: args => {
       if (args.length < 3) error('Missing arguments to clamp function.');
       if (args.length > 3) error('Too many arguments to clamp function.');
       const a = args.map(codegen);
@@ -91,7 +91,7 @@ export default function(codegen) {
     test:    fn('test', REGEXP),
 
     // Control Flow functions
-    if: function(args) {
+    if: args => {
         if (args.length < 3) error('Missing arguments to if function.');
         if (args.length > 3) error('Too many arguments to if function.');
         const a = args.map(codegen);

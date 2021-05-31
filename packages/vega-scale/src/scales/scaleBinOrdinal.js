@@ -32,13 +32,9 @@ export function scaleBinOrdinal() {
     }
   };
 
-  scale.tickFormat = function(count, specifier) {
-    return tickFormat(domain[0], peek(domain), count == null ? 10 : count, specifier);
-  };
+  scale.tickFormat = (count, specifier) => tickFormat(domain[0], peek(domain), count == null ? 10 : count, specifier);
 
-  scale.copy = function() {
-    return scaleBinOrdinal().domain(scale.domain()).range(scale.range());
-  };
+  scale.copy = () => scaleBinOrdinal().domain(scale.domain()).range(scale.range());
 
   return scale;
 }

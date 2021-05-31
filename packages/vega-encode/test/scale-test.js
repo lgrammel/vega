@@ -212,7 +212,7 @@ tape('Scale respects range color schemes', t => {
 
 tape('Scale warns for zero in log domain', t => {
   function logScale(domain) {
-    return function() {
+    return () => {
       var df = new vega.Dataflow(), e;
       df.warn = (_ => e = _);
       df.add(encode.scale, {type: 'log', domain: domain});

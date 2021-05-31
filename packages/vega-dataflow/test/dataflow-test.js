@@ -8,7 +8,7 @@ tape('Dataflow propagates values (run)', t => {
       n1 = df.add(_ => _.s1 + 0.25, {s1:s1}),
       n2 = df.add(_ => _.n1 * _.s2, {n1:n1, s2:s2}),
       op = [s1, s2, n1, n2],
-      stamp = function(_) { return _.stamp; };
+      stamp = _ => _.stamp;
 
   t.equal(df.stamp(), 0); // timestamp 0
 
@@ -41,7 +41,7 @@ tape('Dataflow propagates values (runAsync)', t => {
       n1 = df.add(_ => _.s1 + 0.25, {s1:s1}),
       n2 = df.add(_ => _.n1 * _.s2, {n1:n1, s2:s2}),
       op = [s1, s2, n1, n2],
-      stamp = function(_) { return _.stamp; };
+      stamp = _ => _.stamp;
 
   t.equal(df.stamp(), 0); // timestamp 0
 
@@ -94,7 +94,7 @@ tape('Dataflow handles errors', t => {
   var df = new vega.Dataflow(),
       error = 0;
 
-  df.error = function() { error = 1; };
+  df.error = () => { error = 1; };
   df.add(() => { throw Error('!!!'); });
 
   df.run();

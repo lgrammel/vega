@@ -56,19 +56,15 @@ export function band() {
     }
   };
 
-  scale.rangeRound = function(_) {
+  scale.rangeRound = _ => {
     range = [+_[0], +_[1]];
     round = true;
     return rescale();
   };
 
-  scale.bandwidth = function() {
-    return bandwidth;
-  };
+  scale.bandwidth = () => bandwidth;
 
-  scale.step = function() {
-    return step;
-  };
+  scale.step = () => step;
 
   scale.round = function(_) {
     if (arguments.length) {
@@ -116,7 +112,7 @@ export function band() {
     }
   };
 
-  scale.invertRange = function(_) {
+  scale.invertRange = _ => {
     // bail if range has null or undefined values
     if (_[0] == null || _[1] == null) return;
 
@@ -155,20 +151,18 @@ export function band() {
     return (a > b) ? undefined : domain().slice(a, b+1);
   };
 
-  scale.invert = function(_) {
+  scale.invert = _ => {
     const value = scale.invertRange([_, _]);
     return value ? value[0] : value;
   };
 
-  scale.copy = function() {
-    return band()
-        .domain(domain())
-        .range(range)
-        .round(round)
-        .paddingInner(paddingInner)
-        .paddingOuter(paddingOuter)
-        .align(align);
-  };
+  scale.copy = () => band()
+      .domain(domain())
+      .range(range)
+      .round(round)
+      .paddingInner(paddingInner)
+      .paddingOuter(paddingOuter)
+      .align(align);
 
   return rescale();
 }
@@ -179,9 +173,7 @@ function pointish(scale) {
   scale.padding = scale.paddingOuter;
   delete scale.paddingInner;
 
-  scale.copy = function() {
-    return pointish(copy());
-  };
+  scale.copy = () => pointish(copy());
 
   return scale;
 }

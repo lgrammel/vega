@@ -15,7 +15,7 @@ export default function DataScope(scope, input, output, values, aggr) {
   this.index = {};
 }
 
-DataScope.fromEntries = function(scope, entries) {
+DataScope.fromEntries = (scope, entries) => {
   const n = entries.length,
         values = entries[n-1],
         output = entries[n-2];

@@ -34,13 +34,11 @@ const comparator = (fields, orders) => fields.length === 1
   ? compare1(fields[0], orders[0])
   : compareN(fields, orders, fields.length);
 
-const compare1 = (field, order) => function(a, b) {
-  return ascending(field(a), field(b)) * order;
-};
+const compare1 = (field, order) => (a, b) => ascending(field(a), field(b)) * order;
 
 const compareN = (fields, orders, n) => {
   orders.push(0); // pad zero for convenient lookup
-  return function(a, b) {
+  return (a, b) => {
     let f, c = 0, i = -1;
     while (c === 0 && ++i < n) {
       f = fields[i];

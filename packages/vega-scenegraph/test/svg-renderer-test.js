@@ -194,7 +194,7 @@ tape('SVGRenderer should support enter-item redraw', t => {
   t.end();
 });
 
-tape('SVGRenderer should support exit-item redraw', function(t) {
+tape('SVGRenderer should support exit-item redraw', t => {
   vega.resetSVGDefIds();
 
   const scene = loadScene('scenegraph-rect.json');

@@ -132,7 +132,7 @@ export function transform(grid, sx, sy, tx, ty) {
     coordinates[1] = (coordinates[1] - y1) * sy + ty;
   }
 
-  return function(geometry) {
+  return geometry => {
     geometry.coordinates.forEach(transformPolygon);
     return geometry;
   };
